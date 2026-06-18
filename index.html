@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleanfoods | Dieta Limpa, Treino Pesado</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Anton (Impact Headings), Permanent Marker (Graffiti), Inter (Readability) -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cf-black': '#0E0E0E',
+                        'cf-yellow': '#F6C500',
+                        'cf-darkgray': '#1A1A1A',
+                        'cf-gray': '#333333',
+                    },
+                    fontFamily: {
+                        'impact': ['Anton', 'sans-serif'],
+                        'street': ['Permanent Marker', 'cursive'],
+                        'body': ['Inter', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'spray': "radial-gradient(circle, rgba(246,197,0,0.15) 0%, rgba(14,14,14,0) 70%)",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --black: #0E0E0E;
+            --yellow: #F6C500;
+        }
+
+        body {
+            background-color: var(--black);
+            color: #ffffff;
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        /* Noise Texture for Street Vibe */
+        .noise-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: var(--yellow);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 2px solid var(--yellow);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        .cursor-hover .cursor-outline {
+            width: 60px; height: 60px;
+            background-color: rgba(246, 197, 0, 0.1);
+            border-style: dashed;
+            animation: rotateCursor 4s linear infinite;
+        }
+
+        @keyframes rotateCursor {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Text Utilities */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 2px var(--yellow);
+        }
+        .text-outline-white {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+        }
+
+        /* Marquee Animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            background: var(--yellow);
+            color: var(--black);
+            padding: 10px 0;
+            transform: rotate(-2deg) scale(1.05);
+            border-top: 4px solid #fff;
+            border-bottom: 4px solid #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 10;
+            position: relative;
+        }
+        .marquee-content {
+            display: flex;
+            animation: marquee 15s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--black);
+        }
+        .glitch::before {
+            left: 3px;
+            text-shadow: -2px 0 var(--yellow);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -3px;
+            text-shadow: -2px 0 #fff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 44px, 0); }
+            20% { clip: rect(65px, 9999px, 98px, 0); }
+            40% { clip: rect(12px, 9999px, 33px, 0); }
+            60% { clip: rect(78px, 9999px, 15px, 0); }
+            80% { clip: rect(23px, 9999px, 88px, 0); }
+            100% { clip: rect(4px, 9999px, 55px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(34px, 9999px, 12px, 0); }
+            20% { clip: rect(88px, 9999px, 55px, 0); }
+            40% { clip: rect(22px, 9999px, 77px, 0); }
+            60% { clip: rect(9px, 9999px, 33px, 0); }
+            80% { clip: rect(66px, 9999px, 91px, 0); }
+            100% { clip: rect(11px, 9999px, 24px, 0); }
+        }
+
+        /* Abstract Shapes & Borders */
+        .torn-edge {
+            clip-path: polygon(0 0, 100% 2%, 98% 100%, 2% 98%);
+        }
+        .marker-highlight {
+            background: linear-gradient(104deg, rgba(246,197,0,0) 0.9%, rgba(246,197,0,1) 2.4%, rgba(246,197,0,0.8) 5.8%, rgba(246,197,0,0.9) 93%, rgba(246,197,0,0) 96%);
+            padding: 0 10px;
+            color: var(--black) !important;
+            display: inline-block;
+            transform: rotate(-1deg);
+        }
+        
+        .spray-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--yellow); }
+
+        /* Asymmetric Grid for Menu */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        /* Interactive Buttons */
+        .btn-street {
+            position: relative;
+            display: inline-block;
+            background: var(--yellow);
+            color: var(--black);
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+            padding: 1rem 2.5rem;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            border: 3px solid var(--yellow);
+            transition: all 0.3s ease;
+            z-index: 1;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+        }
+        .btn-street:hover {
+            background: var(--black);
+            color: var(--yellow);
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 10px 10px 0px var(--yellow);
+        }
+
+        /* Image treatment */
+        .img-hardcore {
+            filter: grayscale(100%) contrast(120%);
+            mix-blend-mode: luminosity;
+            transition: filter 0.5s;
+        }
+        .img-hardcore:hover {
+            filter: grayscale(0%) contrast(110%);
+        }
+
+        /* Hide elements for GSAP initialization */
+        .reveal-up, .reveal-left, .reveal-right { visibility: hidden; }
+        
+        /* Ensure mobile is smooth */
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline { display: none; }
+            body { cursor: auto; }
+            .marquee-container { transform: rotate(-3deg) scale(1.1); }
+        }
+    </style>
+</head>
+<body class="antialiased font-body relative">
+
+    <div class="noise-bg"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/5511910993953" target="_blank" class="fixed bottom-6 right-6 w-16 h-16 bg-cf-yellow rounded-full flex items-center justify-center text-cf-black text-3xl z-50 shadow-[0_0_20px_rgba(246,197,0,0.5)] hover:scale-110 transition-transform cursor-hover border-4 border-cf-black hover:border-white">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Header Minimal/Raw -->
+    <header class="absolute top-0 w-full pt-1 pb-2 px-4 md:px-6 flex justify-between items-center z-40 mix-blend-difference">
+        <a href="#hero" class="cursor-hover">
+            <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-16 sm:h-20 lg:h-28 xl:h-36 w-auto object-contain">
+        </a>
+        <a href="#cardapio" class="font-impact text-lg md:text-xl text-white hover:text-cf-yellow transition-colors tracking-widest cursor-hover">
+            CARDÁPIO <i class="fa-solid fa-arrow-down ml-2"></i>
+        </a>
+    </header>
+
+    <section class="relative min-h-screen grid grid-rows-[auto_1fr] pb-12" id="hero">
+        <!-- Spacer matching header height to prevent overlap -->
+        <div class="h-20 sm:h-24 lg:h-32 xl:h-40"></div>
+
+        <!-- Spray background elements -->
+        <div class="spray-blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-cf-yellow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-25"></div>
+        <div class="spray-blob w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-cf-yellow bottom-[-10%] right-[-5%] opacity-20"></div>
+
+        <!-- Huge Background Text Parallax -->
+        <div class="absolute inset-0 flex flex-col justify-center pointer-events-none opacity-5 md:opacity-10 font-impact text-[15vw] leading-none whitespace-nowrap overflow-hidden select-none">
+            <div id="bg-text-1" class="transform -translate-x-10 text-outline-white">SEM GLÚTEN</div>
+            <div id="bg-text-2" class="transform translate-x-20 text-outline-white">SEM LACTOSE</div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-8 lg:gap-16 items-center my-auto">
+            
+            <!-- Hero Text -->
+            <div class="flex flex-col items-start space-y-4 md:space-y-6 max-w-xl mx-auto lg:mx-0">
+                <h1 class="font-impact text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[6.5rem] leading-[0.85] uppercase text-white reveal-up">
+                    <span class="block">Dieta</span>
+                    <span class="block glitch" data-text="LIMPA">LIMPA</span>
+                    <span class="block text-outline mt-2 md:mt-4">Treino</span>
+                    <span class="block text-cf-yellow marker-highlight px-2 mt-1 md:mt-2">PESADO.</span>
+                </h1>
+                <p class="font-body text-gray-300 text-sm sm:text-base lg:text-lg max-w-md border-l-4 border-cf-yellow pl-4 reveal-up font-semibold">
+                    Marmitas fitness reais para quem treina de verdade. Sem glúten, sem lactose, sem frescura.
+                </p>
+                
+                <div class="pt-2 md:pt-4 reveal-up">
+                    <a href="#cardapio" class="btn-street text-lg lg:text-xl px-6 py-3 lg:px-8 lg:py-4 cursor-hover">
+                        BOTA PRA DENTRO <i class="fa-solid fa-bolt ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Image Collage -->
+            <div class="relative w-full flex justify-center items-center reveal-right mt-8 lg:mt-0">
+                <!-- Inner Aspect Ratio Box -->
+                <div class="relative w-full max-w-[280px] sm:max-w-[360px] lg:max-w-[450px] aspect-[4/5] flex items-center justify-center">
+                    <!-- Decorative Frame -->
+                    <div class="absolute inset-0 border-4 border-cf-yellow transform rotate-3 z-0"></div>
+                    <div class="absolute inset-[5%] border-2 border-white border-dashed transform -rotate-2 z-0 opacity-50"></div>
+                    
+                    <!-- Main Image (Grayscale with yellow highlights) -->
+                    <img src="https://placehold.co/600x800/0E0E0E/F6C500?text=MARMITA+MONSTRO" alt="Marmita Cleanfoods" class="img-hardcore w-[85%] h-[85%] object-cover z-10 torn-edge shadow-2xl relative">
+                    
+                    <!-- Floating Graphic -->
+                    <div class="absolute bottom-[5%] -left-[5%] bg-cf-yellow text-cf-black font-impact text-2xl lg:text-4xl p-2 lg:p-4 transform -rotate-12 z-20 shadow-lg whitespace-nowrap">
+                        100% REAL
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Infinite Marquee Seals -->
+    <div class="marquee-container my-12 cursor-default">
+        <div class="marquee-content font-impact text-3xl tracking-widest flex items-center">
+            <!-- Repeated content for infinite loop effect -->
+            <span class="mx-8"><i class="fa-solid fa-ban text-cf-black mr-2"></i> SEM GLÚTEN</span>
+            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
+            <span class="mx-8"><i class="fa-solid fa-ban text-cf-black mr-2"></i> SEM LACTOSE</span>
+            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
+            <span class="mx-8"><i class="fa-solid fa-droplet-slash text-cf-black mr-2"></i> SEM ÓLEO</span>
+            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
+            <span class="mx-8"><i class="fa-solid fa-heart-pulse text-cf-black mr-2"></i> BAIXO SÓDIO</span>
+            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
+            <!-- Duplicate for seamless scroll -->
+            <span class="mx-8"><i class="fa-solid fa-ban text-cf-black mr-2"></i> SEM GLÚTEN</span>
+            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
+            <span class="mx-8"><i class="fa-solid fa-ban text-cf-black mr-2"></i> SEM LACTOSE</span>
+            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
+            <span class="mx-8"><i class="fa-solid fa-droplet-slash text-cf-black mr-2"></i> SEM ÓLEO</span>
+            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
+            <span class="mx-8"><i class="fa-solid fa-heart-pulse text-cf-black mr-2"></i> BAIXO SÓDIO</span>
+            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
+        </div>
+    </div>
+
+    <section id="cardapio" class="py-20 relative z-10">
+        <div class="container mx-auto px-4">
+            
+            <div class="mb-20 text-center relative reveal-up">
+                <h2 class="font-impact text-6xl md:text-8xl text-outline absolute left-1/2 -translate-x-1/2 top-[-40px] w-full opacity-30 select-none">O ARSENAL</h2>
+                <h3 class="font-impact text-5xl md:text-7xl text-white relative z-10">ESCOLHA SEU <span class="text-cf-yellow border-b-8 border-cf-yellow">COMBUSTÍVEL</span></h3>
+                <p class="font-street text-xl text-gray-400 mt-6">Tamanhos projetados pro seu shape:</p>
+                <div class="flex justify-center gap-6 mt-4 font-impact text-2xl">
+                    <span class="bg-cf-darkgray px-4 py-2 border-l-4 border-white">P: 225g</span>
+                    <span class="bg-cf-yellow text-cf-black px-4 py-2 transform rotate-2">G: 450g</span>
+                </div>
+            </div>
+
+            <div class="menu-grid">
+                <!-- Categoria: Frango -->
+                <div class="bg-cf-darkgray border-t-8 border-white p-8 relative torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
+                    <div class="absolute -top-6 -right-6 font-street text-8xl text-cf-gray opacity-20 z-0">01</div>
+                    <h4 class="font-impact text-4xl text-white mb-6 relative z-10 uppercase">Linha Frango</h4>
+                    
+                    <ul class="space-y-6 font-body relative z-10">
+                        <!-- Item -->
+                        <li class="border-b border-gray-700 pb-4">
+                            <div class="text-xl font-bold text-white uppercase mb-2">Frango Classic Grelhado</div>
+                            <div class="flex justify-between items-center text-sm font-semibold">
+                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1">R$ 19,50</span></span>
+                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1">R$ 27,50</span></span>
+                            </div>
+                        </li>
+                        <li class="border-b border-gray-700 pb-4">
+                            <div class="text-xl font-bold text-white uppercase mb-2">Frango Desfiado com Batata Doce</div>
+                            <div class="flex justify-between items-center text-sm font-semibold">
+                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1">R$ 19,50</span></span>
+                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1">R$ 27,50</span></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Categoria: Patinho -->
+                <div class="bg-cf-darkgray border-t-8 border-cf-yellow p-8 relative transform md:translate-y-12 torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
+                    <div class="absolute -top-6 -right-6 font-street text-8xl text-cf-gray opacity-20 z-0">02</div>
+                    <h4 class="font-impact text-4xl text-cf-yellow mb-6 relative z-10 uppercase">Linha Patinho</h4>
+                    
+                    <ul class="space-y-6 font-body relative z-10">
+                        <li class="border-b border-gray-700 pb-4">
+                            <div class="text-xl font-bold text-white uppercase mb-2">Patinho Moído c/ Mandioca</div>
+                            <div class="flex justify-between items-center text-sm font-semibold">
+                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1">R$ 25,50</span></span>
+                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1">R$ 33,50</span></span>
+                            </div>
+                        </li>
+                        <li class="border-b border-gray-700 pb-4">
+                            <div class="text-xl font-bold text-white uppercase mb-2">Almôndegas Fit de Patinho</div>
+                            <div class="flex justify-between items-center text-sm font-semibold">
+                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1">R$ 25,50</span></span>
+                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1">R$ 33,50</span></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Destaque GOURMET -->
+            <div class="mt-32 relative reveal-up">
+                <div class="absolute inset-0 bg-cf-yellow transform -skew-y-3 z-0 scale-105"></div>
+                <div class="relative z-10 bg-cf-black border-4 border-cf-yellow p-8 md:p-12 flex flex-col md:flex-row gap-10 items-center">
+                    
+                    <div class="md:w-1/2">
+                        <h4 class="font-street text-2xl text-white mb-2 transform -rotate-2">Pra sair da rotina</h4>
+                        <h3 class="font-impact text-5xl md:text-6xl text-cf-yellow uppercase mb-6 marker-highlight">Linha Gourmet</h3>
+                        <p class="font-body text-gray-300 font-semibold mb-8">Sabor de refeição livre, macros de dieta estrita. O bagulho é louco.</p>
+                        
+                        <div class="space-y-4 font-body w-full">
+                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
+                                <span class="font-bold text-white text-lg uppercase">Strogonoff de Frango Fit</span>
+                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide">
+                                    <span class="text-gray-400 mr-4">P: R$22,50</span> <span class="text-cf-yellow">G: R$29,50</span>
+                                </div>
+                            </div>
+                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
+                                <span class="font-bold text-white text-lg uppercase">Nhoque com Patinho</span>
+                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide">
+                                    <span class="text-gray-400 mr-4">P: R$30,50</span> <span class="text-cf-yellow">G: R$38,50</span>
+                                </div>
+                            </div>
+                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
+                                <span class="font-bold text-white text-lg uppercase">Escondidinho c/ Mussarela Búfala</span>
+                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide">
+                                    <span class="text-gray-400 mr-4">P: R$30,50</span> <span class="text-cf-yellow">G: R$38,50</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/2 relative flex justify-center cursor-hover">
+                        <!-- Imagem estilo lambe-lambe -->
+                        <img src="https://placehold.co/500x500/F6C500/0E0E0E?text=GOURMET+STREET" alt="Gourmet" class="img-hardcore w-full max-w-md torn-edge shadow-[15px_15px_0px_#fff] transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <div class="absolute -top-5 -right-5 bg-black text-white font-impact text-3xl px-4 py-2 transform rotate-12 border-2 border-white">
+                            NOVO
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Central Order CTA -->
+            <div class="mt-20 text-center reveal-up">
+                <a href="https://wa.me/5511910993953" target="_blank" class="btn-street text-2xl px-10 py-5 cursor-hover">
+                    <i class="fa-brands fa-whatsapp mr-2"></i> FAZER PEDIDO AGORA
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-24 relative bg-cf-darkgray overflow-hidden">
+        <!-- SVG Background Line -->
+        <svg class="absolute top-1/2 left-0 w-full h-20 -translate-y-1/2 opacity-20 pointer-events-none" preserveAspectRatio="none" viewBox="0 0 1000 100">
+            <path d="M0,50 Q250,100 500,50 T1000,50" fill="none" stroke="var(--yellow)" stroke-width="4" stroke-dasharray="20,10"/>
+        </svg>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="font-impact text-5xl md:text-7xl text-center text-white mb-16 uppercase reveal-up">
+                Como <span class="text-cf-yellow">Funciona</span>
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-12 text-center">
+                
+                <!-- Step 1 -->
+                <div class="reveal-up relative group cursor-hover">
+                    <div class="text-[10rem] font-impact text-cf-black text-outline absolute left-1/2 -translate-x-1/2 -top-16 opacity-50 transition-transform group-hover:scale-110 group-hover:text-cf-yellow group-hover:text-opacity-20 z-0">1</div>
+                    <div class="relative z-10">
+                        <div class="w-24 h-24 mx-auto bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mb-6 shadow-lg transform -rotate-6 border-4 border-cf-black">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                        <h3 class="font-impact text-3xl text-white mb-2 uppercase">A Escolha</h3>
+                        <p class="font-body text-gray-400 font-semibold">Monte seu arsenal. Escolha entre frango, patinho ou linha gourmet pelo WhatsApp.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="reveal-up relative group cursor-hover" style="transition-delay: 100ms;">
+                    <div class="text-[10rem] font-impact text-cf-black text-outline absolute left-1/2 -translate-x-1/2 -top-16 opacity-50 transition-transform group-hover:scale-110 group-hover:text-cf-yellow group-hover:text-opacity-20 z-0">2</div>
+                    <div class="relative z-10">
+                        <div class="w-24 h-24 mx-auto bg-white text-cf-black rounded-full flex items-center justify-center text-4xl mb-6 shadow-lg transform rotate-6 border-4 border-cf-black">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                        </div>
+                        <h3 class="font-impact text-3xl text-white mb-2 uppercase">O Pedido</h3>
+                        <p class="font-body text-gray-400 font-semibold">Atendimento direto, sem enrolação. Mandou mensagem, fechou o kit.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="reveal-up relative group cursor-hover" style="transition-delay: 200ms;">
+                    <div class="text-[10rem] font-impact text-cf-black text-outline absolute left-1/2 -translate-x-1/2 -top-16 opacity-50 transition-transform group-hover:scale-110 group-hover:text-cf-yellow group-hover:text-opacity-20 z-0">3</div>
+                    <div class="relative z-10">
+                        <div class="w-24 h-24 mx-auto bg-cf-yellow text-cf-black flex items-center justify-center text-4xl mb-6 shadow-lg transform -rotate-3 border-4 border-cf-black torn-edge">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3 class="font-impact text-3xl text-white mb-2 uppercase">O Recebimento</h3>
+                        <p class="font-body text-gray-400 font-semibold">Chega congelado, pronto pra aquecer. Só focar no treino, a dieta tá garantida.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-cf-black pt-20 pb-10 border-t-8 border-cf-yellow relative overflow-hidden">
+        <div class="spray-blob w-[300px] h-[300px] bg-white bottom-0 right-0 opacity-5"></div>
+        
+        <div class="container mx-auto px-4 grid md:grid-cols-2 gap-10 items-center relative z-10">
+            
+            <div>
+                <h2 class="font-impact text-5xl md:text-7xl text-white uppercase mb-4 leading-none reveal-up">
+                    A Fome <br><span class="text-cf-yellow">Bateu?</span>
+                </h2>
+                <p class="font-street text-xl text-gray-400 mb-8 reveal-up">Chama no zap e garante a semana.</p>
+                
+                <div class="flex flex-col gap-4 reveal-up">
+                    <a href="https://wa.me/5511910993953" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
+                        <i class="fa-brands fa-whatsapp text-3xl mr-4 text-cf-yellow"></i> (11) 91099-3953
+                    </a>
+                    <a href="#" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
+                        <i class="fa-brands fa-instagram text-3xl mr-4 text-cf-yellow"></i> @cleanfoodsbrasil
+                    </a>
+                    <div class="text-lg font-body text-gray-400 mt-4 flex items-center font-bold">
+                        <i class="fa-solid fa-location-dot text-xl mr-4 text-white"></i> Ipiranga, São Paulo - SP
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center md:text-right flex flex-col items-center md:items-end justify-center reveal-right">
+                <div class="font-impact text-5xl md:text-6xl text-cf-gray opacity-30 select-none transform rotate-[-5deg]">
+                    NO EXCUSES
+                </div>
+                <div class="mt-8">
+                    <a href="https://wa.me/5511910993953" class="btn-street cursor-hover">
+                        PEDIR AGORA
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-20 pt-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
+            © 2026 Cleanfoods Brasil. Todos os direitos reservados. Sem glúten, sem lactose, sem frescura.
+        </div>
+    </footer>
+
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverables = document.querySelectorAll('.cursor-hover, a, button');
+
+        // Only activate custom cursor on non-touch devices
+        if (window.matchMedia("(pointer: fine)").matches) {
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                // Move dot instantly
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+
+                // Move outline with slight delay (requestAnimationFrame for smoothness)
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 500, fill: "forwards" });
+            });
+
+            hoverables.forEach(elem => {
+                elem.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover');
+                });
+                elem.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover');
+                });
+            });
+        }
+
+        // GSAP Animations Registration
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.onload = function() {
+            // Initial Hero Animation
+            const heroTimeline = gsap.timeline();
+            
+            heroTimeline.fromTo("#hero .reveal-up", 
+                { y: 50, autoAlpha: 0 },
+                { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" }
+            )
+            .fromTo("#hero .reveal-right",
+                { x: 100, autoAlpha: 0, rotation: 5 },
+                { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
+                "-=0.5"
+            );
+
+            // ScrollTrigger Animations for Menu and other sections
+            const revealElements = document.querySelectorAll('.reveal-up:not(#hero .reveal-up), .reveal-right:not(#hero .reveal-right)');
+            revealElements.forEach((elem) => {
+                let startY = elem.classList.contains('reveal-up') ? 60 : 0;
+                let startX = elem.classList.contains('reveal-right') ? 100 : 0;
+                let startRot = elem.classList.contains('reveal-right') ? 5 : 0;
+
+                gsap.fromTo(elem, 
+                    { y: startY, x: startX, rotation: startRot, autoAlpha: 0 },
+                    {
+                        y: 0, x: 0, rotation: 0,
+                        autoAlpha: 1,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%", // Trigger when top of element hits 85% of viewport
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Parallax effect on background huge text
+            gsap.to("#bg-text-1", {
+                x: 100,
+                scrollTrigger: {
+                    trigger: "#hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1
+                }
+            });
+            gsap.to("#bg-text-2", {
+                x: -100,
+                scrollTrigger: {
+                    trigger: "#hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1
+                }
+            });
+        };
+    </script>
+</body>
+</html>
