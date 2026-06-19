@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleanfoods | Dieta Limpa, Treino Pesado</title>
+    <title>Cleanfoods | Cardápio Completo</title>
     <link rel="icon" type="image/jpeg" href="Logonova.jpeg">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Anton (Impact Headings), Permanent Marker (Graffiti), Inter (Readability) -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap" rel="stylesheet">
     
     <!-- FontAwesome for Icons -->
@@ -31,9 +30,6 @@
                         'impact': ['Anton', 'sans-serif'],
                         'street': ['Permanent Marker', 'cursive'],
                         'body': ['Inter', 'sans-serif'],
-                    },
-                    backgroundImage: {
-                        'spray': "radial-gradient(circle, rgba(246,197,0,0.15) 0%, rgba(14,14,14,0) 70%)",
                     }
                 }
             }
@@ -103,74 +99,10 @@
             -webkit-text-stroke: 1px rgba(255,255,255,0.3);
         }
 
-        /* Marquee Animation */
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            display: flex;
-            background: var(--yellow);
-            color: var(--black);
-            padding: 10px 0;
-            transform: rotate(-2deg) scale(1.05);
-            border-top: 4px solid #fff;
-            border-bottom: 4px solid #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 10;
-            position: relative;
-        }
-        .marquee-content {
-            display: flex;
-            animation: marquee 15s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* Glitch Effect */
-        .glitch {
-            position: relative;
-        }
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--black);
-        }
-        .glitch::before {
-            left: 3px;
-            text-shadow: -2px 0 var(--yellow);
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
-        }
-        .glitch::after {
-            left: -3px;
-            text-shadow: -2px 0 #fff;
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim 2.5s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(10px, 9999px, 44px, 0); }
-            20% { clip: rect(65px, 9999px, 98px, 0); }
-            40% { clip: rect(12px, 9999px, 33px, 0); }
-            60% { clip: rect(78px, 9999px, 15px, 0); }
-            80% { clip: rect(23px, 9999px, 88px, 0); }
-            100% { clip: rect(4px, 9999px, 55px, 0); }
-        }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(34px, 9999px, 12px, 0); }
-            20% { clip: rect(88px, 9999px, 55px, 0); }
-            40% { clip: rect(22px, 9999px, 77px, 0); }
-            60% { clip: rect(9px, 9999px, 33px, 0); }
-            80% { clip: rect(66px, 9999px, 91px, 0); }
-            100% { clip: rect(11px, 9999px, 24px, 0); }
-        }
-
-        /* Abstract Shapes & Borders */
         .torn-edge {
-            clip-path: polygon(0 0, 100% 2%, 98% 100%, 2% 98%);
+            clip-path: polygon(0 0, 100% 1%, 99% 100%, 1% 99%);
         }
+        
         .marker-highlight {
             background: linear-gradient(104deg, rgba(246,197,0,0) 0.9%, rgba(246,197,0,1) 2.4%, rgba(246,197,0,0.8) 5.8%, rgba(246,197,0,0.9) 93%, rgba(246,197,0,0) 96%);
             padding: 0 10px;
@@ -178,7 +110,7 @@
             display: inline-block;
             transform: rotate(-1deg);
         }
-        
+
         .spray-blob {
             position: absolute;
             border-radius: 50%;
@@ -192,13 +124,6 @@
         ::-webkit-scrollbar-track { background: var(--black); }
         ::-webkit-scrollbar-thumb { background: var(--yellow); }
 
-        /* Asymmetric Grid for Menu */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
         /* Interactive Buttons */
         .btn-street {
             position: relative;
@@ -221,6 +146,7 @@
             transform: scale(1.05) rotate(2deg);
             box-shadow: 10px 10px 0px var(--yellow);
         }
+
         .btn-street-outline {
             position: relative;
             display: inline-block;
@@ -243,16 +169,6 @@
             box-shadow: 10px 10px 0px #ffffff;
         }
 
-        /* Image treatment */
-        .img-hardcore {
-            filter: grayscale(100%) contrast(120%);
-            mix-blend-mode: luminosity;
-            transition: filter 0.5s;
-        }
-        .img-hardcore:hover {
-            filter: grayscale(0%) contrast(110%);
-        }
-
         /* Cart Drawer Slide */
         #cart-drawer.open {
             transform: translateX(0);
@@ -261,14 +177,9 @@
             overflow: hidden;
         }
 
-        /* Hide elements for GSAP initialization */
-        .reveal-up, .reveal-left, .reveal-right { visibility: hidden; }
-        
-        /* Ensure mobile is smooth */
         @media (max-width: 768px) {
             .cursor-dot, .cursor-outline { display: none; }
             body { cursor: auto; }
-            .marquee-container { transform: rotate(-3deg) scale(1.1); }
         }
     </style>
 </head>
@@ -279,7 +190,7 @@
     <div class="cursor-outline"></div>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/5511910993953" target="_blank" class="fixed bottom-6 right-6 w-16 h-16 bg-cf-yellow rounded-full flex items-center justify-center text-cf-black text-3xl z-40 shadow-[0_0_20px_rgba(246,197,0,0.5)] hover:scale-110 transition-transform cursor-hover border-4 border-cf-black hover:border-white">
+    <a href="https://wa.me/5511910993953" id="wa-floating-btn" target="_blank" class="fixed bottom-6 right-6 w-16 h-16 bg-cf-yellow rounded-full flex items-center justify-center text-cf-black text-3xl z-40 shadow-[0_0_20px_rgba(246,197,0,0.5)] hover:scale-110 transition-transform cursor-hover border-4 border-cf-black hover:border-white">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -291,12 +202,12 @@
 
     <!-- Header Minimal/Raw -->
     <header class="absolute top-0 w-full pt-0 pb-0 px-4 md:px-6 flex justify-center items-center z-40 mix-blend-difference">
-        <a href="#hero" class="cursor-hover">
+        <a href="index.html" class="cursor-hover">
             <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-16 sm:h-20 lg:h-28 xl:h-36 w-auto object-contain">
         </a>
         <div class="absolute right-4 md:right-6 flex items-center gap-4 md:gap-6">
-            <a href="cardapio-completo.html" class="font-impact text-base md:text-lg text-white hover:text-cf-yellow transition-colors tracking-widest cursor-hover">
-                CARDÁPIO <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+            <a href="index.html" class="font-impact text-base md:text-lg text-white hover:text-cf-yellow transition-colors tracking-widest cursor-hover">
+                <i class="fa-solid fa-arrow-left mr-1.5 text-xs"></i> INÍCIO
             </a>
             <a href="admin.html" class="font-impact text-xs md:text-sm text-cf-black bg-cf-yellow hover:bg-white hover:text-cf-black border border-cf-yellow hover:border-white px-2.5 py-1 transition-colors tracking-wider cursor-hover uppercase rounded-sm flex items-center gap-1 shadow-md">
                 ADMIN <i class="fa-solid fa-user-gear text-[10px]"></i>
@@ -304,93 +215,24 @@
         </div>
     </header>
 
-    <section class="relative min-h-screen grid grid-rows-[auto_1fr] pb-12" id="hero">
-        <!-- Spacer matching header height to prevent overlap -->
-        <div class="h-20 sm:h-24 lg:h-32 xl:h-40"></div>
-
-        <!-- Spray background elements -->
-        <div class="spray-blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-cf-yellow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-40"></div>
-        <div class="spray-blob w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-cf-yellow bottom-[-10%] right-[-5%] opacity-20"></div>
-
-        <!-- Huge Background Text Parallax -->
-        <div class="absolute inset-0 flex flex-col justify-center pointer-events-none opacity-5 md:opacity-10 font-impact text-[15vw] leading-none whitespace-nowrap overflow-hidden select-none">
-            <div id="bg-text-1" class="transform -translate-x-10 text-outline-white">SEM GLÚTEN</div>
-            <div id="bg-text-2" class="transform translate-x-20 text-outline-white">SEM LACTOSE</div>
-        </div>
-
-        <!-- Vertical Background Text -->
-        <div class="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none opacity-[0.03] font-impact text-[12vw] leading-none z-0 justify-center items-center">
-            <div class="rotate-90 text-outline-white tracking-[2.5rem] whitespace-nowrap">HARDCORE</div>
-        </div>
-
-        <div class="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center my-auto">
-            
-            <!-- Hero Text -->
-            <div class="flex flex-col items-start space-y-4 md:space-y-6 max-w-3xl lg:max-w-4xl mx-auto lg:mx-0">
-                <h1 class="font-impact text-[2.75rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7.5rem] xl:text-[9.5rem] leading-[0.85] uppercase text-white reveal-up">
-                    <span class="block">Dieta</span>
-                    <span class="block glitch" data-text="LIMPA">LIMPA</span>
-                    <span class="block text-outline mt-2 md:mt-4">Treino</span>
-                    <span class="block text-cf-yellow marker-highlight px-2 mt-1 md:mt-2">PESADO.</span>
-                </h1>
-                <p class="font-body text-gray-300 text-sm sm:text-base lg:text-lg max-w-md border-l-4 border-cf-yellow pl-4 reveal-up font-semibold">
-                    Marmitas fitness reais para quem treina de verdade. Sem glúten, sem lactose, sem frescura.
-                </p>
-                
-                <div class="pt-2 md:pt-4 reveal-up">
-                    <a href="cardapio-completo.html" class="btn-street text-lg lg:text-xl px-6 py-3 lg:px-8 lg:py-4 cursor-hover">
-                        NOSSO CARDÁPIO <i class="fa-solid fa-utensils ml-2"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Hero Image Collage -->
-            <div class="relative w-full flex justify-center items-center reveal-right mt-8 lg:mt-0">
-                <!-- Inner Aspect Ratio Box -->
-                <div class="relative w-full max-w-[360px] sm:max-w-[500px] lg:max-w-[620px] aspect-[4/5] flex items-center justify-center">
-                    <!-- Decorative Frame -->
-                    <div class="absolute inset-0 border-4 border-cf-yellow transform rotate-3 z-0"></div>
-                    <div class="absolute inset-[5%] border-2 border-white border-dashed transform -rotate-2 z-0 opacity-50"></div>
-                    
-                    <img src="Marmita%20monstro.png" alt="Marmita Cleanfoods" class="w-[90%] h-[90%] object-cover z-10 torn-edge shadow-2xl relative">
-                    
-                    <!-- Floating Graphic -->
-                    <div class="absolute bottom-[5%] -left-[5%] bg-cf-yellow text-cf-black font-impact text-2xl lg:text-4xl p-2 lg:p-4 transform -rotate-12 z-20 shadow-lg whitespace-nowrap">
-                        100% REAL
-                    </div>
-                </div>
-            </div>
+    <!-- Page Banner / Title -->
+    <section class="relative pt-36 pb-12 overflow-hidden">
+        <div class="spray-blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-cf-yellow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-25"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h1 class="font-impact text-[2.5rem] sm:text-[4rem] md:text-[6rem] leading-none uppercase text-white reveal-up">
+                O Nosso <span class="text-cf-yellow glitch" data-text="CARDÁPIO">CARDÁPIO</span>
+            </h1>
+            <p class="font-street text-lg md:text-2xl text-gray-400 mt-4 max-w-xl mx-auto">
+                Combustível limpo para o seu objetivo
+            </p>
         </div>
     </section>
 
-    <!-- Infinite Marquee Seals -->
-    <div class="marquee-container my-12 cursor-default">
-        <div class="marquee-content font-impact text-3xl tracking-widest flex items-center">
-            <!-- Repeated content for infinite loop effect -->
-            <span class="mx-8"><i class="fa-solid fa-ban text-cf-black mr-2"></i> SEM GLÚTEN</span>
-            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
-            <span class="mx-8"><i class="fa-solid fa-ban text-cf-black mr-2"></i> SEM LACTOSE</span>
-            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
-            <span class="mx-8"><i class="fa-solid fa-droplet-slash text-cf-black mr-2"></i> SEM ÓLEO</span>
-            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
-            <span class="mx-8"><i class="fa-solid fa-heart-pulse text-cf-black mr-2"></i> BAIXO SÓDIO</span>
-            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
-            <!-- Duplicate for seamless scroll -->
-            <span class="mx-8"><i class="fa-solid fa-ban text-cf-black mr-2"></i> SEM GLÚTEN</span>
-            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
-            <span class="mx-8"><i class="fa-solid fa-ban text-cf-black mr-2"></i> SEM LACTOSE</span>
-            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
-            <span class="mx-8"><i class="fa-solid fa-droplet-slash text-cf-black mr-2"></i> SEM ÓLEO</span>
-            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
-            <span class="mx-8"><i class="fa-solid fa-heart-pulse text-cf-black mr-2"></i> BAIXO SÓDIO</span>
-            <span class="mx-8 text-white"><i class="fa-solid fa-bolt"></i></span>
-        </div>
-    </div>
-
-    <section id="cardapio" class="py-20 relative z-10">
+    <!-- Menu Section with Filters -->
+    <section class="py-12 relative z-10">
         <div class="container mx-auto px-4">
             
-            <!-- Promo Coupon Banner -->
+            <!-- Dynamic Coupon Banner -->
             <div id="promo-coupon-banner" class="hidden max-w-2xl mx-auto mb-16 bg-cf-yellow text-cf-black p-4 md:p-6 border-4 border-white transform rotate-1 flex flex-col md:flex-row justify-between items-center gap-4 shadow-xl select-none z-20">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-ticket text-3xl md:text-4xl animate-bounce"></i>
@@ -404,188 +246,48 @@
                 </div>
             </div>
 
-            <div class="mb-20 text-center relative reveal-up">
-                <h2 class="font-impact text-6xl md:text-8xl text-outline absolute left-1/2 -translate-x-1/2 top-[-40px] w-full opacity-30 select-none">O ARSENAL</h2>
-                <h3 class="font-impact text-5xl md:text-7xl text-white relative z-10">ESCOLHA SEU <span class="text-cf-yellow border-b-8 border-cf-yellow">COMBUSTÍVEL</span></h3>
-                <p class="font-street text-xl text-gray-400 mt-6">Tamanhos projetados pro seu shape:</p>
-                <div class="flex justify-center gap-6 mt-4 font-impact text-2xl">
-                    <span class="bg-cf-darkgray px-4 py-2 border-l-4 border-white">P: 225g</span>
-                    <span class="bg-cf-yellow text-cf-black px-4 py-2 transform rotate-2">G: 450g</span>
-                </div>
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-4 mb-16 reveal-up">
+                <button onclick="filterCategory('Todos')" id="filter-btn-Todos" class="bg-cf-yellow text-cf-black font-impact tracking-wider px-6 py-3 border-2 border-cf-yellow hover:bg-white hover:text-cf-black hover:border-white transition-all uppercase text-base rounded-sm cursor-hover shadow-lg">
+                    Todos
+                </button>
+                <button onclick="filterCategory('Frango')" id="filter-btn-Frango" class="bg-cf-darkgray text-white font-impact tracking-wider px-6 py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-base rounded-sm cursor-hover shadow-lg">
+                    Linha Frango
+                </button>
+                <button onclick="filterCategory('Patinho')" id="filter-btn-Patinho" class="bg-cf-darkgray text-white font-impact tracking-wider px-6 py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-base rounded-sm cursor-hover shadow-lg">
+                    Linha Patinho
+                </button>
+                <button onclick="filterCategory('Gourmet')" id="filter-btn-Gourmet" class="bg-cf-darkgray text-white font-impact tracking-wider px-6 py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-base rounded-sm cursor-hover shadow-lg">
+                    Linha Gourmet
+                </button>
             </div>
 
-            <div class="menu-grid">
-                <!-- Categoria: Frango -->
-                <div class="bg-cf-darkgray border-t-8 border-white p-8 relative torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
-                    <div class="absolute -top-6 -right-6 font-street text-8xl text-cf-gray opacity-20 z-0">01</div>
-                    <h4 class="font-impact text-4xl text-white mb-6 relative z-10 uppercase">Linha Frango</h4>
-                             <ul id="menu-frango-list" class="space-y-6 font-body relative z-10">
-                        <li class="border-b border-gray-700 pb-4">
-                            <div class="text-xl font-bold text-white uppercase mb-2">Frango Classic Grelhado</div>
-                            <div class="flex justify-between items-center text-sm font-semibold">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('price-frango-classic', 'P')">R$ <span id="val-price-frango-classic-p">19,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('price-frango-classic', 'G')">R$ <span id="val-price-frango-classic-g">27,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            </div>
-                        </li>
-                        <li class="border-b border-gray-700 pb-4">
-                            <div class="text-xl font-bold text-white uppercase mb-2">Frango Desfiado com Batata Doce</div>
-                            <div class="flex justify-between items-center text-sm font-semibold">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('price-frango-desfiado', 'P')">R$ <span id="val-price-frango-desfiado-p">19,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('price-frango-desfiado', 'G')">R$ <span id="val-price-frango-desfiado-g">27,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Categoria: Patinho -->
-                <div class="bg-cf-darkgray border-t-8 border-cf-yellow p-8 relative transform md:translate-y-12 torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
-                    <div class="absolute -top-6 -right-6 font-street text-8xl text-cf-gray opacity-20 z-0">02</div>
-                    <h4 class="font-impact text-4xl text-cf-yellow mb-6 relative z-10 uppercase">Linha Patinho</h4>
-                    
-                    <ul id="menu-patinho-list" class="space-y-6 font-body relative z-10">
-                        <li class="border-b border-gray-700 pb-4">
-                            <div class="text-xl font-bold text-white uppercase mb-2">Patinho Moído c/ Mandioca</div>
-                            <div class="flex justify-between items-center text-sm font-semibold">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('price-patinho-mandioca', 'P')">R$ <span id="val-price-patinho-mandioca-p">25,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('price-patinho-mandioca', 'G')">R$ <span id="val-price-patinho-mandioca-g">33,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            </div>
-                        </li>
-                        <li class="border-b border-gray-700 pb-4">
-                            <div class="text-xl font-bold text-white uppercase mb-2">Almôndegas Fit de Patinho</div>
-                            <div class="flex justify-between items-center text-sm font-semibold">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('price-almondegas', 'P')">R$ <span id="val-price-almondegas-p">25,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('price-almondegas', 'G')">R$ <span id="val-price-almondegas-g">33,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Grid dynamically filled -->
+            <div id="dishes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-up">
+                <!-- Card dynamically loaded -->
             </div>
-
-            <!-- Destaque GOURMET -->
-            <div class="mt-32 relative reveal-up">
-                <div class="absolute inset-0 bg-cf-yellow transform -skew-y-3 z-0 scale-105"></div>
-                <div class="relative z-10 bg-cf-black border-4 border-cf-yellow p-8 md:p-12 flex flex-col md:flex-row gap-10 items-center">
-                    
-                    <div class="md:w-1/2">
-                        <h4 class="font-street text-2xl text-white mb-2 transform -rotate-2">Pra sair da rotina</h4>
-                        <h3 class="font-impact text-5xl md:text-6xl text-cf-yellow uppercase mb-6 marker-highlight">Linha Gourmet</h3>
-                        <p class="font-body text-gray-300 font-semibold mb-8">Sabor de refeição livre, macros de dieta estrita. O bagulho é louco.</p>
-                        
-                        <div id="menu-gourmet-list" class="space-y-4 font-body w-full">
-                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
-                                <span class="font-bold text-white text-lg uppercase">Strogonoff de Frango Fit</span>
-                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                                    <span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-strogonoff', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-strogonoff-p">22,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span> 
-                                    <span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-strogonoff', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-strogonoff-g">29,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>
-                                </div>
-                            </div>
-                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
-                                <span class="font-bold text-white text-lg uppercase">Nhoque com Patinho</span>
-                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                                    <span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-nhoque', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-nhoque-p">30,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span> 
-                                    <span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-nhoque', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-nhoque-g">38,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>
-                                </div>
-                            </div>
-                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
-                                <span class="font-bold text-white text-lg uppercase">Escondidinho c/ Mussarela Búfala</span>
-                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                                    <span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-escondidinho', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-escondidinho-p">30,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span> 
-                                    <span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-escondidinho', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-escondidinho-g">38,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="md:w-1/2 relative flex justify-center cursor-hover">
-                        <!-- Imagem estilo lambe-lambe -->
-                        <img src="Marmita%20gourmet.jpg" alt="Gourmet" class="w-full max-w-md torn-edge shadow-[15px_15px_0px_#fff] transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                        <div class="absolute -top-5 -right-5 bg-black text-white font-impact text-3xl px-4 py-2 transform rotate-12 border-2 border-white">
-                            NOVO
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Central Action Buttons -->
-            <div class="mt-20 flex flex-col sm:flex-row justify-center items-center gap-6 reveal-up">
-                <a href="cardapio-completo.html" class="btn-street-outline text-xl sm:text-2xl px-8 sm:px-10 py-4 sm:py-5 cursor-hover">
-                    <i class="fa-solid fa-book-open mr-2"></i> VER CARDÁPIO COMPLETO
-                </a>
-                <a href="https://wa.me/5511910993953" target="_blank" class="btn-street text-xl sm:text-2xl px-8 sm:px-10 py-4 sm:py-5 cursor-hover">
-                    FAZER PEDIDO AGORA
-                </a>
+            
+            <!-- Central CTA -->
+            <div class="mt-20 text-center reveal-up">
+                <button onclick="toggleCart()" class="btn-street text-xl sm:text-2xl px-10 py-5 cursor-hover">
+                    <i class="fa-solid fa-basket-shopping mr-2"></i> VER CARRINHO & FINALIZAR
+                </button>
             </div>
 
         </div>
     </section>
 
-    <section class="py-24 relative bg-cf-darkgray overflow-hidden">
-        <!-- SVG Background Line -->
-        <svg class="absolute top-1/2 left-0 w-full h-20 -translate-y-1/2 opacity-20 pointer-events-none" preserveAspectRatio="none" viewBox="0 0 1000 100">
-            <path d="M0,50 Q250,100 500,50 T1000,50" fill="none" stroke="var(--yellow)" stroke-width="4" stroke-dasharray="20,10"/>
-        </svg>
-
-        <div class="container mx-auto px-4 relative z-10">
-            <h2 class="font-impact text-5xl md:text-7xl text-center text-white mb-16 uppercase reveal-up">
-                Como <span class="text-cf-yellow">Funciona</span>
-            </h2>
-
-            <div class="grid md:grid-cols-3 gap-12 text-center">
-                
-                <!-- Step 1 -->
-                <div class="reveal-up relative group cursor-hover">
-                    <div class="text-[10rem] font-impact text-cf-black text-outline absolute left-1/2 -translate-x-1/2 -top-16 opacity-50 transition-transform group-hover:scale-110 group-hover:text-cf-yellow group-hover:text-opacity-20 z-0">1</div>
-                    <div class="relative z-10">
-                        <div class="w-24 h-24 mx-auto bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mb-6 shadow-lg transform -rotate-6 border-4 border-cf-black">
-                            <i class="fa-solid fa-fire"></i>
-                        </div>
-                        <h3 class="font-impact text-3xl text-white mb-2 uppercase">A Escolha</h3>
-                        <p class="font-body text-gray-400 font-semibold">Monte seu arsenal. Escolha entre frango, patinho ou linha gourmet pelo WhatsApp.</p>
-                    </div>
-                </div>
-
-                <!-- Step 2 -->
-                <div class="reveal-up relative group cursor-hover" style="transition-delay: 100ms;">
-                    <div class="text-[10rem] font-impact text-cf-black text-outline absolute left-1/2 -translate-x-1/2 -top-16 opacity-50 transition-transform group-hover:scale-110 group-hover:text-cf-yellow group-hover:text-opacity-20 z-0">2</div>
-                    <div class="relative z-10">
-                        <div class="w-24 h-24 mx-auto bg-white text-cf-black rounded-full flex items-center justify-center text-4xl mb-6 shadow-lg transform rotate-6 border-4 border-cf-black">
-                            <i class="fa-solid fa-mobile-screen"></i>
-                        </div>
-                        <h3 class="font-impact text-3xl text-white mb-2 uppercase">O Pedido</h3>
-                        <p class="font-body text-gray-400 font-semibold">Atendimento direto, sem enrolação. Mandou mensagem, fechou o kit.</p>
-                    </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="reveal-up relative group cursor-hover" style="transition-delay: 200ms;">
-                    <div class="text-[10rem] font-impact text-cf-black text-outline absolute left-1/2 -translate-x-1/2 -top-16 opacity-50 transition-transform group-hover:scale-110 group-hover:text-cf-yellow group-hover:text-opacity-20 z-0">3</div>
-                    <div class="relative z-10">
-                        <div class="w-24 h-24 mx-auto bg-cf-yellow text-cf-black flex items-center justify-center text-4xl mb-6 shadow-lg transform -rotate-3 border-4 border-cf-black torn-edge">
-                            <i class="fa-solid fa-box-open"></i>
-                        </div>
-                        <h3 class="font-impact text-3xl text-white mb-2 uppercase">O Recebimento</h3>
-                        <p class="font-body text-gray-400 font-semibold">Chega congelado, pronto pra aquecer. Só focar no treino, a dieta tá garantida.</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
+    <!-- Footer -->
     <footer class="bg-cf-black pt-20 pb-10 border-t-8 border-cf-yellow relative overflow-hidden">
         <div class="spray-blob w-[300px] h-[300px] bg-white bottom-0 right-0 opacity-5"></div>
-        
         <div class="container mx-auto px-4 grid md:grid-cols-2 gap-10 items-center relative z-10">
-            
             <div>
                 <h2 class="font-impact text-5xl md:text-7xl text-white uppercase mb-4 leading-none reveal-up">
                     A Fome <br><span class="text-cf-yellow">Bateu?</span>
                 </h2>
                 <p class="font-street text-xl text-gray-400 mb-8 reveal-up">Chama no zap e garante a semana.</p>
-                
                 <div class="flex flex-col gap-4 reveal-up">
-                    <a href="https://wa.me/5511910993953" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
+                    <a href="https://wa.me/5511910993953" id="wa-footer-link" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
                         <i class="fa-brands fa-whatsapp text-3xl mr-4 text-cf-yellow"></i> <span id="val-whatsapp-text">(11) 91099-3953</span>
                     </a>
                     <a href="#" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
@@ -596,19 +298,17 @@
                     </div>
                 </div>
             </div>
-
             <div class="text-center md:text-right flex flex-col items-center md:items-end justify-center reveal-right">
                 <div class="font-impact text-5xl md:text-6xl text-cf-gray opacity-30 select-none transform rotate-[-5deg]">
                     NO EXCUSES
                 </div>
                 <div class="mt-8">
-                    <a href="https://wa.me/5511910993953" class="btn-street cursor-hover">
+                    <a href="https://wa.me/5511910993953" id="wa-footer-btn" class="btn-street cursor-hover">
                         PEDIR AGORA
                     </a>
                 </div>
             </div>
         </div>
-        
         <div class="text-center mt-20 pt-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
             © 2026 Cleanfoods Brasil. Todos os direitos reservados. Sem glúten, sem lactose, sem frescura.
         </div>
@@ -628,7 +328,6 @@
 
         <!-- Drawer Content (Scrollable) -->
         <div class="flex-1 overflow-y-auto p-6 space-y-6">
-            <!-- Cart Items Container -->
             <div id="cart-items-list" class="space-y-4">
                 <!-- Dynamic Items -->
                 <div class="text-center py-8 text-gray-500 font-semibold italic">
@@ -639,7 +338,6 @@
 
         <!-- Drawer Footer -->
         <div class="p-6 border-t border-cf-gray bg-cf-black space-y-4">
-            <!-- Pricing Summary -->
             <div class="space-y-2 font-body text-sm font-semibold">
                 <div class="flex justify-between text-gray-400">
                     <span>Subtotal</span>
@@ -655,7 +353,6 @@
                 </div>
             </div>
 
-            <!-- Checkout Button -->
             <button onclick="checkoutOrder()" class="w-full bg-cf-yellow text-cf-black font-impact text-xl uppercase tracking-wider py-4 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all flex items-center justify-center gap-2" style="clip-path: polygon(2% 0, 100% 0, 98% 100%, 0 100%);">
                 Finalizar Pedido
             </button>
@@ -671,12 +368,10 @@
     <!-- Checkout Modal -->
     <div id="checkout-modal" class="fixed inset-0 bg-black/85 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
         <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 md:p-8 max-w-xl w-full mx-4 relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.2)] overflow-y-auto max-h-[90vh]">
-            <!-- Close Button -->
             <button onclick="toggleCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-cf-yellow hover:scale-110 transition-all text-2xl p-1 cursor-hover">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
-            <!-- Modal Title -->
             <div class="border-b-4 border-cf-yellow pb-4 mb-6">
                 <h3 class="font-impact text-3xl text-white uppercase tracking-widest flex items-center gap-3">
                     <span class="bg-cf-yellow text-cf-black px-2.5 py-1 text-xl flex items-center rounded-sm"><i class="fa-solid fa-list-check"></i></span>
@@ -685,26 +380,22 @@
             </div>
             
             <form id="checkout-form" onsubmit="event.preventDefault(); submitCheckoutForm();" class="space-y-5 font-body text-sm font-semibold">
-                <!-- Name & Phone Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Nome Completo *</label>
                         <input type="text" id="client-name" required placeholder="Ex: João Silva" class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
                     </div>
-                    
                     <div>
                         <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Telefone com DDD *</label>
                         <input type="tel" id="client-phone" required placeholder="Ex: (11) 98888-7777" class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
                     </div>
                 </div>
                 
-                <!-- Delivery Address -->
                 <div>
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Endereço de Entrega *</label>
                     <textarea id="client-address" required rows="2" placeholder="Ex: Av. Paulista, 1000 - Apto 51 - Bela Vista, São Paulo - SP" class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
                 </div>
 
-                <!-- Payment Method -->
                 <div>
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Forma de Pagamento *</label>
                     <div class="relative">
@@ -722,22 +413,18 @@
                     </div>
                 </div>
                 
-                <!-- Observations -->
                 <div>
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Observações (Opcional)</label>
                     <textarea id="client-notes" rows="2" placeholder="Ex: Retirar cebola do strogonoff, troco para R$ 50..." class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
                 </div>
 
-                <!-- Resumo do Pedido -->
                 <div class="bg-cf-black p-5 border-2 border-dashed border-cf-gray rounded-sm space-y-3 mt-5 relative">
                     <div class="absolute -top-3 left-4 bg-cf-black px-2 text-xs font-impact text-cf-yellow uppercase tracking-widest">
                         Resumo do Pedido
                     </div>
-                    
                     <div id="checkout-items-list" class="space-y-2 text-xs text-gray-300 font-bold max-h-32 overflow-y-auto pr-1">
                         <!-- Dynamic Items -->
                     </div>
-                    
                     <div class="border-t-2 border-dashed border-cf-gray/60 pt-3 space-y-1.5 text-xs font-bold">
                         <div class="flex justify-between text-gray-400">
                             <span>Subtotal</span>
@@ -754,7 +441,6 @@
                     </div>
                 </div>
 
-                <!-- Cupom de Desconto -->
                 <div class="pt-2">
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
                         <i class="fa-solid fa-ticket text-cf-yellow"></i> Cupom de Desconto
@@ -768,7 +454,6 @@
                     <div id="coupon-feedback" class="text-xs font-bold mt-2 hidden"></div>
                 </div>
                 
-                <!-- Action Buttons -->
                 <div class="flex gap-4 pt-4">
                     <button type="button" onclick="toggleCheckoutModal()" class="w-1/2 bg-cf-gray text-white font-impact text-lg uppercase tracking-widest py-3 border-2 border-cf-gray hover:bg-white hover:text-cf-black hover:border-white transition-all cursor-hover rounded-sm" style="clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);">
                         Voltar
@@ -826,23 +511,21 @@
         let dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes')) || defaultDishes;
         let cart = JSON.parse(localStorage.getItem('cleanfoods_cart')) || {};
         let appliedCoupon = null;
+        let activeCategory = 'Todos';
 
         // Custom Cursor Logic
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         const hoverables = document.querySelectorAll('.cursor-hover, a, button');
 
-        // Only activate custom cursor on non-touch devices
         if (window.matchMedia("(pointer: fine)").matches) {
             window.addEventListener('mousemove', (e) => {
                 const posX = e.clientX;
                 const posY = e.clientY;
 
-                // Move dot instantly
                 cursorDot.style.left = `${posX}px`;
                 cursorDot.style.top = `${posY}px`;
 
-                // Move outline with slight delay (requestAnimationFrame for smoothness)
                 cursorOutline.animate({
                     left: `${posX}px`,
                     top: `${posY}px`
@@ -1196,12 +879,10 @@
                 return;
             }
 
-            // Save details to localStorage for future use
             localStorage.setItem('cleanfoods_client_name', name);
             localStorage.setItem('cleanfoods_client_phone', phone);
             localStorage.setItem('cleanfoods_address', address);
 
-            // Calculate pricing
             let subtotal = 0;
             const orderItems = [];
             for (const key in cart) {
@@ -1222,10 +903,8 @@
             }
             const finalTotal = Math.max(0, subtotal - discountAmount);
 
-            // Generate unique order ID
             const orderId = 'CF-' + Math.floor(1000 + Math.random() * 9000);
 
-            // Create Order Object
             const order = {
                 id: orderId,
                 clientName: name,
@@ -1241,12 +920,10 @@
                 date: new Date().toISOString()
             };
 
-            // Save Order to localStorage cleanfoods_orders
             let orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
             orders.push(order);
             localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
 
-            // Populate Thank You Modal details
             const orderIdSpan = document.getElementById('thank-order-id');
             const orderTotalSpan = document.getElementById('thank-order-total');
             const orderPaymentSpan = document.getElementById('thank-order-payment');
@@ -1255,7 +932,6 @@
             if (orderTotalSpan) orderTotalSpan.innerText = 'R$ ' + finalTotal.toFixed(2).replace('.', ',');
             if (orderPaymentSpan) orderPaymentSpan.innerText = payment;
 
-            // Open Thank You Modal
             const thankModal = document.getElementById('thank-you-modal');
             if (thankModal) {
                 thankModal.classList.remove('hidden');
@@ -1264,17 +940,14 @@
                 }, 10);
             }
 
-            // Close the checkout form modal
             toggleCheckoutModal();
 
-            // Clear the cart
             cart = {};
             localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
             updateCartBadges();
             renderCart();
         }
 
-        // Format order info and redirect to WhatsApp
         function checkoutOrder() {
             let hasItems = false;
             for (const key in cart) {
@@ -1287,95 +960,87 @@
                 return;
             }
 
-            // Close the cart drawer
             toggleCart();
-
-            // Open the checkout details modal
             toggleCheckoutModal();
         }
 
-        // GSAP Animations Registration
-        gsap.registerPlugin(ScrollTrigger);
+        // Filtering Logic
+        function filterCategory(category) {
+            activeCategory = category;
+            
+            // Highlight active button
+            const categories = ['Todos', 'Frango', 'Patinho', 'Gourmet'];
+            categories.forEach(cat => {
+                const btn = document.getElementById('filter-btn-' + cat);
+                if (btn) {
+                    if (cat === category) {
+                        btn.className = "bg-cf-yellow text-cf-black font-impact tracking-wider px-6 py-3 border-2 border-cf-yellow hover:bg-white hover:text-cf-black hover:border-white transition-all uppercase text-base rounded-sm cursor-hover shadow-lg";
+                    } else {
+                        btn.className = "bg-cf-darkgray text-white font-impact tracking-wider px-6 py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-base rounded-sm cursor-hover shadow-lg";
+                    }
+                }
+            });
+
+            renderDishesGrid();
+        }
+
+        // Render Dishes in Grid
+        function renderDishesGrid() {
+            const grid = document.getElementById('dishes-grid');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+
+            const filteredDishes = activeCategory === 'Todos' 
+                ? dishes 
+                : dishes.filter(d => d.category === activeCategory);
+
+            if (filteredDishes.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-500 font-semibold italic">
+                        Nenhum prato disponível nesta categoria.
+                    </div>
+                `;
+                return;
+            }
+
+            filteredDishes.forEach(dish => {
+                const card = document.createElement('div');
+                card.className = "bg-cf-darkgray border-t-8 border-cf-yellow p-6 relative torn-edge flex flex-col justify-between hover:-translate-y-1.5 transition-transform duration-300 shadow-xl cursor-hover";
+                
+                let groupLabel = 'Linha ' + dish.category;
+                if (dish.category === 'Gourmet') groupLabel = 'Linha Gourmet';
+
+                card.innerHTML = `
+                    <div>
+                        <div class="text-xs uppercase font-bold text-gray-500 mb-1.5">${groupLabel}</div>
+                        <h4 class="font-impact text-2xl text-white uppercase mb-6">${dish.name}</h4>
+                    </div>
+                    <div class="flex justify-between items-center text-sm font-semibold pt-4 border-t border-gray-800">
+                        <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2.5 py-1 rounded-sm ml-1.5 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ ${dish.priceP} <i class="fa-solid fa-plus text-[10px]"></i></span></span>
+                        <span class="text-cf-yellow ml-2">G <span class="bg-cf-yellow text-cf-black px-2.5 py-1 rounded-sm ml-1.5 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ ${dish.priceG} <i class="fa-solid fa-plus text-[10px]"></i></span></span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
         window.onload = function() {
-            const frangoList = document.getElementById('menu-frango-list');
-            const patinhoList = document.getElementById('menu-patinho-list');
-            const gourmetList = document.getElementById('menu-gourmet-list');
-
-            // Sync default dishes: update prices or hide if deleted
-            const activeIds = dishes.map(d => d.id);
-            defaultDishes.forEach(defaultDish => {
-                const activeDish = dishes.find(d => d.id === defaultDish.id);
-                if (!activeDish) {
-                    // This default dish was deleted
-                    const priceSpanP = document.getElementById(`val-${defaultDish.id}-p`);
-                    if (priceSpanP) {
-                        let parent = priceSpanP.parentElement;
-                        while (parent && parent.tagName !== 'LI' && !parent.classList.contains('bg-[#1a1a1a]')) {
-                            parent = parent.parentElement;
-                        }
-                        if (parent) parent.style.display = 'none'; // hide it
-                    }
-                } else {
-                    // Update prices
-                    const pSpan = document.getElementById(`val-${defaultDish.id}-p`);
-                    const gSpan = document.getElementById(`val-${defaultDish.id}-g`);
-                    if (pSpan) pSpan.innerText = activeDish.priceP;
-                    if (gSpan) gSpan.innerText = activeDish.priceG;
-                }
-            });
-
-            // Append custom dishes (not in defaultDishes list)
-            const defaultIds = defaultDishes.map(d => d.id);
-            const customDishes = dishes.filter(d => !defaultIds.includes(d.id));
-
-            customDishes.forEach(dish => {
-                if (dish.category === 'Frango' && frangoList) {
-                    const li = document.createElement('li');
-                    li.className = 'border-b border-gray-700 pb-4 custom-dish-item';
-                    li.innerHTML = `
-                        <div class="text-xl font-bold text-white uppercase mb-2">${dish.name}</div>
-                        <div class="flex justify-between items-center text-sm font-semibold">
-                            <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                        </div>
-                    `;
-                    frangoList.appendChild(li);
-                } else if (dish.category === 'Patinho' && patinhoList) {
-                    const li = document.createElement('li');
-                    li.className = 'border-b border-gray-700 pb-4 custom-dish-item';
-                    li.innerHTML = `
-                        <div class="text-xl font-bold text-white uppercase mb-2">${dish.name}</div>
-                        <div class="flex justify-between items-center text-sm font-semibold">
-                            <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                        </div>
-                    `;
-                    patinhoList.appendChild(li);
-                } else if (dish.category === 'Gourmet' && gourmetList) {
-                    const div = document.createElement('div');
-                    div.className = 'bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow custom-dish-item';
-                    div.innerHTML = `
-                        <span class="font-bold text-white text-lg uppercase">${dish.name}</span>
-                        <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                            <span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span> 
-                            <span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>
-                        </div>
-                    `;
-                    gourmetList.appendChild(div);
-                }
-            });
+            // Render dishes
+            renderDishesGrid();
 
             // Load WhatsApp and Address configs if stored
             const savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
             if (savedWhatsapp) {
                 // Update wa.me links
-                const waLinks = document.querySelectorAll('a[href*="wa.me/"]');
-                waLinks.forEach(link => {
-                    link.href = 'https://wa.me/55' + savedWhatsapp;
-                });
-                
-                // Update display text formatting
+                const waFloatingBtn = document.getElementById('wa-floating-btn');
+                const waFooterBtn = document.getElementById('wa-footer-btn');
+                const waFooterLink = document.getElementById('wa-footer-link');
+
+                if (waFloatingBtn) waFloatingBtn.href = 'https://wa.me/55' + savedWhatsapp;
+                if (waFooterBtn) waFooterBtn.href = 'https://wa.me/55' + savedWhatsapp;
+                if (waFooterLink) waFooterLink.href = 'https://wa.me/55' + savedWhatsapp;
+
                 const textSpan = document.getElementById('val-whatsapp-text');
                 if (textSpan && savedWhatsapp.length >= 10) {
                     const ddd = savedWhatsapp.substring(0, 2);
@@ -1397,7 +1062,6 @@
                 const daysOfWeek = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
                 const todayDay = daysOfWeek[new Date().getDay()];
 
-                // Find first active coupon that matches today's day or 'Todo Dia'
                 const activeCoupon = savedCoupons.find(c => c.active && (c.day === todayDay || c.day === 'Todo Dia'));
                 if (activeCoupon) {
                     const banner = document.getElementById('promo-coupon-banner');
@@ -1410,7 +1074,6 @@
                         banner.classList.remove('hidden');
                     }
 
-                    // Autofill and apply coupon to cart automatically
                     const couponInput = document.getElementById('cart-coupon-input');
                     if (couponInput) {
                         couponInput.value = activeCoupon.code;
@@ -1419,64 +1082,16 @@
                 }
             }
 
-            // Update badges and render cart state on load
             updateCartBadges();
             renderCart();
 
-            // Initial Hero Animation
-            const heroTimeline = gsap.timeline();
-            
-            heroTimeline.fromTo("#hero .reveal-up", 
-                { y: 50, autoAlpha: 0 },
-                { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" }
-            )
-            .fromTo("#hero .reveal-right",
-                { x: 100, autoAlpha: 0, rotation: 5 },
-                { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
-                "-=0.5"
-            );
-
-            // ScrollTrigger Animations for Menu and other sections
-            const revealElements = document.querySelectorAll('.reveal-up:not(#hero .reveal-up), .reveal-right:not(#hero .reveal-right)');
-            revealElements.forEach((elem) => {
-                let startY = elem.classList.contains('reveal-up') ? 60 : 0;
-                let startX = elem.classList.contains('reveal-right') ? 100 : 0;
-                let startRot = elem.classList.contains('reveal-right') ? 5 : 0;
-
-                gsap.fromTo(elem, 
-                    { y: startY, x: startX, rotation: startRot, autoAlpha: 0 },
-                    {
-                        y: 0, x: 0, rotation: 0,
-                        autoAlpha: 1,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: elem,
-                            start: "top 85%", // Trigger when top of element hits 85% of viewport
-                            toggleActions: "play none none reverse"
-                        }
-                    }
-                );
-            });
-
-            // Parallax effect on background huge text
-            gsap.to("#bg-text-1", {
-                x: 100,
-                scrollTrigger: {
-                    trigger: "#hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: 1
-                }
-            });
-            gsap.to("#bg-text-2", {
-                x: -100,
-                scrollTrigger: {
-                    trigger: "#hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: 1
-                }
+            // GSAP Animations
+            gsap.from(".reveal-up", {
+                duration: 1,
+                y: 30,
+                opacity: 0,
+                stagger: 0.2,
+                ease: "power2.out"
             });
         };
     </script>

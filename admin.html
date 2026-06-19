@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleanfoods | Painel de Controle Admin</title>
+    <link rel="icon" type="image/jpeg" href="Logonova.jpeg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cf-black': '#0E0E0E',
+                        'cf-yellow': '#F6C500',
+                        'cf-darkgray': '#1A1A1A',
+                        'cf-gray': '#333333',
+                    },
+                    fontFamily: {
+                        'impact': ['Anton', 'sans-serif'],
+                        'street': ['Permanent Marker', 'cursive'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --black: #0E0E0E;
+            --yellow: #F6C500;
+        }
+
+        body {
+            background-color: var(--black);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .noise-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--yellow); }
+
+        .torn-edge {
+            clip-path: polygon(0 0, 100% 1%, 99% 100%, 1% 99%);
+        }
+
+        .btn-street {
+            background: var(--yellow);
+            color: var(--black);
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%);
+        }
+        .btn-street:hover {
+            background: #ffffff;
+            transform: scale(1.03) rotate(1deg);
+        }
+
+        /* Active Sidebar Link Style */
+        .sidebar-link-active {
+            background-color: var(--yellow);
+            color: var(--black) !important;
+            font-weight: 800;
+            border-left: 6px solid #ffffff;
+        }
+    </style>
+</head>
+<body class="antialiased relative min-h-screen flex">
+    <div class="noise-bg"></div>
+
+    <!-- SIDEBAR (Módulos na Lateral Esquerda) -->
+    <aside class="w-64 bg-cf-darkgray h-screen flex flex-col justify-between border-r-4 border-cf-yellow z-30 sticky top-0 flex-shrink-0">
+        <div>
+            <!-- Sidebar Header / Logo -->
+            <div class="p-6 border-b border-cf-gray flex flex-col items-center">
+                <a href="index.html" class="hover:opacity-85 transition-opacity mb-4">
+                    <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-14 w-auto object-contain">
+                </a>
+                <span class="font-impact text-md text-cf-yellow tracking-widest uppercase text-center">
+                    PAINEL ADMIN
+                </span>
+            </div>
+
+            <!-- Sidebar Navigation Links (Módulos) -->
+            <nav class="mt-6 px-4 space-y-2">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-link-active w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-chart-simple text-base w-5 text-center"></i> Dashboard
+                </button>
+                <button onclick="switchTab('cardapio')" id="btn-cardapio" class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-utensils text-base w-5 text-center"></i> Cardápio
+                </button>
+                <button onclick="switchTab('pedidos')" id="btn-pedidos" class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-box-open text-base w-5 text-center"></i> Pedidos
+                </button>
+                <button onclick="switchTab('cupons')" id="btn-cupons" class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-ticket text-base w-5 text-center"></i> Cupons
+                </button>
+                <button onclick="switchTab('config')" id="btn-config" class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-gears text-base w-5 text-center"></i> Ajustes
+                </button>
+            </nav>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="p-6 border-t border-cf-gray">
+            <a href="index.html" class="w-full font-impact text-center block text-xs md:text-sm text-white hover:text-cf-yellow transition-colors tracking-widest uppercase">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Site
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-1 h-screen overflow-y-auto flex flex-col">
+        <!-- Top Mini-Bar -->
+        <header class="w-full bg-cf-darkgray border-b border-cf-gray py-4 px-8 flex justify-between items-center z-10 sticky top-0">
+            <h2 id="current-tab-title" class="font-impact text-xl text-white tracking-widest uppercase">
+                DASHBOARD
+            </h2>
+            <div class="flex items-center gap-4">
+                <span class="text-xs text-gray-400 font-bold bg-cf-black px-3 py-1 rounded">
+                    Admin Ativo <i class="fa-solid fa-circle text-green-500 text-[8px] ml-1"></i>
+                </span>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Body -->
+        <main class="p-8 max-w-6xl w-full mx-auto">
+            <!-- Welcome banner (Global) -->
+            <div class="bg-cf-darkgray border-t-8 border-white p-6 md:p-8 rounded-sm mb-8 relative overflow-hidden torn-edge">
+                <div class="absolute -right-10 -bottom-10 font-street text-[8rem] text-cf-gray opacity-10 select-none pointer-events-none">
+                    CLEAN
+                </div>
+                <h1 class="font-impact text-3xl md:text-5xl text-white uppercase mb-2">Bem-vindo, Administrador!</h1>
+                <p class="text-gray-400 font-semibold text-sm md:text-base max-w-xl">
+                    Gerencie o cardápio, crie cupons promocionais e configure os dados de contato do site principal.
+                </p>
+            </div>
+            
+            <!-- ================= TAB: DASHBOARD ================= -->
+            <div id="tab-dashboard" class="tab-content">
+                <!-- Dashboard Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-cf-darkgray p-6 border-l-4 border-cf-yellow flex justify-between items-center shadow-lg">
+                        <div>
+                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Faturamento Estimado</div>
+                            <div class="font-impact text-3xl text-white" id="stat-revenue">R$ 0,00</div>
+                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-revenue-desc">Nenhuma venda registrada</div>
+                        </div>
+                        <div class="text-cf-yellow text-4xl opacity-50"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    </div>
+                    <div class="bg-cf-darkgray p-6 border-l-4 border-white flex justify-between items-center shadow-lg">
+                        <div>
+                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Marmitas Vendidas</div>
+                            <div class="font-impact text-3xl text-white" id="stat-meals">0 Marmitas</div>
+                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-meals-desc">Aguardando novos pedidos</div>
+                        </div>
+                        <div class="text-white text-4xl opacity-50"><i class="fa-solid fa-box-open"></i></div>
+                    </div>
+                    <div class="bg-cf-darkgray p-6 border-l-4 border-cf-yellow flex justify-between items-center shadow-lg">
+                        <div>
+                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total de Pedidos</div>
+                            <div class="font-impact text-3xl text-white" id="stat-orders-count">0 pedidos</div>
+                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-orders-desc">Sem pedidos no momento</div>
+                        </div>
+                        <div class="text-cf-yellow text-4xl opacity-50"><i class="fa-solid fa-receipt"></i></div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-cf-darkgray p-6 border border-cf-gray">
+                    <h3 class="font-impact text-xl text-white uppercase mb-4 border-b border-cf-gray pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-cf-yellow"></i> Logs do Sistema
+                    </h3>
+                    <div class="text-center py-12 text-gray-500 font-body font-semibold text-sm">
+                        <i class="fa-solid fa-clock text-3xl mb-3 block text-cf-gray"></i>
+                        <span>Nenhuma atividade registrada no momento.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB: CARDÁPIO ================= -->
+            <div id="tab-cardapio" class="tab-content hidden">
+                <div class="bg-cf-darkgray p-6 md:p-8 border-4 border-cf-yellow">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-cf-gray pb-4">
+                        <div>
+                            <h2 class="font-impact text-2xl md:text-3xl text-cf-yellow uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-utensils"></i> Gerenciador do Cardápio
+                            </h2>
+                            <p class="text-xs text-gray-400 font-semibold mt-1">Ajuste os valores das marmitas diretamente na exibição local.</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="openAddDishModal()" class="px-5 py-2.5 font-bold flex items-center gap-2 shadow-lg text-sm bg-white border-white text-cf-black hover:bg-cf-yellow hover:border-cf-yellow transition-all uppercase tracking-wider font-impact rounded-sm" style="clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%);">
+                                <i class="fa-solid fa-circle-plus"></i> Novo Prato
+                            </button>
+                            <button onclick="savePrices()" class="btn-street px-5 py-2.5 font-bold flex items-center gap-2 shadow-lg text-sm">
+                                <i class="fa-solid fa-floppy-disk"></i> Salvar Preços
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Products List dynamically rendered (Full Width) -->
+                    <div id="dishes-editor-list" class="space-y-6">
+                        <!-- Grouped by category and rendered dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB: PEDIDOS ================= -->
+            <div id="tab-pedidos" class="tab-content hidden">
+                <div class="bg-cf-darkgray p-6 md:p-8 border-4 border-white">
+                    <h2 class="font-impact text-2xl md:text-3xl text-white uppercase mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-cf-yellow"></i> Pedidos Recentes
+                    </h2>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left font-body text-sm font-semibold">
+                            <thead>
+                                <tr class="border-b border-cf-gray text-gray-400 text-xs uppercase">
+                                    <th class="py-3 px-4">ID</th>
+                                    <th class="py-3 px-4">Cliente</th>
+                                    <th class="py-3 px-4">Itens</th>
+                                    <th class="py-3 px-4 text-right">Valor</th>
+                                    <th class="py-3 px-4 text-center">Status</th>
+                                    <th class="py-3 px-4 text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-body" class="text-gray-200">
+                                <tr>
+                                    <td colspan="6" class="py-12 text-center text-gray-500 font-bold italic">
+                                        <i class="fa-solid fa-inbox text-3xl mb-3 block text-cf-gray"></i>
+                                        <span>Nenhum pedido registrado no banco de dados.</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB: CUPONS ================= -->
+            <div id="tab-cupons" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Form Form -->
+                    <div class="lg:col-span-1 bg-cf-darkgray p-6 border-4 border-cf-yellow">
+                        <h3 class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
+                            <i class="fa-solid fa-circle-plus text-cf-yellow"></i> Novo Cupom
+                        </h3>
+                        <div class="space-y-4 font-body">
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Código do Cupom</label>
+                                <input type="text" id="coupon-code" placeholder="Ex: MONSTRO10" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold uppercase">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Desconto (%)</label>
+                                <input type="number" id="coupon-discount" placeholder="Ex: 10" min="1" max="100" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Filtrar por Dia da Semana</label>
+                                <select id="coupon-day" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                                    <option value="Todo Dia">Todo Dia</option>
+                                    <option value="Segunda-feira">Segunda-feira</option>
+                                    <option value="Terça-feira">Terça-feira</option>
+                                    <option value="Quarta-feira">Quarta-feira</option>
+                                    <option value="Quinta-feira">Quinta-feira</option>
+                                    <option value="Sexta-feira">Sexta-feira</option>
+                                    <option value="Sábado">Sábado</option>
+                                    <option value="Domingo">Domingo</option>
+                                </select>
+                            </div>
+                            <button onclick="addCoupon()" class="btn-street w-full py-2.5 font-bold flex items-center justify-center gap-2 mt-4 shadow-lg text-sm">
+                                <i class="fa-solid fa-plus"></i> Criar Cupom
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- List Column -->
+                    <div class="lg:col-span-2 bg-cf-darkgray p-6 border-4 border-white">
+                        <h3 class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
+                            <i class="fa-solid fa-ticket text-cf-yellow"></i> Cupons de Desconto
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left font-body text-sm font-semibold">
+                                <thead>
+                                    <tr class="border-b border-cf-gray text-gray-400 text-xs uppercase">
+                                        <th class="py-3 px-4">Código</th>
+                                        <th class="py-3 px-4 text-center">Desconto</th>
+                                        <th class="py-3 px-4 text-center">Dia da Semana</th>
+                                        <th class="py-3 px-4 text-center">Status</th>
+                                        <th class="py-3 px-4 text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coupons-table-body" class="text-gray-200 text-sm">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB: AJUSTES ================= -->
+            <div id="tab-config" class="tab-content hidden">
+                <div class="bg-cf-darkgray p-6 md:p-8 border-4 border-cf-yellow">
+                    <h2 class="font-impact text-2xl md:text-3xl text-cf-yellow uppercase mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-gears"></i> Configurações do Negócio
+                    </h2>
+                    
+                    <div class="space-y-6 max-w-xl font-body">
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">WhatsApp de Contato (Link de Pedido)</label>
+                            <div class="flex gap-2">
+                                <span class="bg-cf-black border border-cf-gray text-gray-500 px-3 py-2 flex items-center rounded text-sm font-semibold">+55</span>
+                                <input type="text" id="config-whatsapp" value="11910993953" class="flex-1 bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                            </div>
+                            <span class="text-[10px] text-gray-500 font-semibold block mt-1">Insira apenas os números com DDD.</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Localização da Unidade</label>
+                            <input type="text" id="config-address" value="Ipiranga, São Paulo - SP" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                        </div>
+                        
+                        <button onclick="saveConfig()" class="btn-street px-6 py-2.5 font-bold flex items-center gap-2 mt-4 shadow-lg">
+                            <i class="fa-solid fa-check"></i> Salvar Ajustes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Adicionar Novo Prato (Acionado apenas via botão) -->
+    <div id="add-dish-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-md w-full mx-4 relative torn-edge shadow-2xl">
+            <button onclick="closeAddDishModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <h3 class="font-impact text-2xl text-cf-yellow uppercase mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-circle-plus"></i> Adicionar Prato
+            </h3>
+            
+            <div class="space-y-4 font-body">
+                <div>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Nome do Prato</label>
+                    <input type="text" id="dish-name" placeholder="Ex: Frango Grelhado C/ Arroz" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Categoria</label>
+                    <select id="dish-category" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                        <option value="Frango">Linha Frango</option>
+                        <option value="Patinho">Linha Patinho</option>
+                        <option value="Gourmet">Linha Gourmet</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço P (R$)</label>
+                        <input type="text" id="dish-price-p" placeholder="Ex: 19,50" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço G (R$)</label>
+                        <input type="text" id="dish-price-g" placeholder="Ex: 27,50" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center">
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="closeAddDishModal()" class="w-1/2 py-2.5 bg-cf-gray text-white font-bold uppercase tracking-wider text-sm transition-all hover:bg-white hover:text-cf-black">
+                        Cancelar
+                    </button>
+                    <button onclick="addDish()" class="btn-street w-1/2 py-2.5 font-bold flex items-center justify-center gap-2 shadow-lg text-sm">
+                        <i class="fa-solid fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast Alert -->
+    <div id="toast-success" class="fixed bottom-6 right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-2xl"></i>
+        <span id="toast-text">ALTERAÇÕES SALVAS COM SUCESSO!</span>
+    </div>
+
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            // Remove active style from all links
+            const links = document.querySelectorAll('nav button');
+            links.forEach(link => {
+                link.classList.remove('sidebar-link-active');
+            });
+
+            // Show active tab
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            // Apply active styles to clicked button
+            document.getElementById('btn-' + tabId).classList.add('sidebar-link-active');
+
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'cardapio': 'Cardápio',
+                'pedidos': 'Pedidos',
+                'cupons': 'Cupons',
+                'config': 'Ajustes'
+            };
+            document.getElementById('current-tab-title').innerText = titles[tabId];
+        }
+
+        // Load initial values if stored in localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            // Load dishes list
+            loadDishes();
+
+            // Load config values
+            const savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
+            if (savedWhatsapp) document.getElementById('config-whatsapp').value = savedWhatsapp;
+
+            const savedAddress = localStorage.getItem('cleanfoods_address');
+            if (savedAddress) document.getElementById('config-address').value = savedAddress;
+
+            // Load coupons
+            loadCoupons();
+
+            // Load orders
+            loadOrders();
+        });
+
+        // Dishes management logic
+        let dishes = [];
+
+        const defaultDishes = [
+            { id: 'price-frango-classic', name: 'Frango Classic Grelhado', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-frango-desfiado', name: 'Frango Desfiado com Batata Doce', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-patinho-mandioca', name: 'Patinho Moído c/ Mandioca', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-almondegas', name: 'Almôndegas Fit de Patinho', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-strogonoff', name: 'Strogonoff de Frango Fit', category: 'Gourmet', priceP: '22,50', priceG: '29,50' },
+            { id: 'price-nhoque', name: 'Nhoque com Patinho', category: 'Gourmet', priceP: '30,50', priceG: '38,50' },
+            { id: 'price-escondidinho', name: 'Escondidinho c/ Mussarela Búfala', category: 'Gourmet', priceP: '30,50', priceG: '38,50' }
+        ];
+
+        function loadDishes() {
+            dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes'));
+            if (!dishes) {
+                dishes = defaultDishes;
+                localStorage.setItem('cleanfoods_dishes', JSON.stringify(dishes));
+            }
+            renderDishesEditor();
+        }
+
+        function renderDishesEditor() {
+            const listContainer = document.getElementById('dishes-editor-list');
+            if (!listContainer) return;
+            
+            listContainer.innerHTML = '';
+
+            const categories = ['Frango', 'Patinho', 'Gourmet'];
+            
+            categories.forEach(cat => {
+                const catDishes = dishes.filter(d => d.category === cat);
+                
+                // Create Category Container
+                const catDiv = document.createElement('div');
+                catDiv.className = 'border-b border-cf-gray pb-4';
+                
+                let iconClass = cat === 'Frango' ? 'text-cf-yellow' : (cat === 'Patinho' ? 'text-white' : 'text-cf-yellow');
+                
+                catDiv.innerHTML = `
+                    <div class="font-impact text-xl text-white uppercase mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-circle ${iconClass} text-xs"></i> Linha ${cat}
+                    </div>
+                    <div id="cat-list-${cat}" class="space-y-3">
+                        <!-- Items rendered here -->
+                    </div>
+                `;
+                
+                listContainer.appendChild(catDiv);
+                const itemsContainer = document.getElementById(`cat-list-${cat}`);
+                
+                if (catDishes.length === 0) {
+                    itemsContainer.innerHTML = `<div class="text-xs text-gray-500 font-semibold italic py-2">Nenhum prato nesta categoria.</div>`;
+                    return;
+                }
+
+                catDishes.forEach(dish => {
+                    const row = document.createElement('div');
+                    row.className = 'bg-cf-black p-4 flex flex-col md:flex-row justify-between items-start md:items-center border-l-2 border-white gap-3';
+                    if (cat === 'Patinho') row.className = 'bg-cf-black p-4 flex flex-col md:flex-row justify-between items-start md:items-center border-l-2 border-cf-yellow gap-3';
+
+                    row.innerHTML = `
+                        <span class="font-bold text-gray-200 uppercase text-sm">${dish.name}</span>
+                        <div class="flex items-center gap-3 font-body text-xs">
+                            <div class="flex items-center gap-1">
+                                <span>P: R$</span>
+                                <input type="text" id="p-input-${dish.id}" value="${dish.priceP}" class="w-16 bg-cf-darkgray text-white border border-cf-gray rounded px-2 py-1 font-bold text-center">
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="ml-1">G: R$</span>
+                                <input type="text" id="g-input-${dish.id}" value="${dish.priceG}" class="w-16 bg-cf-darkgray text-white border border-cf-gray rounded px-2 py-1 font-bold text-center">
+                            </div>
+                            <button onclick="deleteDish('${dish.id}')" class="text-red-500 hover:text-red-400 transition-colors ml-2 text-base">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                    itemsContainer.appendChild(row);
+                });
+            });
+        }
+
+        // Modal Triggers
+        function openAddDishModal() {
+            const modal = document.getElementById('add-dish-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeAddDishModal() {
+            const modal = document.getElementById('add-dish-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+            
+            // Clear inputs
+            document.getElementById('dish-name').value = '';
+            document.getElementById('dish-price-p').value = '';
+            document.getElementById('dish-price-g').value = '';
+        }
+
+        function addDish() {
+            const nameInput = document.getElementById('dish-name');
+            const catSelect = document.getElementById('dish-category');
+            const pricePInput = document.getElementById('dish-price-p');
+            const priceGInput = document.getElementById('dish-price-g');
+
+            const name = nameInput.value.trim();
+            const category = catSelect.value;
+            const priceP = pricePInput.value.trim() || '0,00';
+            const priceG = priceGInput.value.trim() || '0,00';
+
+            if (!name) {
+                showToast('INFORME O NOME DO PRATO!');
+                return;
+            }
+
+            // Create a safe ID
+            const id = 'price-' + name.toLowerCase()
+                                      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+                                      .replace(/[^a-z0-9]+/g, '-') // replace spaces/special characters with hyphen
+                                      .replace(/(^-|-$)/g, ''); // trim starting/ending hyphens
+
+            // Check if ID already exists
+            if (dishes.some(d => d.id === id)) {
+                showToast('ESTE PRATO JÁ CONSTA NO CARDÁPIO!');
+                return;
+            }
+
+            dishes.push({
+                id: id,
+                name: name,
+                category: category,
+                priceP: priceP,
+                priceG: priceG
+            });
+
+            localStorage.setItem('cleanfoods_dishes', JSON.stringify(dishes));
+            renderDishesEditor();
+            closeAddDishModal();
+
+            showToast('PRATO ADICIONADO COM SUCESSO!');
+        }
+
+        function deleteDish(id) {
+            const dish = dishes.find(d => d.id === id);
+            if (!dish) return;
+
+            if (confirm(`Deseja realmente remover o prato "${dish.name}" do cardápio?`)) {
+                dishes = dishes.filter(d => d.id !== id);
+                localStorage.setItem('cleanfoods_dishes', JSON.stringify(dishes));
+                renderDishesEditor();
+                showToast('PRATO REMOVIDO COM SUCESSO!');
+            }
+        }
+
+        // Function to simulate price saving
+        function savePrices() {
+            // Update prices in the array
+            dishes.forEach(dish => {
+                const pInput = document.getElementById(`p-input-${dish.id}`);
+                const gInput = document.getElementById(`g-input-${dish.id}`);
+                
+                if (pInput) dish.priceP = pInput.value.trim();
+                if (gInput) dish.priceG = gInput.value.trim();
+            });
+
+            localStorage.setItem('cleanfoods_dishes', JSON.stringify(dishes));
+            renderDishesEditor();
+            showToast('PREÇOS SALVOS COM SUCESSO!');
+        }
+
+        // Function to save config
+        function saveConfig() {
+            const whatsapp = document.getElementById('config-whatsapp').value;
+            const address = document.getElementById('config-address').value;
+
+            localStorage.setItem('cleanfoods_whatsapp', whatsapp);
+            localStorage.setItem('cleanfoods_address', address);
+
+            showToast('CONFIGURAÇÕES SALVAS COM SUCESSO!');
+        }
+
+        // Coupons Logic
+        let coupons = [];
+
+        function loadCoupons() {
+            coupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+            renderCoupons();
+        }
+
+        function saveCoupons() {
+            localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
+            renderCoupons();
+        }
+
+        function renderCoupons() {
+            const tbody = document.getElementById('coupons-table-body');
+            tbody.innerHTML = '';
+
+            if (coupons.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-12 text-center text-gray-500 font-bold italic">
+                            <i class="fa-solid fa-ticket text-3xl mb-3 block text-cf-gray"></i>
+                            <span>Nenhum cupom cadastrado.</span>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            coupons.forEach((coupon, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-cf-gray/20 hover:bg-cf-black/20 transition-colors';
+                
+                tr.innerHTML = `
+                    <td class="py-4 px-4 font-mono font-bold text-cf-yellow uppercase">${coupon.code}</td>
+                    <td class="py-4 px-4 text-center font-mono">${coupon.discount}%</td>
+                    <td class="py-4 px-4 text-center text-xs font-bold text-gray-400">${coupon.day}</td>
+                    <td class="py-4 px-4 text-center">
+                        <div class="flex items-center justify-center">
+                            <label class="relative inline-flex items-center cursor-pointer select-none">
+                                <input type="checkbox" onchange="toggleCoupon(${index})" ${coupon.active ? 'checked' : ''} class="sr-only peer">
+                                <div class="w-9 h-5 bg-cf-gray rounded-full peer peer-checked:bg-cf-yellow after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="py-4 px-4 text-center">
+                        <button onclick="deleteCoupon(${index})" class="text-red-500 hover:text-red-400 transition-colors text-base">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addCoupon() {
+            const codeInput = document.getElementById('coupon-code');
+            const discountInput = document.getElementById('coupon-discount');
+            const daySelect = document.getElementById('coupon-day');
+
+            const code = codeInput.value.trim().toUpperCase();
+            const discount = parseInt(discountInput.value);
+            const day = daySelect.value;
+
+            if (!code) {
+                showToast('INFORME O CÓDIGO DO CUPOM!');
+                return;
+            }
+            if (isNaN(discount) || discount < 1 || discount > 100) {
+                showToast('INSIRA UN DESCONTO VÁLIDO (1-100)%!');
+                return;
+            }
+
+            // Check if coupon code already exists
+            if (coupons.some(c => c.code === code)) {
+                showToast('ESTE CÓDIGO DE CUPOM JÁ EXISTE!');
+                return;
+            }
+
+            coupons.push({
+                code: code,
+                discount: discount,
+                day: day,
+                active: true
+            });
+
+            saveCoupons();
+            
+            // Clear inputs
+            codeInput.value = '';
+            discountInput.value = '';
+            daySelect.value = 'Todo Dia';
+
+            showToast('CUPOM CRIADO COM SUCESSO!');
+        }
+
+        function toggleCoupon(index) {
+            coupons[index].active = !coupons[index].active;
+            saveCoupons();
+            showToast('STATUS DO CUPOM ATUALIZADO!');
+        }
+
+        function deleteCoupon(index) {
+            if (confirm(`Deseja apagar o cupom ${coupons[index].code}?`)) {
+                coupons.splice(index, 1);
+                saveCoupons();
+                showToast('CUPOM REMOVIDO COM SUCESSO!');
+            }
+        }
+
+        // Orders Logic
+        let orders = [];
+
+        function loadOrders() {
+            orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+            renderOrders();
+            updateDashboardStats();
+        }
+
+        function renderOrders() {
+            const tbody = document.getElementById('orders-table-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            if (orders.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-12 text-center text-gray-500 font-bold italic">
+                            <i class="fa-solid fa-inbox text-3xl mb-3 block text-cf-gray"></i>
+                            <span>Nenhum pedido registrado no banco de dados.</span>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            orders.forEach((order, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-cf-gray/20 hover:bg-cf-black/20 transition-colors';
+                
+                // Format items detail
+                let itemsDetailHTML = '<ul class="list-disc list-inside space-y-0.5 text-xs">';
+                order.items.forEach(item => {
+                    itemsDetailHTML += `<li>${item.quantity}x ${item.name} (<span class="text-cf-yellow">${item.size}</span>)</li>`;
+                });
+                itemsDetailHTML += '</ul>';
+
+                // Format client details
+                let clientDetailsHTML = `
+                    <div class="space-y-0.5 text-xs">
+                        <div class="font-bold text-white">${order.clientName}</div>
+                        <div class="text-gray-400 font-mono">${order.clientPhone}</div>
+                        <div class="text-gray-400">${order.address}</div>
+                        <div class="text-cf-yellow font-bold">Pagamento: ${order.payment}</div>
+                        ${order.notes ? `<div class="text-gray-500 italic mt-1 font-sans">Obs: "${order.notes}"</div>` : ''}
+                    </div>
+                `;
+
+                // Status dropdown
+                const statusOptions = ['Pendente', 'Em Preparo', 'Enviado', 'Concluído'];
+                let statusDropdownHTML = `
+                    <select onchange="updateOrderStatus(${index}, this.value)" class="bg-cf-black border border-cf-gray text-white text-xs font-bold rounded px-2 py-1 focus:border-cf-yellow focus:outline-none">
+                `;
+                statusOptions.forEach(opt => {
+                    statusDropdownHTML += `<option value="${opt}" ${order.status === opt ? 'selected' : ''}>${opt}</option>`;
+                });
+                statusDropdownHTML += '</select>';
+
+                tr.innerHTML = `
+                    <td class="py-4 px-4 font-mono font-bold text-cf-yellow uppercase">#${order.id}</td>
+                    <td class="py-4 px-4">${clientDetailsHTML}</td>
+                    <td class="py-4 px-4">${itemsDetailHTML}</td>
+                    <td class="py-4 px-4 text-right font-mono font-bold text-white">R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}</td>
+                    <td class="py-4 px-4 text-center">${statusDropdownHTML}</td>
+                    <td class="py-4 px-4 text-center">
+                        <button onclick="deleteOrder(${index})" class="text-red-500 hover:text-red-400 transition-colors text-base cursor-hover p-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateOrderStatus(index, newStatus) {
+            orders[index].status = newStatus;
+            localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+            updateDashboardStats();
+            showToast('STATUS DO PEDIDO ATUALIZADO!');
+        }
+
+        function deleteOrder(index) {
+            if (confirm(`Deseja apagar o pedido #${orders[index].id}?`)) {
+                orders.splice(index, 1);
+                localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+                loadOrders();
+                showToast('PEDIDO REMOVIDO COM SUCESSO!');
+            }
+        }
+
+        function updateDashboardStats() {
+            let totalRevenue = 0;
+            let totalMeals = 0;
+
+            orders.forEach(order => {
+                totalRevenue += parseFloat(order.total);
+                order.items.forEach(item => {
+                    totalMeals += item.quantity;
+                });
+            });
+
+            const revSpan = document.getElementById('stat-revenue');
+            const revDesc = document.getElementById('stat-revenue-desc');
+            const mealsSpan = document.getElementById('stat-meals');
+            const mealsDesc = document.getElementById('stat-meals-desc');
+            const ordersSpan = document.getElementById('stat-orders-count');
+            const ordersDesc = document.getElementById('stat-orders-desc');
+
+            if (revSpan) revSpan.innerText = `R$ ${totalRevenue.toFixed(2).replace('.', ',')}`;
+            if (revDesc) {
+                revDesc.innerText = orders.length > 0 
+                    ? `Faturamento acumulado` 
+                    : `Nenhuma venda registrada`;
+            }
+
+            if (mealsSpan) mealsSpan.innerText = `${totalMeals} Marmitas`;
+            if (mealsDesc) {
+                mealsDesc.innerText = totalMeals > 0 
+                    ? `Total de marmitas prontas` 
+                    : `Aguardando novos pedidos`;
+            }
+
+            if (ordersSpan) ordersSpan.innerText = `${orders.length} pedidos`;
+            if (ordersDesc) {
+                ordersDesc.innerText = orders.length > 0 
+                    ? `Aguardando novos pedidos` 
+                    : `Sem pedidos no momento`;
+            }
+        }
+
+        // Helper to show success toast
+        function showToast(text) {
+            document.getElementById('toast-text').innerText = text;
+            const toast = document.getElementById('toast-success');
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
