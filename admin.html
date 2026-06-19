@@ -93,8 +93,11 @@
 <body class="antialiased relative min-h-screen flex">
     <div class="noise-bg"></div>
 
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-20 hidden"></div>
+
     <!-- SIDEBAR (Módulos na Lateral Esquerda) -->
-    <aside class="w-64 bg-cf-darkgray h-screen flex flex-col justify-between border-r-4 border-cf-yellow z-30 sticky top-0 flex-shrink-0">
+    <aside id="sidebar-menu" class="fixed md:sticky top-0 left-0 w-64 bg-cf-darkgray h-screen flex flex-col justify-between border-r-4 border-cf-yellow z-30 flex-shrink-0 transition-transform duration-300 -translate-x-full md:translate-x-0">
         <div>
             <!-- Sidebar Header / Logo -->
             <div class="p-6 border-b border-cf-gray flex flex-col items-center">
@@ -137,10 +140,15 @@
     <!-- MAIN CONTENT AREA -->
     <div class="flex-1 h-screen overflow-y-auto flex flex-col">
         <!-- Top Mini-Bar -->
-        <header class="w-full bg-cf-darkgray border-b border-cf-gray py-4 px-8 flex justify-between items-center z-10 sticky top-0">
-            <h2 id="current-tab-title" class="font-impact text-xl text-white tracking-widest uppercase">
-                DASHBOARD
-            </h2>
+        <header class="w-full bg-cf-darkgray border-b border-cf-gray py-4 px-4 md:px-8 flex justify-between items-center z-10 sticky top-0">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="md:hidden text-white text-xl hover:text-cf-yellow focus:outline-none p-1">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h2 id="current-tab-title" class="font-impact text-xl text-white tracking-widest uppercase">
+                    DASHBOARD
+                </h2>
+            </div>
             <div class="flex items-center gap-4">
                 <span class="text-xs text-gray-400 font-bold bg-cf-black px-3 py-1 rounded">
                     Admin Ativo <i class="fa-solid fa-circle text-green-500 text-[8px] ml-1"></i>
@@ -149,7 +157,7 @@
         </header>
 
         <!-- Dynamic Content Body -->
-        <main class="p-8 max-w-6xl w-full mx-auto">
+        <main class="p-4 sm:p-8 max-w-6xl w-full mx-auto">
             <!-- Welcome banner (Global) -->
             <div class="bg-cf-darkgray border-t-8 border-white p-6 md:p-8 rounded-sm mb-8 relative overflow-hidden torn-edge">
                 <div class="absolute -right-10 -bottom-10 font-street text-[8rem] text-cf-gray opacity-10 select-none pointer-events-none">
@@ -405,7 +413,40 @@
         <span id="toast-text">ALTERAÇÕES SALVAS COM SUCESSO!</span>
     </div>
 
+    <!-- Supabase SDK & Central Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+
     <script>
+        // Initialize Supabase Client
+        let supabaseClient = null;
+        if (window.SUPABASE_URL && window.SUPABASE_URL !== "YOUR_SUPABASE_URL" &&
+            window.SUPABASE_ANON_KEY && window.SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
+            try {
+                const { createClient } = supabase;
+                supabaseClient = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+            } catch (err) {
+                console.error("Erro ao inicializar Supabase:", err);
+            }
+        }
+
+        // Sidebar Toggle for Mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar-menu');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (!sidebar || !overlay) return;
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
         // Tab switching logic
         function switchTab(tabId) {
             // Hide all tabs
@@ -433,45 +474,89 @@
                 'config': 'Ajustes'
             };
             document.getElementById('current-tab-title').innerText = titles[tabId];
+
+            // Close sidebar on mobile screen widths once a selection is made
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar-menu');
+                const overlay = document.getElementById('sidebar-overlay');
+                if (sidebar) {
+                    sidebar.classList.remove('translate-x-0');
+                    sidebar.classList.add('-translate-x-full');
+                }
+                if (overlay) {
+                    overlay.classList.add('hidden');
+                }
+            }
         }
 
-        // Load initial values if stored in localStorage
-        window.addEventListener('DOMContentLoaded', () => {
-            // Load dishes list
-            loadDishes();
-
-            // Load config values
-            const savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
-            if (savedWhatsapp) document.getElementById('config-whatsapp').value = savedWhatsapp;
-
-            const savedAddress = localStorage.getItem('cleanfoods_address');
-            if (savedAddress) document.getElementById('config-address').value = savedAddress;
-
-            // Load coupons
-            loadCoupons();
-
-            // Load orders
-            loadOrders();
+        // Load initial values
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadDishes();
+            await loadSettings();
+            await loadCoupons();
+            await loadOrders();
         });
 
         // Dishes management logic
         let dishes = [];
 
         const defaultDishes = [
-            { id: 'price-frango-classic', name: 'Frango Classic Grelhado', category: 'Frango', priceP: '19,50', priceG: '27,50' },
-            { id: 'price-frango-desfiado', name: 'Frango Desfiado com Batata Doce', category: 'Frango', priceP: '19,50', priceG: '27,50' },
-            { id: 'price-patinho-mandioca', name: 'Patinho Moído c/ Mandioca', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
-            { id: 'price-almondegas', name: 'Almôndegas Fit de Patinho', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
-            { id: 'price-strogonoff', name: 'Strogonoff de Frango Fit', category: 'Gourmet', priceP: '22,50', priceG: '29,50' },
-            { id: 'price-nhoque', name: 'Nhoque com Patinho', category: 'Gourmet', priceP: '30,50', priceG: '38,50' },
-            { id: 'price-escondidinho', name: 'Escondidinho c/ Mussarela Búfala', category: 'Gourmet', priceP: '30,50', priceG: '38,50' }
+            // FRANGO
+            { id: 'price-frango-desfiado-pure-batata-doce-legumes', name: '01. Frango desfiado com purê de batata doce e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-frango-desfiado-arroz-integral-legumes', name: '02. Frango desfiado com arroz integral e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-frango-desfiado-pure-mandioca-legumes', name: '03. Frango desfiado com purê de mandioca e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-frango-legumes', name: '04. Frango com legumes', category: 'Frango', priceP: '19,50', priceG: '—' },
+            { id: 'price-macarrao-frango-desfiado', name: '05. Macarrão com frango desfiado', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-escondidinho-frango-moido-mandioca', name: '06. Escondidinho de frango moído com mandioca', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-escondidinho-frango-moido-batata-doce', name: '07. Escondidinho de frango moído com batata doce', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            // GOURMET
+            { id: 'price-escondidinho-frango-mussarela-bufala', name: '08. Escondidinho de frango com mussarela de búfala', category: 'Gourmet', priceP: '27,50', priceG: '34,50' },
+            { id: 'price-nhoque-batata-doce-patinho-moido', name: '09. Nhoque de batata doce com patinho moído', category: 'Gourmet', priceP: '28,50', priceG: '35,50' },
+            { id: 'price-macarrao-patinho-moido', name: '10. Macarrão com patinho moído', category: 'Gourmet', priceP: '28,50', priceG: '35,50' },
+            { id: 'price-strogonoff-frango-arroz-branco', name: '20. Strogonoff de frango com arroz branco', category: 'Gourmet', priceP: '30,50', priceG: '38,50' },
+            { id: 'price-nhoque-batata-doce-frango-desfiado', name: '22. Nhoque de batata doce com frango desfiado', category: 'Gourmet', priceP: '22,50', priceG: '29,50' },
+            { id: 'price-penne-frango-desfiado-molho', name: '23. Penne com frango desfiado ao molho', category: 'Gourmet', priceP: '22,50', priceG: '29,50' },
+            // PATINHO
+            { id: 'price-patinho-desfiado-arroz-integral-legumes', name: '11. Patinho desfiado com arroz integral e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-patinho-desfiado-pure-batata-doce-legumes', name: '12. Patinho desfiado com purê de batata doce e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-escondidinho-mandioca-patinho-moido', name: '13. Escondidinho de mandioca com patinho moído', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-patinho-legumes', name: '14. Patinho com legumes', category: 'Patinho', priceP: '25,50', priceG: '—' },
+            { id: 'price-patinho-desfiado-pure-mandioca-legumes', name: '15. Patinho desfiado com purê de mandioca e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' }
         ];
 
-        function loadDishes() {
-            dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes'));
-            if (!dishes) {
-                dishes = defaultDishes;
-                localStorage.setItem('cleanfoods_dishes', JSON.stringify(dishes));
+        async function loadDishes() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('dishes').select('*');
+                    if (error) throw error;
+                    if (data && data.length > 0) {
+                        dishes = data.map(d => ({
+                            id: d.id,
+                            name: d.name,
+                            category: d.category,
+                            priceP: d.price_p || d.priceP || '0,00',
+                            priceG: d.price_g || d.priceG || '0,00'
+                        })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
+                    } else {
+                        // Seed database
+                        const dbDishes = defaultDishes.map(d => ({
+                            id: d.id,
+                            name: d.name,
+                            category: d.category,
+                            price_p: d.priceP,
+                            price_g: d.priceG
+                        }));
+                        const { error: insertError } = await supabaseClient.from('dishes').insert(dbDishes);
+                        if (insertError) throw insertError;
+                        dishes = defaultDishes;
+                    }
+                } catch (err) {
+                    console.error("Erro ao carregar pratos do Supabase:", err);
+                    dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                }
+            } else {
+                dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
             }
             renderDishesEditor();
         }
@@ -558,7 +643,7 @@
             document.getElementById('dish-price-g').value = '';
         }
 
-        function addDish() {
+        async function addDish() {
             const nameInput = document.getElementById('dish-name');
             const catSelect = document.getElementById('dish-category');
             const pricePInput = document.getElementById('dish-price-p');
@@ -586,35 +671,64 @@
                 return;
             }
 
-            dishes.push({
+            const newDish = {
                 id: id,
                 name: name,
                 category: category,
                 priceP: priceP,
                 priceG: priceG
-            });
+            };
 
-            localStorage.setItem('cleanfoods_dishes', JSON.stringify(dishes));
+            dishes.push(newDish);
+
+            if (supabaseClient) {
+                try {
+                    const dbDish = {
+                        id: newDish.id,
+                        name: newDish.name,
+                        category: newDish.category,
+                        price_p: newDish.priceP,
+                        price_g: newDish.priceG
+                    };
+                    const { error } = await supabaseClient.from('dishes').insert([dbDish]);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao adicionar prato no Supabase:", err);
+                    localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+                }
+            } else {
+                localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+            }
+
             renderDishesEditor();
             closeAddDishModal();
 
             showToast('PRATO ADICIONADO COM SUCESSO!');
         }
 
-        function deleteDish(id) {
+        async function deleteDish(id) {
             const dish = dishes.find(d => d.id === id);
             if (!dish) return;
 
             if (confirm(`Deseja realmente remover o prato "${dish.name}" do cardápio?`)) {
                 dishes = dishes.filter(d => d.id !== id);
-                localStorage.setItem('cleanfoods_dishes', JSON.stringify(dishes));
+                if (supabaseClient) {
+                    try {
+                        const { error } = await supabaseClient.from('dishes').delete().eq('id', id);
+                        if (error) throw error;
+                    } catch (err) {
+                        console.error("Erro ao deletar prato no Supabase:", err);
+                        localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+                    }
+                } else {
+                    localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+                }
                 renderDishesEditor();
                 showToast('PRATO REMOVIDO COM SUCESSO!');
             }
         }
 
-        // Function to simulate price saving
-        function savePrices() {
+        async function savePrices() {
             // Update prices in the array
             dishes.forEach(dish => {
                 const pInput = document.getElementById(`p-input-${dish.id}`);
@@ -624,18 +738,69 @@
                 if (gInput) dish.priceG = gInput.value.trim();
             });
 
-            localStorage.setItem('cleanfoods_dishes', JSON.stringify(dishes));
+            if (supabaseClient) {
+                try {
+                    for (const dish of dishes) {
+                        const { error } = await supabaseClient.from('dishes').update({
+                            price_p: dish.priceP,
+                            price_g: dish.priceG
+                        }).eq('id', dish.id);
+                        if (error) throw error;
+                    }
+                } catch (err) {
+                    console.error("Erro ao salvar preços no Supabase:", err);
+                    localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+                }
+            } else {
+                localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+            }
+
             renderDishesEditor();
             showToast('PREÇOS SALVOS COM SUCESSO!');
         }
 
-        // Function to save config
-        function saveConfig() {
-            const whatsapp = document.getElementById('config-whatsapp').value;
-            const address = document.getElementById('config-address').value;
+        async function loadSettings() {
+            let savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
+            let savedAddress = localStorage.getItem('cleanfoods_address');
 
-            localStorage.setItem('cleanfoods_whatsapp', whatsapp);
-            localStorage.setItem('cleanfoods_address', address);
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('settings').select('*');
+                    if (error) throw error;
+                    if (data) {
+                        const waSetting = data.find(s => s.key === 'whatsapp');
+                        if (waSetting) savedWhatsapp = waSetting.value;
+                        const addrSetting = data.find(s => s.key === 'address');
+                        if (addrSetting) savedAddress = addrSetting.value;
+                    }
+                } catch (err) {
+                    console.error("Erro ao carregar configurações do Supabase:", err);
+                }
+            }
+
+            if (savedWhatsapp) document.getElementById('config-whatsapp').value = savedWhatsapp;
+            if (savedAddress) document.getElementById('config-address').value = savedAddress;
+        }
+
+        async function saveConfig() {
+            const whatsapp = document.getElementById('config-whatsapp').value.trim();
+            const address = document.getElementById('config-address').value.trim();
+
+            if (supabaseClient) {
+                try {
+                    const { error: waError } = await supabaseClient.from('settings').upsert({ key: 'whatsapp', value: whatsapp });
+                    if (waError) throw waError;
+                    const { error: addrError } = await supabaseClient.from('settings').upsert({ key: 'address', value: address });
+                    if (addrError) throw addrError;
+                } catch (err) {
+                    console.error("Erro ao salvar configurações no Supabase:", err);
+                    localStorage.setItem('cleanfoods_whatsapp', whatsapp);
+                    localStorage.setItem('cleanfoods_address', address);
+                }
+            } else {
+                localStorage.setItem('cleanfoods_whatsapp', whatsapp);
+                localStorage.setItem('cleanfoods_address', address);
+            }
 
             showToast('CONFIGURAÇÕES SALVAS COM SUCESSO!');
         }
@@ -643,14 +808,114 @@
         // Coupons Logic
         let coupons = [];
 
-        function loadCoupons() {
-            coupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+        async function loadCoupons() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('coupons').select('*');
+                    if (error) throw error;
+                    coupons = data || [];
+                } catch (err) {
+                    console.error("Erro ao carregar cupons do Supabase:", err);
+                    coupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+                }
+            } else {
+                coupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+            }
             renderCoupons();
         }
 
-        function saveCoupons() {
-            localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
+        async function addCoupon() {
+            const codeInput = document.getElementById('coupon-code');
+            const discountInput = document.getElementById('coupon-discount');
+            const daySelect = document.getElementById('coupon-day');
+
+            const code = codeInput.value.trim().toUpperCase();
+            const discount = parseInt(discountInput.value);
+            const day = daySelect.value;
+
+            if (!code) {
+                showToast('INFORME O CÓDIGO DO CUPOM!');
+                return;
+            }
+            if (isNaN(discount) || discount < 1 || discount > 100) {
+                showToast('INSIRA UM DESCONTO VÁLIDO (1-100)%!');
+                return;
+            }
+
+            if (coupons.some(c => c.code === code)) {
+                showToast('ESTE CÓDIGO DE CUPOM JÁ EXISTE!');
+                return;
+            }
+
+            const newCoupon = {
+                code: code,
+                discount: discount,
+                day: day,
+                active: true
+            };
+
+            coupons.push(newCoupon);
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('coupons').insert([newCoupon]);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao criar cupom no Supabase:", err);
+                    localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
+                }
+            } else {
+                localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
+            }
+            
             renderCoupons();
+            
+            // Clear inputs
+            codeInput.value = '';
+            discountInput.value = '';
+            daySelect.value = 'Todo Dia';
+
+            showToast('CUPOM CRIADO COM SUCESSO!');
+        }
+
+        async function toggleCoupon(index) {
+            coupons[index].active = !coupons[index].active;
+            const coupon = coupons[index];
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('coupons').update({ active: coupon.active }).eq('code', coupon.code);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao atualizar status do cupom no Supabase:", err);
+                    localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
+                }
+            } else {
+                localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
+            }
+            
+            renderCoupons();
+            showToast('STATUS DO CUPOM ATUALIZADO!');
+        }
+
+        async function deleteCoupon(index) {
+            const coupon = coupons[index];
+            if (confirm(`Deseja apagar o cupom ${coupon.code}?`)) {
+                coupons.splice(index, 1);
+                if (supabaseClient) {
+                    try {
+                        const { error } = await supabaseClient.from('coupons').delete().eq('code', coupon.code);
+                        if (error) throw error;
+                    } catch (err) {
+                        console.error("Erro ao deletar cupom no Supabase:", err);
+                        localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
+                    }
+                } else {
+                    localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
+                }
+                renderCoupons();
+                showToast('CUPOM REMOVIDO COM SUCESSO!');
+            }
         }
 
         function renderCoupons() {
@@ -695,66 +960,36 @@
             });
         }
 
-        function addCoupon() {
-            const codeInput = document.getElementById('coupon-code');
-            const discountInput = document.getElementById('coupon-discount');
-            const daySelect = document.getElementById('coupon-day');
-
-            const code = codeInput.value.trim().toUpperCase();
-            const discount = parseInt(discountInput.value);
-            const day = daySelect.value;
-
-            if (!code) {
-                showToast('INFORME O CÓDIGO DO CUPOM!');
-                return;
-            }
-            if (isNaN(discount) || discount < 1 || discount > 100) {
-                showToast('INSIRA UN DESCONTO VÁLIDO (1-100)%!');
-                return;
-            }
-
-            // Check if coupon code already exists
-            if (coupons.some(c => c.code === code)) {
-                showToast('ESTE CÓDIGO DE CUPOM JÁ EXISTE!');
-                return;
-            }
-
-            coupons.push({
-                code: code,
-                discount: discount,
-                day: day,
-                active: true
-            });
-
-            saveCoupons();
-            
-            // Clear inputs
-            codeInput.value = '';
-            discountInput.value = '';
-            daySelect.value = 'Todo Dia';
-
-            showToast('CUPOM CRIADO COM SUCESSO!');
-        }
-
-        function toggleCoupon(index) {
-            coupons[index].active = !coupons[index].active;
-            saveCoupons();
-            showToast('STATUS DO CUPOM ATUALIZADO!');
-        }
-
-        function deleteCoupon(index) {
-            if (confirm(`Deseja apagar o cupom ${coupons[index].code}?`)) {
-                coupons.splice(index, 1);
-                saveCoupons();
-                showToast('CUPOM REMOVIDO COM SUCESSO!');
-            }
-        }
-
         // Orders Logic
         let orders = [];
 
-        function loadOrders() {
-            orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+        async function loadOrders() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+                    if (error) throw error;
+                    orders = (data || []).map(o => ({
+                        id: o.id,
+                        clientName: o.client_name || o.clientName,
+                        clientPhone: o.client_phone || o.clientPhone,
+                        address: o.address,
+                        payment: o.payment,
+                        notes: o.notes,
+                        deliveryDate: o.delivery_date || o.deliveryDate,
+                        deliveryTime: o.delivery_time || o.deliveryTime,
+                        items: o.items,
+                        subtotal: o.subtotal,
+                        discount: o.discount,
+                        total: o.total,
+                        status: o.status
+                    }));
+                } catch (err) {
+                    console.error("Erro ao carregar pedidos do Supabase:", err);
+                    orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+                }
+            } else {
+                orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+            }
             renderOrders();
             updateDashboardStats();
         }
@@ -789,12 +1024,23 @@
                 itemsDetailHTML += '</ul>';
 
                 // Format client details
+                const formatDateToBR = (dateStr) => {
+                    if (!dateStr) return '';
+                    const parts = dateStr.split('-');
+                    if (parts.length === 3) {
+                        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                    }
+                    return dateStr;
+                };
+
+                const formattedDeliveryDate = formatDateToBR(order.deliveryDate);
                 let clientDetailsHTML = `
                     <div class="space-y-0.5 text-xs">
                         <div class="font-bold text-white">${order.clientName}</div>
                         <div class="text-gray-400 font-mono">${order.clientPhone}</div>
                         <div class="text-gray-400">${order.address}</div>
                         <div class="text-cf-yellow font-bold">Pagamento: ${order.payment}</div>
+                        ${order.deliveryDate ? `<div class="text-green-400 font-bold mt-1"><i class="fa-solid fa-truck"></i> Entrega: ${formattedDeliveryDate} às ${order.deliveryTime}</div>` : ''}
                         ${order.notes ? `<div class="text-gray-500 italic mt-1 font-sans">Obs: "${order.notes}"</div>` : ''}
                     </div>
                 `;
@@ -825,17 +1071,41 @@
             });
         }
 
-        function updateOrderStatus(index, newStatus) {
+        async function updateOrderStatus(index, newStatus) {
             orders[index].status = newStatus;
-            localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+            const order = orders[index];
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', order.id);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao atualizar status do pedido no Supabase:", err);
+                    localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+                }
+            } else {
+                localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+            }
+
             updateDashboardStats();
             showToast('STATUS DO PEDIDO ATUALIZADO!');
         }
 
-        function deleteOrder(index) {
-            if (confirm(`Deseja apagar o pedido #${orders[index].id}?`)) {
+        async function deleteOrder(index) {
+            const order = orders[index];
+            if (confirm(`Deseja apagar o pedido #${order.id}?`)) {
                 orders.splice(index, 1);
-                localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+                if (supabaseClient) {
+                    try {
+                        const { error } = await supabaseClient.from('orders').delete().eq('id', order.id);
+                        if (error) throw error;
+                    } catch (err) {
+                        console.error("Erro ao deletar pedido no Supabase:", err);
+                        localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+                    }
+                } else {
+                    localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+                }
                 loadOrders();
                 showToast('PEDIDO REMOVIDO COM SUCESSO!');
             }

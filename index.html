@@ -50,7 +50,6 @@
             background-color: var(--black);
             color: #ffffff;
             overflow-x: hidden;
-            cursor: none; /* Custom cursor */
         }
 
         /* Noise Texture for Street Vibe */
@@ -63,7 +62,7 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Custom Cursor */
+        /* Custom Cursor - Hidden by default (touchscreens) */
         .cursor-dot, .cursor-outline {
             position: fixed;
             top: 0; left: 0;
@@ -71,21 +70,32 @@
             border-radius: 50%;
             z-index: 9999;
             pointer-events: none;
+            display: none;
         }
-        .cursor-dot {
-            width: 8px; height: 8px;
-            background-color: var(--yellow);
-        }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 2px solid var(--yellow);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-        .cursor-hover .cursor-outline {
-            width: 60px; height: 60px;
-            background-color: rgba(246, 197, 0, 0.1);
-            border-style: dashed;
-            animation: rotateCursor 4s linear infinite;
+
+        /* Enable custom cursor only on hover-capable pointer devices (mice/trackpads) */
+        @media (hover: hover) and (pointer: fine) {
+            body {
+                cursor: none;
+            }
+            .cursor-dot, .cursor-outline {
+                display: block;
+            }
+            .cursor-dot {
+                width: 8px; height: 8px;
+                background-color: var(--yellow);
+            }
+            .cursor-outline {
+                width: 40px; height: 40px;
+                border: 2px solid var(--yellow);
+                transition: width 0.2s, height 0.2s, background-color 0.2s;
+            }
+            .cursor-hover .cursor-outline {
+                width: 60px; height: 60px;
+                background-color: rgba(246, 197, 0, 0.1);
+                border-style: dashed;
+                animation: rotateCursor 4s linear infinite;
+            }
         }
 
         @keyframes rotateCursor {
@@ -195,7 +205,7 @@
         /* Asymmetric Grid for Menu */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
             gap: 2rem;
         }
         
@@ -266,13 +276,67 @@
         
         /* Ensure mobile is smooth */
         @media (max-width: 768px) {
-            .cursor-dot, .cursor-outline { display: none; }
-            body { cursor: auto; }
             .marquee-container { transform: rotate(-3deg) scale(1.1); }
+        }
+
+        /* Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--black);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .preloader-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .preloader-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+            animation: pulse-logo-subtle 2s infinite ease-in-out;
+        }
+        .preloader-spinner {
+            position: absolute;
+            width: 204px;
+            height: 204px;
+            border: 4px solid rgba(255, 255, 255, 0.05);
+            border-top: 4px solid var(--yellow);
+            border-radius: 50%;
+            animation: preloader-spin 1.2s linear infinite;
+            z-index: 5;
+            box-shadow: 0 0 15px rgba(246, 197, 0, 0.15);
+        }
+        @keyframes pulse-logo-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        @keyframes preloader-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body class="antialiased font-body relative">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-container">
+            <img src="logo.jpg" alt="Logo Cleanfoods" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+        </div>
+    </div>
 
     <div class="noise-bg"></div>
     <div class="cursor-dot"></div>
@@ -290,15 +354,15 @@
     </button>
 
     <!-- Header Minimal/Raw -->
-    <header class="absolute top-0 w-full pt-0 pb-0 px-4 md:px-6 flex justify-center items-center z-40 mix-blend-difference">
+    <header class="absolute top-0 w-full pt-4 pb-4 px-4 md:px-8 flex justify-between items-center z-40 mix-blend-difference">
         <a href="#hero" class="cursor-hover">
-            <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-16 sm:h-20 lg:h-28 xl:h-36 w-auto object-contain">
+            <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-12 sm:h-16 md:h-20 lg:h-24 w-auto object-contain">
         </a>
-        <div class="absolute right-4 md:right-6 flex items-center gap-4 md:gap-6">
-            <a href="cardapio-completo.html" class="font-impact text-base md:text-lg text-white hover:text-cf-yellow transition-colors tracking-widest cursor-hover">
+        <div class="flex items-center gap-3 sm:gap-4 md:gap-6">
+            <a href="cardapio-completo.html" class="font-impact text-sm sm:text-base md:text-lg text-white hover:text-cf-yellow transition-colors tracking-widest cursor-hover">
                 CARDÁPIO <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
             </a>
-            <a href="admin.html" class="font-impact text-xs md:text-sm text-cf-black bg-cf-yellow hover:bg-white hover:text-cf-black border border-cf-yellow hover:border-white px-2.5 py-1 transition-colors tracking-wider cursor-hover uppercase rounded-sm flex items-center gap-1 shadow-md">
+            <a href="admin.html" class="font-impact text-[10px] sm:text-xs md:text-sm text-cf-black bg-cf-yellow hover:bg-white hover:text-cf-black border border-cf-yellow hover:border-white px-2 py-1 transition-colors tracking-wider cursor-hover uppercase rounded-sm flex items-center gap-1 shadow-md">
                 ADMIN <i class="fa-solid fa-user-gear text-[10px]"></i>
             </a>
         </div>
@@ -416,47 +480,21 @@
 
             <div class="menu-grid">
                 <!-- Categoria: Frango -->
-                <div class="bg-cf-darkgray border-t-8 border-white p-8 relative torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
+                <div class="bg-cf-darkgray border-t-8 border-white p-5 sm:p-8 relative torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
                     <div class="absolute -top-6 -right-6 font-street text-8xl text-cf-gray opacity-20 z-0">01</div>
                     <h4 class="font-impact text-4xl text-white mb-6 relative z-10 uppercase">Linha Frango</h4>
                              <ul id="menu-frango-list" class="space-y-6 font-body relative z-10">
-                        <li class="border-b border-gray-700 pb-4">
-                            <div class="text-xl font-bold text-white uppercase mb-2">Frango Classic Grelhado</div>
-                            <div class="flex justify-between items-center text-sm font-semibold">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('price-frango-classic', 'P')">R$ <span id="val-price-frango-classic-p">19,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('price-frango-classic', 'G')">R$ <span id="val-price-frango-classic-g">27,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            </div>
-                        </li>
-                        <li class="border-b border-gray-700 pb-4">
-                            <div class="text-xl font-bold text-white uppercase mb-2">Frango Desfiado com Batata Doce</div>
-                            <div class="flex justify-between items-center text-sm font-semibold">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('price-frango-desfiado', 'P')">R$ <span id="val-price-frango-desfiado-p">19,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('price-frango-desfiado', 'G')">R$ <span id="val-price-frango-desfiado-g">27,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            </div>
-                        </li>
+                        <!-- Dynamic items -->
                     </ul>
                 </div>
 
                 <!-- Categoria: Patinho -->
-                <div class="bg-cf-darkgray border-t-8 border-cf-yellow p-8 relative transform md:translate-y-12 torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
+                <div class="bg-cf-darkgray border-t-8 border-cf-yellow p-5 sm:p-8 relative transform md:translate-y-12 torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
                     <div class="absolute -top-6 -right-6 font-street text-8xl text-cf-gray opacity-20 z-0">02</div>
                     <h4 class="font-impact text-4xl text-cf-yellow mb-6 relative z-10 uppercase">Linha Patinho</h4>
                     
                     <ul id="menu-patinho-list" class="space-y-6 font-body relative z-10">
-                        <li class="border-b border-gray-700 pb-4">
-                            <div class="text-xl font-bold text-white uppercase mb-2">Patinho Moído c/ Mandioca</div>
-                            <div class="flex justify-between items-center text-sm font-semibold">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('price-patinho-mandioca', 'P')">R$ <span id="val-price-patinho-mandioca-p">25,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('price-patinho-mandioca', 'G')">R$ <span id="val-price-patinho-mandioca-g">33,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            </div>
-                        </li>
-                        <li class="border-b border-gray-700 pb-4">
-                            <div class="text-xl font-bold text-white uppercase mb-2">Almôndegas Fit de Patinho</div>
-                            <div class="flex justify-between items-center text-sm font-semibold">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('price-almondegas', 'P')">R$ <span id="val-price-almondegas-p">25,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                                <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('price-almondegas', 'G')">R$ <span id="val-price-almondegas-g">33,50</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            </div>
-                        </li>
+                        <!-- Dynamic items -->
                     </ul>
                 </div>
             </div>
@@ -464,7 +502,7 @@
             <!-- Destaque GOURMET -->
             <div class="mt-32 relative reveal-up">
                 <div class="absolute inset-0 bg-cf-yellow transform -skew-y-3 z-0 scale-105"></div>
-                <div class="relative z-10 bg-cf-black border-4 border-cf-yellow p-8 md:p-12 flex flex-col md:flex-row gap-10 items-center">
+                <div class="relative z-10 bg-cf-black border-4 border-cf-yellow p-5 sm:p-8 md:p-12 flex flex-col md:flex-row gap-10 items-center">
                     
                     <div class="md:w-1/2">
                         <h4 class="font-street text-2xl text-white mb-2 transform -rotate-2">Pra sair da rotina</h4>
@@ -472,27 +510,7 @@
                         <p class="font-body text-gray-300 font-semibold mb-8">Sabor de refeição livre, macros de dieta estrita. O bagulho é louco.</p>
                         
                         <div id="menu-gourmet-list" class="space-y-4 font-body w-full">
-                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
-                                <span class="font-bold text-white text-lg uppercase">Strogonoff de Frango Fit</span>
-                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                                    <span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-strogonoff', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-strogonoff-p">22,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span> 
-                                    <span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-strogonoff', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-strogonoff-g">29,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>
-                                </div>
-                            </div>
-                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
-                                <span class="font-bold text-white text-lg uppercase">Nhoque com Patinho</span>
-                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                                    <span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-nhoque', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-nhoque-p">30,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span> 
-                                    <span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-nhoque', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-nhoque-g">38,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>
-                                </div>
-                            </div>
-                            <div class="bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow">
-                                <span class="font-bold text-white text-lg uppercase">Escondidinho c/ Mussarela Búfala</span>
-                                <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                                    <span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-escondidinho', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-escondidinho-p">30,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span> 
-                                    <span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('price-escondidinho', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-price-escondidinho-g">38,50</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>
-                                </div>
-                            </div>
+                            <!-- Dynamic items -->
                         </div>
                     </div>
                     
@@ -617,7 +635,7 @@
     <!-- Shopping Cart Drawer -->
     <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-cf-darkgray border-l-4 border-cf-yellow z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
         <!-- Drawer Header -->
-        <div class="p-6 border-b border-cf-gray flex justify-between items-center bg-cf-black">
+        <div class="p-4 sm:p-6 border-b border-cf-gray flex justify-between items-center bg-cf-black">
             <h3 class="font-impact text-2xl text-cf-yellow uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-solid fa-basket-shopping"></i> Seu Carrinho
             </h3>
@@ -627,7 +645,7 @@
         </div>
 
         <!-- Drawer Content (Scrollable) -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
             <!-- Cart Items Container -->
             <div id="cart-items-list" class="space-y-4">
                 <!-- Dynamic Items -->
@@ -638,7 +656,7 @@
         </div>
 
         <!-- Drawer Footer -->
-        <div class="p-6 border-t border-cf-gray bg-cf-black space-y-4">
+        <div class="p-4 sm:p-6 border-t border-cf-gray bg-cf-black space-y-4">
             <!-- Pricing Summary -->
             <div class="space-y-2 font-body text-sm font-semibold">
                 <div class="flex justify-between text-gray-400">
@@ -663,14 +681,14 @@
     </div>
 
     <!-- Success Toast Alert -->
-    <div id="toast-success" class="fixed bottom-6 right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div id="toast-success" class="fixed top-4 md:top-auto md:bottom-6 left-4 md:left-auto right-4 md:right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center justify-center md:justify-start gap-3 transform -translate-y-24 md:translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
         <i class="fa-solid fa-circle-check text-2xl"></i>
         <span id="toast-text">PRODUTO ADICIONADO AO CARRINHO!</span>
     </div>
 
     <!-- Checkout Modal -->
     <div id="checkout-modal" class="fixed inset-0 bg-black/85 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
-        <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 md:p-8 max-w-xl w-full mx-4 relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.2)] overflow-y-auto max-h-[90vh]">
+        <div class="bg-cf-darkgray border-4 border-cf-yellow p-5 md:p-8 max-w-xl w-full mx-4 relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.2)] overflow-y-auto max-h-[90vh]">
             <!-- Close Button -->
             <button onclick="toggleCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-cf-yellow hover:scale-110 transition-all text-2xl p-1 cursor-hover">
                 <i class="fa-solid fa-xmark"></i>
@@ -719,6 +737,18 @@
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-cf-yellow">
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Delivery Date & Time Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Data da Entrega *</label>
+                        <input type="date" id="delivery-date" required class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Horário da Entrega (11h às 19h) *</label>
+                        <input type="time" id="delivery-time" required min="11:00" max="19:00" class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
                     </div>
                 </div>
                 
@@ -783,7 +813,7 @@
 
     <!-- Thank You Modal -->
     <div id="thank-you-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-cf-darkgray border-4 border-cf-yellow p-8 max-w-md w-full mx-4 text-center relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)]">
+        <div class="bg-cf-darkgray border-4 border-cf-yellow p-5 sm:p-8 max-w-md w-full mx-4 text-center relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)]">
             <div class="w-20 h-20 bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg border-4 border-white animate-bounce">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
@@ -799,6 +829,7 @@
                 <div><span class="text-white font-bold">CÓDIGO:</span> <span id="thank-order-id" class="text-cf-yellow font-bold">#CF-1001</span></div>
                 <div><span class="text-white font-bold">VALOR TOTAL:</span> <span id="thank-order-total" class="text-cf-yellow font-bold">R$ 0,00</span></div>
                 <div><span class="text-white font-bold">PAGAMENTO:</span> <span id="thank-order-payment" class="text-white">Pix</span></div>
+                <div><span class="text-white font-bold">ENTREGA:</span> <span id="thank-order-delivery" class="text-white">—</span></div>
             </div>
             
             <button onclick="closeThankYouModal()" class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
@@ -807,25 +838,173 @@
         </div>
     </div>
 
+    <!-- Supabase SDK & Central Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+
     <!-- GSAP for Animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <script>
+        // Start preloader timer immediately
+        const loaderStartTime = Date.now();
+
+        // Initialize Supabase Client
+        let supabaseClient = null;
+        if (window.SUPABASE_URL && window.SUPABASE_URL !== "YOUR_SUPABASE_URL" &&
+            window.SUPABASE_ANON_KEY && window.SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
+            try {
+                const { createClient } = supabase;
+                supabaseClient = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+            } catch (err) {
+                console.error("Erro ao inicializar Supabase:", err);
+            }
+        }
+
         // Global Cart and Menu variables
         const defaultDishes = [
-            { id: 'price-frango-classic', name: 'Frango Classic Grelhado', category: 'Frango', priceP: '19,50', priceG: '27,50' },
-            { id: 'price-frango-desfiado', name: 'Frango Desfiado com Batata Doce', category: 'Frango', priceP: '19,50', priceG: '27,50' },
-            { id: 'price-patinho-mandioca', name: 'Patinho Moído c/ Mandioca', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
-            { id: 'price-almondegas', name: 'Almôndegas Fit de Patinho', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
-            { id: 'price-strogonoff', name: 'Strogonoff de Frango Fit', category: 'Gourmet', priceP: '22,50', priceG: '29,50' },
-            { id: 'price-nhoque', name: 'Nhoque com Patinho', category: 'Gourmet', priceP: '30,50', priceG: '38,50' },
-            { id: 'price-escondidinho', name: 'Escondidinho c/ Mussarela Búfala', category: 'Gourmet', priceP: '30,50', priceG: '38,50' }
+            // FRANGO
+            { id: 'price-frango-desfiado-pure-batata-doce-legumes', name: '01. Frango desfiado com purê de batata doce e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-frango-desfiado-arroz-integral-legumes', name: '02. Frango desfiado com arroz integral e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-frango-desfiado-pure-mandioca-legumes', name: '03. Frango desfiado com purê de mandioca e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-frango-legumes', name: '04. Frango com legumes', category: 'Frango', priceP: '19,50', priceG: '—' },
+            { id: 'price-macarrao-frango-desfiado', name: '05. Macarrão com frango desfiado', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-escondidinho-frango-moido-mandioca', name: '06. Escondidinho de frango moído com mandioca', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            { id: 'price-escondidinho-frango-moido-batata-doce', name: '07. Escondidinho de frango moído com batata doce', category: 'Frango', priceP: '19,50', priceG: '27,50' },
+            // GOURMET
+            { id: 'price-escondidinho-frango-mussarela-bufala', name: '08. Escondidinho de frango com mussarela de búfala', category: 'Gourmet', priceP: '27,50', priceG: '34,50' },
+            { id: 'price-nhoque-batata-doce-patinho-moido', name: '09. Nhoque de batata doce com patinho moído', category: 'Gourmet', priceP: '28,50', priceG: '35,50' },
+            { id: 'price-macarrao-patinho-moido', name: '10. Macarrão com patinho moído', category: 'Gourmet', priceP: '28,50', priceG: '35,50' },
+            { id: 'price-strogonoff-frango-arroz-branco', name: '20. Strogonoff de frango com arroz branco', category: 'Gourmet', priceP: '30,50', priceG: '38,50' },
+            { id: 'price-nhoque-batata-doce-frango-desfiado', name: '22. Nhoque de batata doce com frango desfiado', category: 'Gourmet', priceP: '22,50', priceG: '29,50' },
+            { id: 'price-penne-frango-desfiado-molho', name: '23. Penne com frango desfiado ao molho', category: 'Gourmet', priceP: '22,50', priceG: '29,50' },
+            // PATINHO
+            { id: 'price-patinho-desfiado-arroz-integral-legumes', name: '11. Patinho desfiado com arroz integral e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-patinho-desfiado-pure-batata-doce-legumes', name: '12. Patinho desfiado com purê de batata doce e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-escondidinho-mandioca-patinho-moido', name: '13. Escondidinho de mandioca com patinho moído', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-patinho-legumes', name: '14. Patinho com legumes', category: 'Patinho', priceP: '25,50', priceG: '—' },
+            { id: 'price-patinho-desfiado-pure-mandioca-legumes', name: '15. Patinho desfiado com purê de mandioca e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' }
         ];
 
-        let dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes')) || defaultDishes;
+        let dishes = [];
         let cart = JSON.parse(localStorage.getItem('cleanfoods_cart')) || {};
         let appliedCoupon = null;
+
+        // Supabase Database helpers
+        async function loadDishes() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('dishes').select('*');
+                    if (error) throw error;
+                    if (data && data.length > 0) {
+                        dishes = data.map(d => ({
+                            id: d.id,
+                            name: d.name,
+                            category: d.category,
+                            priceP: d.price_p || d.priceP || '0,00',
+                            priceG: d.price_g || d.priceG || '0,00'
+                        })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
+                    } else {
+                        // Seed database
+                        const dbDishes = defaultDishes.map(d => ({
+                            id: d.id,
+                            name: d.name,
+                            category: d.category,
+                            price_p: d.priceP,
+                            price_g: d.priceG
+                        }));
+                        const { error: insertError } = await supabaseClient.from('dishes').insert(dbDishes);
+                        if (insertError) throw insertError;
+                        dishes = defaultDishes;
+                    }
+                } catch (err) {
+                    console.error("Erro ao carregar pratos do Supabase:", err);
+                    dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                }
+            } else {
+                dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+            }
+        }
+
+        async function loadSettings() {
+            let savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
+            let savedAddress = localStorage.getItem('cleanfoods_address');
+
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('settings').select('*');
+                    if (error) throw error;
+                    if (data) {
+                        const waSetting = data.find(s => s.key === 'whatsapp');
+                        if (waSetting) savedWhatsapp = waSetting.value;
+                        const addrSetting = data.find(s => s.key === 'address');
+                        if (addrSetting) savedAddress = addrSetting.value;
+                    }
+                } catch (err) {
+                    console.error("Erro ao carregar configurações do Supabase:", err);
+                }
+            }
+
+            if (savedWhatsapp) {
+                const waLinks = document.querySelectorAll('a[href*="wa.me/"]');
+                waLinks.forEach(link => {
+                    link.href = 'https://wa.me/55' + savedWhatsapp;
+                });
+                const textSpan = document.getElementById('val-whatsapp-text');
+                if (textSpan && savedWhatsapp.length >= 10) {
+                    const ddd = savedWhatsapp.substring(0, 2);
+                    const prefix = savedWhatsapp.length === 11 ? savedWhatsapp.substring(2, 7) : savedWhatsapp.substring(2, 6);
+                    const suffix = savedWhatsapp.length === 11 ? savedWhatsapp.substring(7) : savedWhatsapp.substring(6);
+                    textSpan.innerText = `(${ddd}) ${prefix}-${suffix}`;
+                }
+            }
+
+            if (savedAddress) {
+                const addressSpan = document.getElementById('val-address-text');
+                if (addressSpan) addressSpan.innerText = savedAddress;
+            }
+        }
+
+        async function loadCoupons() {
+            let activeCoupons = [];
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('coupons').select('*').eq('active', true);
+                    if (error) throw error;
+                    activeCoupons = data || [];
+                } catch (err) {
+                    console.error("Erro ao carregar cupons do Supabase:", err);
+                    const savedCoupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+                    activeCoupons = savedCoupons.filter(c => c.active);
+                }
+            } else {
+                const savedCoupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+                activeCoupons = savedCoupons.filter(c => c.active);
+            }
+
+            if (activeCoupons.length > 0) {
+                const daysOfWeek = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+                const todayDay = daysOfWeek[new Date().getDay()];
+                const activeCoupon = activeCoupons.find(c => c.day === todayDay || c.day === 'Todo Dia');
+                if (activeCoupon) {
+                    const banner = document.getElementById('promo-coupon-banner');
+                    const discountVal = document.getElementById('coupon-discount-val');
+                    const codeVal = document.getElementById('coupon-code-val');
+                    if (banner && discountVal && codeVal) {
+                        discountVal.innerText = activeCoupon.discount;
+                        codeVal.innerText = activeCoupon.code;
+                        banner.classList.remove('hidden');
+                    }
+                    const couponInput = document.getElementById('cart-coupon-input');
+                    if (couponInput) {
+                        couponInput.value = activeCoupon.code;
+                        applyCartCoupon();
+                    }
+                }
+            }
+        }
 
         // Custom Cursor Logic
         const cursorDot = document.querySelector('.cursor-dot');
@@ -875,12 +1054,12 @@
             if (!toast || !toastText) return;
             
             toastText.innerText = text;
-            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.remove('-translate-y-24', 'md:translate-y-24', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
             
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.add('-translate-y-24', 'md:translate-y-24', 'opacity-0');
             }, 3000);
         }
 
@@ -978,7 +1157,7 @@
         }
 
         // Validate and apply custom coupon codes
-        function applyCartCoupon() {
+        async function applyCartCoupon() {
             const input = document.getElementById('cart-coupon-input');
             const feedback = document.getElementById('coupon-feedback');
             if (!input || !feedback) return;
@@ -993,11 +1172,26 @@
                 return;
             }
 
-            const savedCoupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+            let coupon = null;
             const daysOfWeek = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
             const todayDay = daysOfWeek[new Date().getDay()];
 
-            const coupon = savedCoupons.find(c => c.code === code);
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('coupons').select('*').eq('code', code);
+                    if (error) throw error;
+                    if (data && data.length > 0) {
+                        coupon = data[0];
+                    }
+                } catch (err) {
+                    console.error("Erro ao verificar cupom no Supabase:", err);
+                }
+            }
+
+            if (!coupon) {
+                const savedCoupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+                coupon = savedCoupons.find(c => c.code === code);
+            }
 
             if (!coupon) {
                 feedback.innerText = "Cupom inexistente!";
@@ -1154,12 +1348,33 @@
                 if (phoneInput) phoneInput.value = savedPhone;
                 if (addressTextarea) addressTextarea.value = savedAddress;
 
+                // Dynamically set delivery date bounds
+                const dateInput = document.getElementById('delivery-date');
+                if (dateInput) {
+                    const getLocalDateString = (date) => {
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        return `${year}-${month}-${day}`;
+                    };
+                    const today = new Date();
+                    const minDate = getLocalDateString(today);
+                    const nextWeek = new Date();
+                    nextWeek.setDate(today.getDate() + 7);
+                    const maxDate = getLocalDateString(nextWeek);
+                    dateInput.min = minDate;
+                    dateInput.max = maxDate;
+                    dateInput.value = minDate; // default to today
+                }
+
                 modal.classList.remove('hidden');
+                document.body.classList.add('cart-open-overflow');
                 setTimeout(() => {
                     modal.classList.remove('opacity-0');
                 }, 10);
             } else {
                 modal.classList.add('opacity-0');
+                document.body.classList.remove('cart-open-overflow');
                 setTimeout(() => {
                     modal.classList.add('hidden');
                 }, 300);
@@ -1178,21 +1393,32 @@
         }
 
         // Validate checkout modal fields and submit order locally
-        function submitCheckoutForm() {
+        async function submitCheckoutForm() {
             const nameInput = document.getElementById('client-name');
             const phoneInput = document.getElementById('client-phone');
             const addressInput = document.getElementById('client-address');
             const paymentInput = document.getElementById('client-payment');
             const notesInput = document.getElementById('client-notes');
+            const dateInput = document.getElementById('delivery-date');
+            const timeInput = document.getElementById('delivery-time');
 
             const name = nameInput ? nameInput.value.trim() : '';
             const phone = phoneInput ? phoneInput.value.trim() : '';
             const address = addressInput ? addressInput.value.trim() : '';
             const payment = paymentInput ? paymentInput.value : '';
             const notes = notesInput ? notesInput.value.trim() : '';
+            const deliveryDate = dateInput ? dateInput.value : '';
+            const deliveryTime = timeInput ? timeInput.value : '';
 
-            if (!name || !phone || !address || !payment) {
+            if (!name || !phone || !address || !payment || !deliveryDate || !deliveryTime) {
                 alert("Por favor, preencha todos os campos obrigatórios (*)");
+                return;
+            }
+
+            // Validar horário (11:00 às 19:00)
+            const [hours, minutes] = deliveryTime.split(':').map(Number);
+            if (hours < 11 || (hours === 19 && minutes > 0) || hours > 19) {
+                alert("O horário de entrega deve ser entre 11h e 19h.");
                 return;
             }
 
@@ -1233,6 +1459,8 @@
                 address: address,
                 payment: payment,
                 notes: notes,
+                deliveryDate: deliveryDate,
+                deliveryTime: deliveryTime,
                 items: orderItems,
                 subtotal: subtotal.toFixed(2),
                 discount: discountAmount.toFixed(2),
@@ -1241,19 +1469,52 @@
                 date: new Date().toISOString()
             };
 
-            // Save Order to localStorage cleanfoods_orders
-            let orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
-            orders.push(order);
-            localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+            // Save Order to Supabase or fallback
+            if (supabaseClient) {
+                try {
+                    const dbOrder = {
+                        id: order.id,
+                        client_name: order.clientName,
+                        client_phone: order.clientPhone,
+                        address: order.address,
+                        payment: order.payment,
+                        notes: order.notes,
+                        delivery_date: order.deliveryDate,
+                        delivery_time: order.deliveryTime,
+                        items: order.items,
+                        subtotal: parseFloat(order.subtotal),
+                        discount: parseFloat(order.discount),
+                        total: parseFloat(order.total),
+                        status: order.status
+                    };
+                    const { error } = await supabaseClient.from('orders').insert([dbOrder]);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao enviar pedido para o Supabase, salvando localmente:", err);
+                    let orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+                    orders.push(order);
+                    localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+                }
+            } else {
+                let orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+                orders.push(order);
+                localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+            }
 
             // Populate Thank You Modal details
             const orderIdSpan = document.getElementById('thank-order-id');
             const orderTotalSpan = document.getElementById('thank-order-total');
             const orderPaymentSpan = document.getElementById('thank-order-payment');
+            const orderDeliverySpan = document.getElementById('thank-order-delivery');
 
             if (orderIdSpan) orderIdSpan.innerText = '#' + orderId;
             if (orderTotalSpan) orderTotalSpan.innerText = 'R$ ' + finalTotal.toFixed(2).replace('.', ',');
             if (orderPaymentSpan) orderPaymentSpan.innerText = payment;
+            if (orderDeliverySpan) {
+                const parts = deliveryDate.split('-');
+                const formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : deliveryDate;
+                orderDeliverySpan.innerText = `${formattedDate} às ${deliveryTime}`;
+            }
 
             // Open Thank You Modal
             const thankModal = document.getElementById('thank-you-modal');
@@ -1297,144 +1558,132 @@
         // GSAP Animations Registration
         gsap.registerPlugin(ScrollTrigger);
 
-        window.onload = function() {
+        window.onload = async function() {
+            // Load dishes from remote database or fallback to localStorage
+            await loadDishes();
+
             const frangoList = document.getElementById('menu-frango-list');
             const patinhoList = document.getElementById('menu-patinho-list');
             const gourmetList = document.getElementById('menu-gourmet-list');
 
-            // Sync default dishes: update prices or hide if deleted
-            const activeIds = dishes.map(d => d.id);
-            defaultDishes.forEach(defaultDish => {
-                const activeDish = dishes.find(d => d.id === defaultDish.id);
-                if (!activeDish) {
-                    // This default dish was deleted
-                    const priceSpanP = document.getElementById(`val-${defaultDish.id}-p`);
-                    if (priceSpanP) {
-                        let parent = priceSpanP.parentElement;
-                        while (parent && parent.tagName !== 'LI' && !parent.classList.contains('bg-[#1a1a1a]')) {
-                            parent = parent.parentElement;
-                        }
-                        if (parent) parent.style.display = 'none'; // hide it
-                    }
-                } else {
-                    // Update prices
-                    const pSpan = document.getElementById(`val-${defaultDish.id}-p`);
-                    const gSpan = document.getElementById(`val-${defaultDish.id}-g`);
-                    if (pSpan) pSpan.innerText = activeDish.priceP;
-                    if (gSpan) gSpan.innerText = activeDish.priceG;
-                }
-            });
+            if (frangoList) frangoList.innerHTML = '';
+            if (patinhoList) patinhoList.innerHTML = '';
+            if (gourmetList) gourmetList.innerHTML = '';
 
-            // Append custom dishes (not in defaultDishes list)
-            const defaultIds = defaultDishes.map(d => d.id);
-            const customDishes = dishes.filter(d => !defaultIds.includes(d.id));
-
-            customDishes.forEach(dish => {
+            dishes.forEach(dish => {
                 if (dish.category === 'Frango' && frangoList) {
                     const li = document.createElement('li');
-                    li.className = 'border-b border-gray-700 pb-4 custom-dish-item';
+                    li.className = 'border-b border-gray-700 pb-4';
+                    
+                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
+                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+                        
+                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
+                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+
                     li.innerHTML = `
                         <div class="text-xl font-bold text-white uppercase mb-2">${dish.name}</div>
                         <div class="flex justify-between items-center text-sm font-semibold">
-                            <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
+                            ${pHTML}
+                            ${gHTML}
                         </div>
                     `;
                     frangoList.appendChild(li);
                 } else if (dish.category === 'Patinho' && patinhoList) {
                     const li = document.createElement('li');
-                    li.className = 'border-b border-gray-700 pb-4 custom-dish-item';
+                    li.className = 'border-b border-gray-700 pb-4';
+                    
+                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
+                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+                        
+                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
+                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+
                     li.innerHTML = `
                         <div class="text-xl font-bold text-white uppercase mb-2">${dish.name}</div>
                         <div class="flex justify-between items-center text-sm font-semibold">
-                            <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
-                            <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
+                            ${pHTML}
+                            ${gHTML}
                         </div>
                     `;
                     patinhoList.appendChild(li);
                 } else if (dish.category === 'Gourmet' && gourmetList) {
                     const div = document.createElement('div');
-                    div.className = 'bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow custom-dish-item';
+                    div.className = 'bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow';
+                    
+                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
+                        ? `<span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>`
+                        : `<span class="text-gray-500 cursor-not-allowed">P: <span class="bg-cf-darkgray border border-gray-800 text-gray-600 px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">—</span></span>`;
+                        
+                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
+                        ? `<span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>`
+                        : `<span class="text-gray-500 cursor-not-allowed">G: <span class="bg-cf-darkgray border border-gray-800 text-gray-600 px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">—</span></span>`;
+
                     div.innerHTML = `
                         <span class="font-bold text-white text-lg uppercase">${dish.name}</span>
                         <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                            <span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span> 
-                            <span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>
+                            ${pHTML}
+                            ${gHTML}
                         </div>
                     `;
                     gourmetList.appendChild(div);
                 }
             });
 
-            // Load WhatsApp and Address configs if stored
-            const savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
-            if (savedWhatsapp) {
-                // Update wa.me links
-                const waLinks = document.querySelectorAll('a[href*="wa.me/"]');
-                waLinks.forEach(link => {
-                    link.href = 'https://wa.me/55' + savedWhatsapp;
-                });
-                
-                // Update display text formatting
-                const textSpan = document.getElementById('val-whatsapp-text');
-                if (textSpan && savedWhatsapp.length >= 10) {
-                    const ddd = savedWhatsapp.substring(0, 2);
-                    const prefix = savedWhatsapp.length === 11 ? savedWhatsapp.substring(2, 7) : savedWhatsapp.substring(2, 6);
-                    const suffix = savedWhatsapp.length === 11 ? savedWhatsapp.substring(7) : savedWhatsapp.substring(6);
-                    textSpan.innerText = `(${ddd}) ${prefix}-${suffix}`;
-                }
-            }
-
-            const savedAddress = localStorage.getItem('cleanfoods_address');
-            if (savedAddress) {
-                const addressSpan = document.getElementById('val-address-text');
-                if (addressSpan) addressSpan.innerText = savedAddress;
-            }
-
-            // Load and check dynamic coupons
-            const savedCoupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
-            if (savedCoupons.length > 0) {
-                const daysOfWeek = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-                const todayDay = daysOfWeek[new Date().getDay()];
-
-                // Find first active coupon that matches today's day or 'Todo Dia'
-                const activeCoupon = savedCoupons.find(c => c.active && (c.day === todayDay || c.day === 'Todo Dia'));
-                if (activeCoupon) {
-                    const banner = document.getElementById('promo-coupon-banner');
-                    const discountVal = document.getElementById('coupon-discount-val');
-                    const codeVal = document.getElementById('coupon-code-val');
-
-                    if (banner && discountVal && codeVal) {
-                        discountVal.innerText = activeCoupon.discount;
-                        codeVal.innerText = activeCoupon.code;
-                        banner.classList.remove('hidden');
-                    }
-
-                    // Autofill and apply coupon to cart automatically
-                    const couponInput = document.getElementById('cart-coupon-input');
-                    if (couponInput) {
-                        couponInput.value = activeCoupon.code;
-                        applyCartCoupon();
-                    }
-                }
-            }
+            // Load configurations and coupons asynchronously from Supabase / localStorage
+            await loadSettings();
+            await loadCoupons();
 
             // Update badges and render cart state on load
             updateCartBadges();
             renderCart();
 
-            // Initial Hero Animation
-            const heroTimeline = gsap.timeline();
-            
-            heroTimeline.fromTo("#hero .reveal-up", 
-                { y: 50, autoAlpha: 0 },
-                { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" }
-            )
-            .fromTo("#hero .reveal-right",
-                { x: 100, autoAlpha: 0, rotation: 5 },
-                { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
-                "-=0.5"
-            );
+            // Dismiss preloader and then trigger GSAP reveal animations with at least 1.2 seconds visible time
+            const elapsed = Date.now() - loaderStartTime;
+            const remainingDelay = Math.max(0, 1200 - elapsed);
+
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if (preloader) {
+                    gsap.to(preloader, {
+                        opacity: 0,
+                        duration: 0.6,
+                        ease: "power2.out",
+                        onComplete: () => {
+                            preloader.style.visibility = 'hidden';
+                            preloader.style.display = 'none';
+                            
+                            // Start Hero Entrance
+                            const heroTimeline = gsap.timeline();
+                            heroTimeline.fromTo("#hero .reveal-up", 
+                                { y: 50, autoAlpha: 0 },
+                                { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" }
+                            )
+                            .fromTo("#hero .reveal-right",
+                                { x: 100, autoAlpha: 0, rotation: 5 },
+                                { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
+                                "-=0.5"
+                            );
+                        }
+                    });
+                } else {
+                    // Fallback if preloader overlay is not in DOM
+                    const heroTimeline = gsap.timeline();
+                    heroTimeline.fromTo("#hero .reveal-up", 
+                        { y: 50, autoAlpha: 0 },
+                        { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" }
+                    )
+                    .fromTo("#hero .reveal-right",
+                        { x: 100, autoAlpha: 0, rotation: 5 },
+                        { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
+                        "-=0.5"
+                    );
+                }
+            }, remainingDelay);
 
             // ScrollTrigger Animations for Menu and other sections
             const revealElements = document.querySelectorAll('.reveal-up:not(#hero .reveal-up), .reveal-right:not(#hero .reveal-right)');
