@@ -187,64 +187,12 @@
             overflow: hidden;
         }
 
-        /* Preloader Styles */
-        #preloader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--black);
-            z-index: 99999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-        .preloader-container {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .preloader-logo {
-            width: 180px;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 50%;
-            z-index: 10;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
-            animation: pulse-logo-subtle 2s infinite ease-in-out;
-        }
-        .preloader-spinner {
-            position: absolute;
-            width: 204px;
-            height: 204px;
-            border: 4px solid rgba(255, 255, 255, 0.05);
-            border-top: 4px solid var(--yellow);
-            border-radius: 50%;
-            animation: preloader-spin 1.2s linear infinite;
-            z-index: 5;
-            box-shadow: 0 0 15px rgba(246, 197, 0, 0.15);
-        }
-        @keyframes pulse-logo-subtle {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-        @keyframes preloader-spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+
     </style>
 </head>
 <body class="antialiased font-body relative">
 
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="preloader-container">
-            <img src="logo.jpg" alt="Logo Cleanfoods" class="preloader-logo">
-            <div class="preloader-spinner"></div>
-        </div>
-    </div>
+
 
     <div class="noise-bg"></div>
     <div class="cursor-dot"></div>
@@ -351,8 +299,8 @@
                     <a href="https://wa.me/5511910993953" id="wa-footer-link" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
                         <i class="fa-brands fa-whatsapp text-3xl mr-4 text-cf-yellow"></i> <span id="val-whatsapp-text">(11) 91099-3953</span>
                     </a>
-                    <a href="#" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
-                        <i class="fa-brands fa-instagram text-3xl mr-4 text-cf-yellow"></i> @cleanfoodsbrasil
+                    <a href="https://www.instagram.com/cleanfoods.saopaulo/" target="_blank" rel="noopener noreferrer" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
+                        <i class="fa-brands fa-instagram text-3xl mr-4 text-cf-yellow"></i> @cleanfoods.saopaulo
                     </a>
                     <div class="text-lg font-body text-gray-400 mt-4 flex items-center font-bold">
                         <i class="fa-solid fa-location-dot text-xl mr-4 text-white"></i> <span id="val-address-text">Ipiranga, São Paulo - SP</span>
@@ -575,8 +523,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <script>
-        // Start preloader timer immediately
-        const loaderStartTime = Date.now();
+
 
         // Initialize Supabase Client
         let supabaseClient = null;
@@ -1362,42 +1309,14 @@
             updateCartBadges();
             renderCart();
 
-            // Dismiss preloader and then trigger GSAP reveal animations with at least 1.2 seconds visible time
-            const elapsed = Date.now() - loaderStartTime;
-            const remainingDelay = Math.max(0, 1200 - elapsed);
-
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                if (preloader) {
-                    gsap.to(preloader, {
-                        opacity: 0,
-                        duration: 0.6,
-                        ease: "power2.out",
-                        onComplete: () => {
-                            preloader.style.visibility = 'hidden';
-                            preloader.style.display = 'none';
-                            
-                            // GSAP Animations
-                            gsap.from(".reveal-up", {
-                                duration: 1,
-                                y: 30,
-                                opacity: 0,
-                                stagger: 0.2,
-                                ease: "power2.out"
-                            });
-                        }
-                    });
-                } else {
-                    // Fallback if preloader overlay is not in DOM
-                    gsap.from(".reveal-up", {
-                        duration: 1,
-                        y: 30,
-                        opacity: 0,
-                        stagger: 0.2,
-                        ease: "power2.out"
-                    });
-                }
-            }, remainingDelay);
+            // Trigger GSAP reveal animations immediately (no preloader)
+            gsap.from(".reveal-up", {
+                duration: 1,
+                y: 30,
+                opacity: 0,
+                stagger: 0.2,
+                ease: "power2.out"
+            });
         };
     </script>
 </body>

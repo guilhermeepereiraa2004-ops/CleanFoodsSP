@@ -88,6 +88,30 @@
             font-weight: 800;
             border-left: 6px solid #ffffff;
         }
+
+        /* Drag and Drop visual styles */
+        .kanban-column {
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .kanban-column.drag-over {
+            border-color: var(--yellow) !important;
+            background-color: rgba(246, 197, 0, 0.05) !important;
+        }
+
+        .kanban-card {
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .kanban-card.dragging {
+            opacity: 0.4;
+        }
+
+        /* Prevent children from intercepting drag events to avoid flickering */
+        .kanban-card * {
+            pointer-events: none;
+        }
+        .kanban-card button, .kanban-card a, .kanban-card i {
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body class="antialiased relative min-h-screen flex">
@@ -245,27 +269,42 @@
                         <i class="fa-solid fa-list-check text-cf-yellow"></i> Pedidos Recentes
                     </h2>
                     
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left font-body text-sm font-semibold">
-                            <thead>
-                                <tr class="border-b border-cf-gray text-gray-400 text-xs uppercase">
-                                    <th class="py-3 px-4">ID</th>
-                                    <th class="py-3 px-4">Cliente</th>
-                                    <th class="py-3 px-4">Itens</th>
-                                    <th class="py-3 px-4 text-right">Valor</th>
-                                    <th class="py-3 px-4 text-center">Status</th>
-                                    <th class="py-3 px-4 text-center">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="orders-table-body" class="text-gray-200">
-                                <tr>
-                                    <td colspan="6" class="py-12 text-center text-gray-500 font-bold italic">
-                                        <i class="fa-solid fa-inbox text-3xl mb-3 block text-cf-gray"></i>
-                                        <span>Nenhum pedido registrado no banco de dados.</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-start" id="kanban-board-container">
+                        <!-- Col: Pendente -->
+                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column" id="col-Pendente" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Pendente')">
+                            <div class="flex justify-between items-center mb-4 pb-2 border-b border-cf-gray">
+                                <span class="font-impact text-md text-cf-yellow tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-clock text-xs text-cf-yellow"></i> Pendente</span>
+                                <span id="count-Pendente" class="bg-cf-yellow text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
+                            </div>
+                            <div id="cards-Pendente" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+                        </div>
+                        
+                        <!-- Col: Em Preparo -->
+                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column" id="col-Em-Preparo" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Em Preparo')">
+                            <div class="flex justify-between items-center mb-4 pb-2 border-b border-cf-gray">
+                                <span class="font-impact text-md text-white tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-fire text-xs text-white"></i> Em Preparo</span>
+                                <span id="count-Em-Preparo" class="bg-white text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
+                            </div>
+                            <div id="cards-Em-Preparo" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+                        </div>
+                        
+                        <!-- Col: Enviado -->
+                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column" id="col-Enviado" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Enviado')">
+                            <div class="flex justify-between items-center mb-4 pb-2 border-b border-cf-gray">
+                                <span class="font-impact text-md text-cf-yellow tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-truck text-xs text-cf-yellow"></i> Enviado</span>
+                                <span id="count-Enviado" class="bg-cf-yellow text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
+                            </div>
+                            <div id="cards-Enviado" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+                        </div>
+                        
+                        <!-- Col: Concluído -->
+                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column" id="col-Concluido" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Concluído')">
+                            <div class="flex justify-between items-center mb-4 pb-2 border-b border-cf-gray">
+                                <span class="font-impact text-md text-green-500 tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-xs text-green-500"></i> Concluído</span>
+                                <span id="count-Concluido" class="bg-green-500 text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
+                            </div>
+                            <div id="cards-Concluido" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -403,6 +442,88 @@
                         <i class="fa-solid fa-plus"></i> Adicionar
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Detalhes do Pedido -->
+    <div id="order-detail-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-2xl w-full mx-4 relative torn-edge shadow-2xl overflow-y-auto max-h-[90vh]">
+            <button onclick="closeOrderDetailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="flex justify-between items-start mb-6 pb-4 border-b border-cf-gray">
+                <div>
+                    <h3 class="font-impact text-2xl text-cf-yellow uppercase">Detalhes do Pedido <span id="detail-order-id">#CF-0000</span></h3>
+                    <p class="text-xs text-gray-400 font-semibold mt-1" id="detail-order-date"></p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-body text-sm mb-6">
+                <div class="space-y-3">
+                    <div>
+                        <span class="block text-xs uppercase font-bold text-gray-400">Cliente</span>
+                        <span class="font-bold text-white text-base" id="detail-client-name"></span>
+                    </div>
+                    <div>
+                        <span class="block text-xs uppercase font-bold text-gray-400">WhatsApp / Telefone</span>
+                        <a href="#" target="_blank" class="font-bold text-cf-yellow hover:underline flex items-center gap-1.5" id="detail-client-phone"></a>
+                    </div>
+                    <div>
+                        <span class="block text-xs uppercase font-bold text-gray-400">Forma de Pagamento</span>
+                        <span class="font-bold text-white" id="detail-payment"></span>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div>
+                        <span class="block text-xs uppercase font-bold text-gray-400">Endereço de Entrega</span>
+                        <span class="font-bold text-white block" id="detail-address"></span>
+                    </div>
+                    <div>
+                        <span class="block text-xs uppercase font-bold text-gray-400">Agendamento de Entrega</span>
+                        <span class="font-bold text-green-400" id="detail-delivery"></span>
+                    </div>
+                    <div>
+                        <span class="block text-xs uppercase font-bold text-gray-400">Status Atual</span>
+                        <select id="detail-status-select" onchange="changeDetailOrderStatus(this.value)" class="mt-1 bg-cf-black border border-cf-gray text-white text-xs font-bold rounded px-2.5 py-1.5 focus:border-cf-yellow focus:outline-none"></select>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="detail-notes-container" class="bg-cf-black p-3 border border-cf-gray rounded mb-6 hidden">
+                <span class="block text-xs uppercase font-bold text-gray-400 mb-1">Observações do Cliente:</span>
+                <p class="text-sm italic text-gray-300 font-sans" id="detail-notes"></p>
+            </div>
+            
+            <div class="border-t-2 border-dashed border-cf-gray pt-6 mb-6">
+                <h4 class="font-impact text-lg text-white uppercase mb-4 tracking-wider">Itens do Pedido</h4>
+                <div class="bg-cf-black border border-cf-gray p-4 rounded font-mono text-xs space-y-3" id="detail-items-list"></div>
+            </div>
+            
+            <div class="space-y-1.5 font-body text-sm text-right border-t border-cf-gray pt-4">
+                <div class="flex justify-between text-gray-400">
+                    <span>Subtotal:</span>
+                    <span id="detail-subtotal">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between text-red-400 hidden" id="detail-discount-row">
+                    <span>Desconto (Cupom):</span>
+                    <span id="detail-discount">-R$ 0,00</span>
+                </div>
+                <div class="flex justify-between text-white font-bold text-base border-t border-cf-gray/40 pt-2">
+                    <span>Total Geral:</span>
+                    <span class="text-cf-yellow font-impact text-lg" id="detail-total">R$ 0,00</span>
+                </div>
+            </div>
+            
+            <div class="flex gap-3 mt-8">
+                <button onclick="deleteDetailOrder()" class="w-1/2 py-2.5 bg-red-600/20 text-red-500 border border-red-500 font-bold uppercase tracking-wider text-xs transition-all hover:bg-red-600 hover:text-white">
+                    <i class="fa-solid fa-trash-can mr-1.5"></i> Apagar Pedido
+                </button>
+                <button onclick="closeOrderDetailModal()" class="w-1/2 btn-street py-2.5 font-bold flex items-center justify-center gap-2 text-sm">
+                    Fechar Detalhes
+                </button>
             </div>
         </div>
     </div>
@@ -962,6 +1083,7 @@
 
         // Orders Logic
         let orders = [];
+        let activeOrderDetailId = null;
 
         async function loadOrders() {
             if (supabaseClient) {
@@ -981,7 +1103,8 @@
                         subtotal: o.subtotal,
                         discount: o.discount,
                         total: o.total,
-                        status: o.status
+                        status: o.status,
+                        date: o.created_at || o.date
                     }));
                 } catch (err) {
                     console.error("Erro ao carregar pedidos do Supabase:", err);
@@ -994,81 +1117,190 @@
             updateDashboardStats();
         }
 
-        function renderOrders() {
-            const tbody = document.getElementById('orders-table-body');
-            if (!tbody) return;
+        // Helper to format date
+        const formatDateToBR = (dateStr) => {
+            if (!dateStr) return '';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return dateStr;
+        };
 
-            tbody.innerHTML = '';
+        function renderOrders() {
+            const containers = {
+                'Pendente': document.getElementById('cards-Pendente'),
+                'Em Preparo': document.getElementById('cards-Em-Preparo'),
+                'Enviado': document.getElementById('cards-Enviado'),
+                'Concluído': document.getElementById('cards-Concluido')
+            };
+
+            const counts = {
+                'Pendente': document.getElementById('count-Pendente'),
+                'Em Preparo': document.getElementById('count-Em-Preparo'),
+                'Enviado': document.getElementById('count-Enviado'),
+                'Concluído': document.getElementById('count-Concluido')
+            };
+
+            // Clear all containers
+            for (const status in containers) {
+                if (containers[status]) {
+                    containers[status].innerHTML = '';
+                }
+            }
+
+            // Group counters
+            const statusCounts = {
+                'Pendente': 0,
+                'Em Preparo': 0,
+                'Enviado': 0,
+                'Concluído': 0
+            };
 
             if (orders.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="py-12 text-center text-gray-500 font-bold italic">
-                            <i class="fa-solid fa-inbox text-3xl mb-3 block text-cf-gray"></i>
-                            <span>Nenhum pedido registrado no banco de dados.</span>
-                        </td>
-                    </tr>
-                `;
+                for (const status in containers) {
+                    if (containers[status]) {
+                        containers[status].innerHTML = `
+                            <div class="text-center py-10 text-gray-500 font-semibold italic text-xs">
+                                <i class="fa-solid fa-inbox text-2xl mb-2 block text-cf-gray"></i>
+                                Sem pedidos
+                            </div>
+                        `;
+                    }
+                }
+                
+                for (const status in counts) {
+                    if (counts[status]) counts[status].innerText = '0';
+                }
                 return;
             }
 
-            orders.forEach((order, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'border-b border-cf-gray/20 hover:bg-cf-black/20 transition-colors';
+            orders.forEach(order => {
+                const status = order.status || 'Pendente';
+                if (!containers[status]) return;
                 
-                // Format items detail
-                let itemsDetailHTML = '<ul class="list-disc list-inside space-y-0.5 text-xs">';
-                order.items.forEach(item => {
-                    itemsDetailHTML += `<li>${item.quantity}x ${item.name} (<span class="text-cf-yellow">${item.size}</span>)</li>`;
-                });
-                itemsDetailHTML += '</ul>';
+                statusCounts[status]++;
 
-                // Format client details
-                const formatDateToBR = (dateStr) => {
-                    if (!dateStr) return '';
-                    const parts = dateStr.split('-');
-                    if (parts.length === 3) {
-                        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                const card = document.createElement('div');
+                // Stylize color based on status
+                let borderStyle = 'border-l-4 border-cf-yellow';
+                if (status === 'Em Preparo') borderStyle = 'border-l-4 border-white';
+                if (status === 'Concluído') borderStyle = 'border-l-4 border-green-500';
+                
+                card.className = `kanban-card bg-cf-darkgray p-4 ${borderStyle} rounded cursor-grab active:cursor-grabbing hover:scale-[1.02] hover:bg-cf-gray/40 transition-all shadow-md select-none relative`;
+                card.setAttribute('draggable', 'true');
+                card.setAttribute('ondragstart', `dragStart(event, '${order.id}')`);
+                card.setAttribute('ondragend', `dragEnd(event)`);
+                card.setAttribute('onclick', `openOrderDetailModal('${order.id}')`);
+
+                // Items list summary
+                let itemsSummary = '';
+                if (order.items && order.items.length > 0) {
+                    itemsSummary = order.items.map(item => `${item.quantity}x ${item.name}`).join(', ');
+                    if (itemsSummary.length > 55) {
+                        itemsSummary = itemsSummary.substring(0, 52) + '...';
                     }
-                    return dateStr;
-                };
+                }
 
                 const formattedDeliveryDate = formatDateToBR(order.deliveryDate);
-                let clientDetailsHTML = `
-                    <div class="space-y-0.5 text-xs">
-                        <div class="font-bold text-white">${order.clientName}</div>
-                        <div class="text-gray-400 font-mono">${order.clientPhone}</div>
-                        <div class="text-gray-400">${order.address}</div>
-                        <div class="text-cf-yellow font-bold">Pagamento: ${order.payment}</div>
-                        ${order.deliveryDate ? `<div class="text-green-400 font-bold mt-1"><i class="fa-solid fa-truck"></i> Entrega: ${formattedDeliveryDate} às ${order.deliveryTime}</div>` : ''}
-                        ${order.notes ? `<div class="text-gray-500 italic mt-1 font-sans">Obs: "${order.notes}"</div>` : ''}
-                    </div>
-                `;
 
-                // Status dropdown
-                const statusOptions = ['Pendente', 'Em Preparo', 'Enviado', 'Concluído'];
-                let statusDropdownHTML = `
-                    <select onchange="updateOrderStatus(${index}, this.value)" class="bg-cf-black border border-cf-gray text-white text-xs font-bold rounded px-2 py-1 focus:border-cf-yellow focus:outline-none">
-                `;
-                statusOptions.forEach(opt => {
-                    statusDropdownHTML += `<option value="${opt}" ${order.status === opt ? 'selected' : ''}>${opt}</option>`;
-                });
-                statusDropdownHTML += '</select>';
-
-                tr.innerHTML = `
-                    <td class="py-4 px-4 font-mono font-bold text-cf-yellow uppercase">#${order.id}</td>
-                    <td class="py-4 px-4">${clientDetailsHTML}</td>
-                    <td class="py-4 px-4">${itemsDetailHTML}</td>
-                    <td class="py-4 px-4 text-right font-mono font-bold text-white">R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}</td>
-                    <td class="py-4 px-4 text-center">${statusDropdownHTML}</td>
-                    <td class="py-4 px-4 text-center">
-                        <button onclick="deleteOrder(${index})" class="text-red-500 hover:text-red-400 transition-colors text-base cursor-hover p-1">
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-2 mb-2">
+                        <span class="font-mono font-bold text-cf-yellow text-xs uppercase">#${order.id}</span>
+                        <button onclick="event.stopPropagation(); deleteOrderById('${order.id}')" class="text-red-500 hover:text-red-400 p-0.5 transition-colors text-xs" title="Apagar Pedido">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
-                    </td>
+                    </div>
+                    <div class="text-sm font-bold text-white uppercase truncate mb-1" title="${order.clientName}">${order.clientName}</div>
+                    <div class="text-[11px] text-gray-400 font-semibold truncate mb-2">${itemsSummary}</div>
+                    <div class="flex justify-between items-center text-xs mt-2 border-t border-cf-gray/30 pt-2">
+                        <span class="font-impact text-white">R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}</span>
+                        ${order.deliveryDate ? `
+                            <span class="text-[10px] text-green-400 font-bold flex items-center gap-1" title="Entrega: ${formattedDeliveryDate} ${order.deliveryTime}">
+                                <i class="fa-solid fa-truck"></i> ${order.deliveryTime}
+                            </span>
+                        ` : ''}
+                    </div>
                 `;
-                tbody.appendChild(tr);
+                containers[status].appendChild(card);
             });
+
+            // Update status counts badges
+            for (const status in counts) {
+                if (counts[status]) {
+                    counts[status].innerText = statusCounts[status];
+                    
+                    // Show a message if column is empty
+                    if (statusCounts[status] === 0 && containers[status]) {
+                        containers[status].innerHTML = `
+                            <div class="text-center py-10 text-gray-500 font-semibold italic text-xs">
+                                <i class="fa-solid fa-inbox text-2xl mb-2 block text-cf-gray"></i>
+                                Sem pedidos
+                            </div>
+                        `;
+                    }
+                }
+            }
+        }
+
+        // Drag and Drop API Functions
+        let dragDepth = {}; // tracks depth per column to prevent flicker
+
+        function dragStart(e, orderId) {
+            e.dataTransfer.setData('text/plain', orderId);
+            // Defer adding 'dragging' so the ghost image doesn't capture the opacity change
+            const cardEl = e.currentTarget;
+            setTimeout(() => {
+                if (cardEl) cardEl.classList.add('dragging');
+            }, 0);
+        }
+
+        function dragEnd(e) {
+            const elements = document.querySelectorAll('.kanban-card');
+            elements.forEach(el => el.classList.remove('dragging'));
+            // Reset column visual highlights
+            const cols = document.querySelectorAll('.kanban-column');
+            cols.forEach(col => col.classList.remove('drag-over'));
+            dragDepth = {};
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function dragEnter(e) {
+            e.preventDefault();
+            const col = e.currentTarget;
+            if (!col) return;
+            const colId = col.id;
+            dragDepth[colId] = (dragDepth[colId] || 0) + 1;
+            col.classList.add('drag-over');
+        }
+
+        function dragLeave(e) {
+            const col = e.currentTarget;
+            if (!col) return;
+            const colId = col.id;
+            dragDepth[colId] = (dragDepth[colId] || 0) - 1;
+            if (dragDepth[colId] <= 0) {
+                col.classList.remove('drag-over');
+            }
+        }
+
+        async function drop(e, status) {
+            e.preventDefault();
+            const col = e.currentTarget;
+            if (col) {
+                const colId = col.id;
+                dragDepth[colId] = 0;
+                col.classList.remove('drag-over');
+            }
+
+            const orderId = e.dataTransfer.getData('text/plain');
+            const index = orders.findIndex(o => o.id === orderId);
+            if (index !== -1 && orders[index].status !== status) {
+                await updateOrderStatus(index, status);
+            }
         }
 
         async function updateOrderStatus(index, newStatus) {
@@ -1087,17 +1319,26 @@
                 localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
             }
 
+            // Sync with detail modal if it's open for the updated order
+            if (activeOrderDetailId === order.id) {
+                const selectEl = document.getElementById('detail-status-select');
+                if (selectEl) selectEl.value = newStatus;
+            }
+
+            renderOrders();
             updateDashboardStats();
             showToast('STATUS DO PEDIDO ATUALIZADO!');
         }
 
-        async function deleteOrder(index) {
-            const order = orders[index];
+        async function deleteOrderById(id) {
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+
             if (confirm(`Deseja apagar o pedido #${order.id}?`)) {
-                orders.splice(index, 1);
+                orders = orders.filter(o => o.id !== id);
                 if (supabaseClient) {
                     try {
-                        const { error } = await supabaseClient.from('orders').delete().eq('id', order.id);
+                        const { error } = await supabaseClient.from('orders').delete().eq('id', id);
                         if (error) throw error;
                     } catch (err) {
                         console.error("Erro ao deletar pedido no Supabase:", err);
@@ -1106,9 +1347,140 @@
                 } else {
                     localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
                 }
-                loadOrders();
+
+                // If deleting the active detailed order, close the modal
+                if (activeOrderDetailId === id) {
+                    closeOrderDetailModal();
+                }
+
+                renderOrders();
+                updateDashboardStats();
                 showToast('PEDIDO REMOVIDO COM SUCESSO!');
             }
+        }
+
+        // Details Modal Operations
+        function openOrderDetailModal(id) {
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+
+            activeOrderDetailId = id;
+
+            // Populate text elements
+            document.getElementById('detail-order-id').innerText = '#' + order.id;
+            
+            // Format order date
+            let formattedDate = 'Sem registro';
+            if (order.date) {
+                const d = new Date(order.date);
+                formattedDate = d.toLocaleString('pt-BR');
+            }
+            document.getElementById('detail-order-date').innerText = `Realizado em: ${formattedDate}`;
+            document.getElementById('detail-client-name').innerText = order.clientName;
+            
+            // Phone link with Whatsapp
+            const phoneVal = order.clientPhone.replace(/\D/g, '');
+            const phoneEl = document.getElementById('detail-client-phone');
+            phoneEl.innerText = order.clientPhone;
+            phoneEl.href = `https://wa.me/55${phoneVal}`;
+            
+            document.getElementById('detail-payment').innerText = order.payment;
+            document.getElementById('detail-address').innerText = order.address;
+            
+            const formattedDeliveryDate = formatDateToBR(order.deliveryDate);
+            document.getElementById('detail-delivery').innerText = order.deliveryDate 
+                ? `${formattedDeliveryDate} às ${order.deliveryTime}`
+                : 'Não agendado';
+
+            // Show notes if present
+            const notesContainer = document.getElementById('detail-notes-container');
+            if (order.notes && order.notes.trim() !== '') {
+                document.getElementById('detail-notes').innerText = `"${order.notes}"`;
+                notesContainer.classList.remove('hidden');
+            } else {
+                notesContainer.classList.add('hidden');
+            }
+
+            // Populate status select option
+            const selectEl = document.getElementById('detail-status-select');
+            selectEl.innerHTML = '';
+            const statusOptions = ['Pendente', 'Em Preparo', 'Enviado', 'Concluído'];
+            statusOptions.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.text = opt;
+                if (order.status === opt) option.selected = true;
+                selectEl.appendChild(option);
+            });
+
+            // Populate Items Table/List
+            const itemsListContainer = document.getElementById('detail-items-list');
+            itemsListContainer.innerHTML = '';
+            
+            order.items.forEach(item => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'flex justify-between items-center border-b border-cf-gray/30 pb-2 last:border-b-0 last:pb-0';
+                
+                const sizeBadge = item.size ? `<span class="bg-cf-yellow text-cf-black font-bold px-1.5 py-0.5 rounded text-[10px] ml-1.5">${item.size}</span>` : '';
+                const price = parseFloat(item.price || 0);
+                const quantity = parseInt(item.quantity || 1);
+                const itemTotal = price * quantity;
+
+                itemEl.innerHTML = `
+                    <div class="flex-1">
+                        <div class="font-bold text-white uppercase text-sm">${item.name} ${sizeBadge}</div>
+                        <div class="text-[10px] text-gray-400 font-semibold mt-0.5">Qtd: ${quantity} x R$ ${price.toFixed(2).replace('.', ',')}</div>
+                    </div>
+                    <div class="font-bold text-cf-yellow text-sm">R$ ${itemTotal.toFixed(2).replace('.', ',')}</div>
+                `;
+                itemsListContainer.appendChild(itemEl);
+            });
+
+            // Calculations
+            const subtotal = parseFloat(order.subtotal || 0);
+            const discount = parseFloat(order.discount || 0);
+            const total = parseFloat(order.total || 0);
+
+            document.getElementById('detail-subtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            
+            const discountRow = document.getElementById('detail-discount-row');
+            if (discount > 0) {
+                document.getElementById('detail-discount').innerText = `-R$ ${discount.toFixed(2).replace('.', ',')}`;
+                discountRow.classList.remove('hidden');
+            } else {
+                discountRow.classList.add('hidden');
+            }
+
+            document.getElementById('detail-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+
+            // Open Modal with nice opacity fade
+            const modal = document.getElementById('order-detail-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeOrderDetailModal() {
+            const modal = document.getElementById('order-detail-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                activeOrderDetailId = null;
+            }, 300);
+        }
+
+        async function changeDetailOrderStatus(newStatus) {
+            if (!activeOrderDetailId) return;
+            const index = orders.findIndex(o => o.id === activeOrderDetailId);
+            if (index !== -1) {
+                await updateOrderStatus(index, newStatus);
+            }
+        }
+
+        async function deleteDetailOrder() {
+            if (!activeOrderDetailId) return;
+            await deleteOrderById(activeOrderDetailId);
         }
 
         function updateDashboardStats() {

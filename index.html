@@ -273,70 +273,75 @@
 
         /* Hide elements for GSAP initialization */
         .reveal-up, .reveal-left, .reveal-right { visibility: hidden; }
-        
+
+        /* Smoke Video Background */
+        #smoke-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+            object-fit: cover;
+            opacity: 0.6;
+            mix-blend-mode: screen;
+            transition: opacity 0.15s linear;
+        }
+
         /* Ensure mobile is smooth */
         @media (max-width: 768px) {
             .marquee-container { transform: rotate(-3deg) scale(1.1); }
         }
 
-        /* Preloader Styles */
-        #preloader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--black);
-            z-index: 99999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-        .preloader-container {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .preloader-logo {
-            width: 180px;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 50%;
-            z-index: 10;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
-            animation: pulse-logo-subtle 2s infinite ease-in-out;
-        }
-        .preloader-spinner {
-            position: absolute;
-            width: 204px;
-            height: 204px;
-            border: 4px solid rgba(255, 255, 255, 0.05);
-            border-top: 4px solid var(--yellow);
-            border-radius: 50%;
-            animation: preloader-spin 1.2s linear infinite;
-            z-index: 5;
-            box-shadow: 0 0 15px rgba(246, 197, 0, 0.15);
-        }
-        @keyframes pulse-logo-subtle {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-        @keyframes preloader-spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* Responsive height limits ensuring proportional scaling on all screens */
+        @media (min-width: 1024px) {
+            #hero {
+                height: 100vh !important;
+                min-height: 100vh !important;
+                overflow: hidden !important;
+                padding-bottom: clamp(1rem, 4vh, 3rem) !important;
+            }
+            #hero-header-spacer {
+                height: clamp(20px, 4vh, 60px) !important;
+            }
+            header img {
+                height: clamp(4rem, 11vh, 7.5rem) !important;
+            }
+            #hero-container {
+                gap: clamp(1rem, 4vh, 4rem) !important;
+            }
+            #hero-text-column {
+                gap: clamp(0.5rem, 2vh, 1.5rem) !important;
+                margin-top: clamp(40px, 12vh, 120px) !important;
+            }
+            #hero-title {
+                font-size: clamp(3rem, 14vh, 9.5rem) !important;
+                line-height: 0.85 !important;
+            }
+            #hero-title .block {
+                margin-top: clamp(0.1rem, 1vh, 0.5rem) !important;
+            }
+            #hero-title .block:first-child {
+                margin-top: 0 !important;
+            }
+            #hero-image-container {
+                max-width: clamp(380px, 66vh, 680px) !important;
+            }
+            #hero-subtitle {
+                font-size: clamp(0.875rem, 1.8vh, 1.125rem) !important;
+                max-width: clamp(300px, 45vh, 450px) !important;
+            }
+            #hero-cta {
+                font-size: clamp(1rem, 2vh, 1.25rem) !important;
+                padding: clamp(0.75rem, 1.5vh, 1rem) clamp(1.5rem, 3vh, 2rem) !important;
+            }
         }
     </style>
 </head>
 <body class="antialiased font-body relative">
 
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="preloader-container">
-            <img src="logo.jpg" alt="Logo Cleanfoods" class="preloader-logo">
-            <div class="preloader-spinner"></div>
-        </div>
-    </div>
+
 
     <div class="noise-bg"></div>
     <div class="cursor-dot"></div>
@@ -369,8 +374,13 @@
     </header>
 
     <section class="relative min-h-screen grid grid-rows-[auto_1fr] pb-12" id="hero">
+        <!-- Smoke Video Background -->
+        <video id="smoke-video" autoplay muted loop playsinline>
+            <source src="smoke.mp4" type="video/mp4">
+        </video>
+
         <!-- Spacer matching header height to prevent overlap -->
-        <div class="h-20 sm:h-24 lg:h-32 xl:h-40"></div>
+        <div class="h-20 sm:h-24 lg:h-32 xl:h-40" id="hero-header-spacer"></div>
 
         <!-- Spray background elements -->
         <div class="spray-blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-cf-yellow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-40"></div>
@@ -387,22 +397,22 @@
             <div class="rotate-90 text-outline-white tracking-[2.5rem] whitespace-nowrap">HARDCORE</div>
         </div>
 
-        <div class="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center my-auto">
+        <div id="hero-container" class="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center my-auto">
             
             <!-- Hero Text -->
-            <div class="flex flex-col items-start space-y-4 md:space-y-6 max-w-3xl lg:max-w-4xl mx-auto lg:mx-0">
-                <h1 class="font-impact text-[2.75rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7.5rem] xl:text-[9.5rem] leading-[0.85] uppercase text-white reveal-up">
+            <div id="hero-text-column" class="flex flex-col items-start max-w-3xl lg:max-w-4xl mx-auto lg:mx-0">
+                <h1 id="hero-title" class="font-impact text-[2.75rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7.5rem] xl:text-[9.5rem] leading-[0.85] uppercase text-white reveal-up">
                     <span class="block">Dieta</span>
                     <span class="block glitch" data-text="LIMPA">LIMPA</span>
                     <span class="block text-outline mt-2 md:mt-4">Treino</span>
                     <span class="block text-cf-yellow marker-highlight px-2 mt-1 md:mt-2">PESADO.</span>
                 </h1>
-                <p class="font-body text-gray-300 text-sm sm:text-base lg:text-lg max-w-md border-l-4 border-cf-yellow pl-4 reveal-up font-semibold">
+                <p id="hero-subtitle" class="font-body text-gray-300 text-sm sm:text-base lg:text-lg max-w-md border-l-4 border-cf-yellow pl-4 reveal-up font-semibold">
                     Marmitas fitness reais para quem treina de verdade. Sem glúten, sem lactose, sem frescura.
                 </p>
                 
                 <div class="pt-2 md:pt-4 reveal-up">
-                    <a href="cardapio-completo.html" class="btn-street text-lg lg:text-xl px-6 py-3 lg:px-8 lg:py-4 cursor-hover">
+                    <a href="cardapio-completo.html" id="hero-cta" class="btn-street text-lg lg:text-xl px-6 py-3 lg:px-8 lg:py-4 cursor-hover">
                         NOSSO CARDÁPIO <i class="fa-solid fa-utensils ml-2"></i>
                     </a>
                 </div>
@@ -411,7 +421,7 @@
             <!-- Hero Image Collage -->
             <div class="relative w-full flex justify-center items-center reveal-right mt-8 lg:mt-0">
                 <!-- Inner Aspect Ratio Box -->
-                <div class="relative w-full max-w-[360px] sm:max-w-[500px] lg:max-w-[620px] aspect-[4/5] flex items-center justify-center">
+                <div id="hero-image-container" class="relative w-full max-w-[360px] sm:max-w-[500px] lg:max-w-[620px] aspect-[4/5] flex items-center justify-center">
                     <!-- Decorative Frame -->
                     <div class="absolute inset-0 border-4 border-cf-yellow transform rotate-3 z-0"></div>
                     <div class="absolute inset-[5%] border-2 border-white border-dashed transform -rotate-2 z-0 opacity-50"></div>
@@ -606,8 +616,8 @@
                     <a href="https://wa.me/5511910993953" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
                         <i class="fa-brands fa-whatsapp text-3xl mr-4 text-cf-yellow"></i> <span id="val-whatsapp-text">(11) 91099-3953</span>
                     </a>
-                    <a href="#" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
-                        <i class="fa-brands fa-instagram text-3xl mr-4 text-cf-yellow"></i> @cleanfoodsbrasil
+                    <a href="https://www.instagram.com/cleanfoods.saopaulo/" target="_blank" rel="noopener noreferrer" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
+                        <i class="fa-brands fa-instagram text-3xl mr-4 text-cf-yellow"></i> @cleanfoods.saopaulo
                     </a>
                     <div class="text-lg font-body text-gray-400 mt-4 flex items-center font-bold">
                         <i class="fa-solid fa-location-dot text-xl mr-4 text-white"></i> <span id="val-address-text">Ipiranga, São Paulo - SP</span>
@@ -847,8 +857,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
     <script>
-        // Start preloader timer immediately
-        const loaderStartTime = Date.now();
+
 
         // Initialize Supabase Client
         let supabaseClient = null;
@@ -1642,48 +1651,17 @@
             updateCartBadges();
             renderCart();
 
-            // Dismiss preloader and then trigger GSAP reveal animations with at least 1.2 seconds visible time
-            const elapsed = Date.now() - loaderStartTime;
-            const remainingDelay = Math.max(0, 1200 - elapsed);
-
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                if (preloader) {
-                    gsap.to(preloader, {
-                        opacity: 0,
-                        duration: 0.6,
-                        ease: "power2.out",
-                        onComplete: () => {
-                            preloader.style.visibility = 'hidden';
-                            preloader.style.display = 'none';
-                            
-                            // Start Hero Entrance
-                            const heroTimeline = gsap.timeline();
-                            heroTimeline.fromTo("#hero .reveal-up", 
-                                { y: 50, autoAlpha: 0 },
-                                { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" }
-                            )
-                            .fromTo("#hero .reveal-right",
-                                { x: 100, autoAlpha: 0, rotation: 5 },
-                                { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
-                                "-=0.5"
-                            );
-                        }
-                    });
-                } else {
-                    // Fallback if preloader overlay is not in DOM
-                    const heroTimeline = gsap.timeline();
-                    heroTimeline.fromTo("#hero .reveal-up", 
-                        { y: 50, autoAlpha: 0 },
-                        { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" }
-                    )
-                    .fromTo("#hero .reveal-right",
-                        { x: 100, autoAlpha: 0, rotation: 5 },
-                        { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
-                        "-=0.5"
-                    );
-                }
-            }, remainingDelay);
+            // Trigger GSAP reveal animations immediately (no preloader)
+            const heroTimeline = gsap.timeline();
+            heroTimeline.fromTo("#hero .reveal-up", 
+                { y: 50, autoAlpha: 0 },
+                { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" }
+            )
+            .fromTo("#hero .reveal-right",
+                { x: 100, autoAlpha: 0, rotation: 5 },
+                { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
+                "-=0.5"
+            );
 
             // ScrollTrigger Animations for Menu and other sections
             const revealElements = document.querySelectorAll('.reveal-up:not(#hero .reveal-up), .reveal-right:not(#hero .reveal-right)');
@@ -1728,6 +1706,33 @@
                 }
             });
         };
+
+        // ===== SMOKE VIDEO SCROLL FADE =====
+        (function() {
+            const smokeVideo = document.getElementById('smoke-video');
+            const heroSection = document.getElementById('hero');
+            if (!smokeVideo || !heroSection) return;
+
+            const BASE_OPACITY = 0.6; // matches CSS initial opacity
+
+            function onScroll() {
+                const heroRect = heroSection.getBoundingClientRect();
+                const heroH = heroRect.height;
+                const scrolled = -heroRect.top;
+
+                let opacity;
+                if (scrolled <= 0) {
+                    opacity = BASE_OPACITY;
+                } else if (scrolled >= heroH * 0.6) {
+                    opacity = 0;
+                } else {
+                    opacity = BASE_OPACITY * (1 - (scrolled / (heroH * 0.6)));
+                }
+                smokeVideo.style.opacity = opacity;
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+        })();
     </script>
 </body>
 </html>
