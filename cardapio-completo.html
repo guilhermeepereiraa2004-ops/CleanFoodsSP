@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleanfoods | Cardápio Completo</title>
     <link rel="icon" type="image/jpeg" href="Logonova.jpeg">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -51,7 +54,10 @@
         /* Noise Texture for Street Vibe */
         .noise-bg {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: 50;
             opacity: 0.04;
@@ -59,9 +65,11 @@
         }
 
         /* Custom Cursor - Hidden by default (touchscreens) */
-        .cursor-dot, .cursor-outline {
+        .cursor-dot,
+        .cursor-outline {
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             transform: translate(-50%, -50%);
             border-radius: 50%;
             z-index: 9999;
@@ -74,20 +82,28 @@
             body {
                 cursor: none;
             }
-            .cursor-dot, .cursor-outline {
+
+            .cursor-dot,
+            .cursor-outline {
                 display: block;
             }
+
             .cursor-dot {
-                width: 8px; height: 8px;
+                width: 8px;
+                height: 8px;
                 background-color: var(--yellow);
             }
+
             .cursor-outline {
-                width: 40px; height: 40px;
+                width: 40px;
+                height: 40px;
                 border: 2px solid var(--yellow);
                 transition: width 0.2s, height 0.2s, background-color 0.2s;
             }
+
             .cursor-hover .cursor-outline {
-                width: 60px; height: 60px;
+                width: 60px;
+                height: 60px;
                 background-color: rgba(246, 197, 0, 0.1);
                 border-style: dashed;
                 animation: rotateCursor 4s linear infinite;
@@ -95,8 +111,13 @@
         }
 
         @keyframes rotateCursor {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
         }
 
         /* Text Utilities */
@@ -104,17 +125,18 @@
             color: transparent;
             -webkit-text-stroke: 2px var(--yellow);
         }
+
         .text-outline-white {
             color: transparent;
-            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
         }
 
         .torn-edge {
             clip-path: polygon(0 0, 100% 1%, 99% 100%, 1% 99%);
         }
-        
+
         .marker-highlight {
-            background: linear-gradient(104deg, rgba(246,197,0,0) 0.9%, rgba(246,197,0,1) 2.4%, rgba(246,197,0,0.8) 5.8%, rgba(246,197,0,0.9) 93%, rgba(246,197,0,0) 96%);
+            background: linear-gradient(104deg, rgba(246, 197, 0, 0) 0.9%, rgba(246, 197, 0, 1) 2.4%, rgba(246, 197, 0, 0.8) 5.8%, rgba(246, 197, 0, 0.9) 93%, rgba(246, 197, 0, 0) 96%);
             padding: 0 10px;
             color: var(--black) !important;
             display: inline-block;
@@ -130,9 +152,17 @@
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--black); }
-        ::-webkit-scrollbar-thumb { background: var(--yellow); }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--yellow);
+        }
 
         /* Interactive Buttons */
         .btn-street {
@@ -150,6 +180,7 @@
             z-index: 1;
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
         }
+
         .btn-street:hover {
             background: var(--black);
             color: var(--yellow);
@@ -172,6 +203,7 @@
             z-index: 1;
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
         }
+
         .btn-street-outline:hover {
             background: var(--yellow);
             color: var(--black);
@@ -183,13 +215,13 @@
         #cart-drawer.open {
             transform: translateX(0);
         }
+
         .cart-open-overflow {
             overflow: hidden;
         }
-
-
     </style>
 </head>
+
 <body class="antialiased font-body relative">
 
 
@@ -199,26 +231,32 @@
     <div class="cursor-outline"></div>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/5511910993953" id="wa-floating-btn" target="_blank" class="fixed bottom-6 right-6 w-16 h-16 bg-cf-yellow rounded-full flex items-center justify-center text-cf-black text-3xl z-40 shadow-[0_0_20px_rgba(246,197,0,0.5)] hover:scale-110 transition-transform cursor-hover border-4 border-cf-black hover:border-white">
+    <a href="https://wa.me/5511910993953" id="wa-floating-btn" target="_blank"
+        class="fixed bottom-6 right-6 w-16 h-16 bg-cf-yellow rounded-full flex items-center justify-center text-cf-black text-3xl z-40 shadow-[0_0_20px_rgba(246,197,0,0.5)] hover:scale-110 transition-transform cursor-hover border-4 border-cf-black hover:border-white">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
     <!-- Floating Cart Button -->
-    <button onclick="toggleCart()" id="floating-cart" class="fixed bottom-24 right-6 w-16 h-16 bg-white rounded-full flex items-center justify-center text-cf-black text-2xl z-40 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-110 transition-transform cursor-hover border-4 border-cf-black hover:border-cf-yellow">
+    <button onclick="toggleCart()" id="floating-cart"
+        class="fixed bottom-24 right-6 w-16 h-16 bg-white rounded-full flex items-center justify-center text-cf-black text-2xl z-40 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:scale-110 transition-transform cursor-hover border-4 border-cf-black hover:border-cf-yellow">
         <i class="fa-solid fa-basket-shopping"></i>
-        <span id="cart-badge-float" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold border-2 border-cf-black hidden">0</span>
+        <span id="cart-badge-float"
+            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold border-2 border-cf-black hidden">0</span>
     </button>
 
     <!-- Header Minimal/Raw -->
-    <header class="absolute top-0 w-full pt-4 pb-4 px-4 md:px-8 flex justify-between items-center z-40 mix-blend-difference">
+    <header
+        class="absolute top-0 w-full pt-4 pb-4 px-4 md:px-8 flex justify-between items-start z-40 mix-blend-difference">
         <a href="index.html" class="cursor-hover">
-            <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-12 sm:h-16 md:h-20 lg:h-24 w-auto object-contain">
+            <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-20 sm:h-28 md:h-32 lg:h-40 w-auto object-contain">
         </a>
-        <div class="flex items-center gap-3 sm:gap-4 md:gap-6">
-            <a href="index.html" class="font-impact text-sm sm:text-base md:text-lg text-white hover:text-cf-yellow transition-colors tracking-widest cursor-hover">
+        <div class="flex items-center gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-4">
+            <a href="index.html"
+                class="font-impact text-sm sm:text-base md:text-lg text-white hover:text-cf-yellow transition-colors tracking-widest cursor-hover">
                 <i class="fa-solid fa-arrow-left mr-1.5 text-xs"></i> INÍCIO
             </a>
-            <a href="admin.html" class="font-impact text-[10px] sm:text-xs md:text-sm text-cf-black bg-cf-yellow hover:bg-white hover:text-cf-black border border-cf-yellow hover:border-white px-2 py-1 transition-colors tracking-wider cursor-hover uppercase rounded-sm flex items-center gap-1 shadow-md">
+            <a href="admin.html"
+                class="font-impact text-[10px] sm:text-xs md:text-sm text-cf-black bg-cf-yellow hover:bg-white hover:text-cf-black border border-cf-yellow hover:border-white px-2 py-1 transition-colors tracking-wider cursor-hover uppercase rounded-sm flex items-center gap-1 shadow-md">
                 ADMIN <i class="fa-solid fa-user-gear text-[10px]"></i>
             </a>
         </div>
@@ -226,9 +264,12 @@
 
     <!-- Page Banner / Title -->
     <section class="relative pt-36 pb-12 overflow-hidden">
-        <div class="spray-blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-cf-yellow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-25"></div>
+        <div
+            class="spray-blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-cf-yellow top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-25">
+        </div>
         <div class="container mx-auto px-4 relative z-10 text-center">
-            <h1 class="font-impact text-[2.5rem] sm:text-[4rem] md:text-[6rem] leading-none uppercase text-white reveal-up">
+            <h1
+                class="font-impact text-[2.5rem] sm:text-[4rem] md:text-[6rem] leading-none uppercase text-white reveal-up">
                 O Nosso <span class="text-cf-yellow glitch" data-text="CARDÁPIO">CARDÁPIO</span>
             </h1>
             <p class="font-street text-lg md:text-2xl text-gray-400 mt-4 max-w-xl mx-auto">
@@ -240,33 +281,41 @@
     <!-- Menu Section with Filters -->
     <section class="py-12 relative z-10">
         <div class="container mx-auto px-4">
-            
+
             <!-- Dynamic Coupon Banner -->
-            <div id="promo-coupon-banner" class="hidden max-w-2xl mx-auto mb-16 bg-cf-yellow text-cf-black p-4 md:p-6 border-4 border-white transform rotate-1 flex flex-col md:flex-row justify-between items-center gap-4 shadow-xl select-none z-20">
+            <div id="promo-coupon-banner"
+                class="hidden max-w-2xl mx-auto mb-16 bg-cf-yellow text-cf-black p-4 md:p-6 border-4 border-white transform rotate-1 flex flex-col md:flex-row justify-between items-center gap-4 shadow-xl select-none z-20">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-ticket text-3xl md:text-4xl animate-bounce"></i>
                     <div>
                         <h4 class="font-impact text-xl md:text-2xl uppercase leading-none">PROMOÇÃO ATIVA!</h4>
-                        <p class="font-body text-xs md:text-sm font-semibold mt-1">Use o cupom de hoje para ganhar <span id="coupon-discount-val">10</span>% de desconto.</p>
+                        <p class="font-body text-xs md:text-sm font-semibold mt-1">Use o cupom de hoje para ganhar <span
+                                id="coupon-discount-val">10</span>% de desconto.</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="font-street text-lg bg-cf-black text-white px-4 py-2 border-2 border-white select-all cursor-copy" id="coupon-code-val">MONSTRO10</span>
+                    <span
+                        class="font-street text-lg bg-cf-black text-white px-4 py-2 border-2 border-white select-all cursor-copy"
+                        id="coupon-code-val">MONSTRO10</span>
                 </div>
             </div>
 
             <!-- Filters -->
             <div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-16 reveal-up">
-                <button onclick="filterCategory('Todos')" id="filter-btn-Todos" class="bg-cf-yellow text-cf-black font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-yellow hover:bg-white hover:text-cf-black hover:border-white transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
+                <button onclick="filterCategory('Todos')" id="filter-btn-Todos"
+                    class="bg-cf-yellow text-cf-black font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-yellow hover:bg-white hover:text-cf-black hover:border-white transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
                     Todos
                 </button>
-                <button onclick="filterCategory('Frango')" id="filter-btn-Frango" class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
+                <button onclick="filterCategory('Frango')" id="filter-btn-Frango"
+                    class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
                     Linha Frango
                 </button>
-                <button onclick="filterCategory('Patinho')" id="filter-btn-Patinho" class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
+                <button onclick="filterCategory('Patinho')" id="filter-btn-Patinho"
+                    class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
                     Linha Patinho
                 </button>
-                <button onclick="filterCategory('Gourmet')" id="filter-btn-Gourmet" class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
+                <button onclick="filterCategory('Gourmet')" id="filter-btn-Gourmet"
+                    class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
                     Linha Gourmet
                 </button>
             </div>
@@ -275,7 +324,7 @@
             <div id="dishes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-up">
                 <!-- Card dynamically loaded -->
             </div>
-            
+
             <!-- Central CTA -->
             <div class="mt-20 text-center reveal-up">
                 <button onclick="toggleCart()" class="btn-street text-xl sm:text-2xl px-10 py-5 cursor-hover">
@@ -296,19 +345,24 @@
                 </h2>
                 <p class="font-street text-xl text-gray-400 mb-8 reveal-up">Chama no zap e garante a semana.</p>
                 <div class="flex flex-col gap-4 reveal-up">
-                    <a href="https://wa.me/5511910993953" id="wa-footer-link" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
-                        <i class="fa-brands fa-whatsapp text-3xl mr-4 text-cf-yellow"></i> <span id="val-whatsapp-text">(11) 91099-3953</span>
+                    <a href="https://wa.me/5511910993953" id="wa-footer-link"
+                        class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
+                        <i class="fa-brands fa-whatsapp text-3xl mr-4 text-cf-yellow"></i> <span
+                            id="val-whatsapp-text">(11) 91099-3953</span>
                     </a>
-                    <a href="https://www.instagram.com/cleanfoods.saopaulo/" target="_blank" rel="noopener noreferrer" class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
+                    <a href="https://www.instagram.com/cleanfoods.saopaulo/" target="_blank" rel="noopener noreferrer"
+                        class="text-2xl font-impact text-white hover:text-cf-yellow transition-colors flex items-center cursor-hover">
                         <i class="fa-brands fa-instagram text-3xl mr-4 text-cf-yellow"></i> @cleanfoods.saopaulo
                     </a>
                     <div class="text-lg font-body text-gray-400 mt-4 flex items-center font-bold">
-                        <i class="fa-solid fa-location-dot text-xl mr-4 text-white"></i> <span id="val-address-text">Ipiranga, São Paulo - SP</span>
+                        <i class="fa-solid fa-location-dot text-xl mr-4 text-white"></i> <span
+                            id="val-address-text">Ipiranga, São Paulo - SP</span>
                     </div>
                 </div>
             </div>
             <div class="text-center md:text-right flex flex-col items-center md:items-end justify-center reveal-right">
-                <div class="font-impact text-5xl md:text-6xl text-cf-gray opacity-30 select-none transform rotate-[-5deg]">
+                <div
+                    class="font-impact text-5xl md:text-6xl text-cf-gray opacity-30 select-none transform rotate-[-5deg]">
                     NO EXCUSES
                 </div>
                 <div class="mt-8">
@@ -318,10 +372,12 @@
                 </div>
             </div>
         </div>
-        <div class="text-center mt-20 pt-6 pb-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
-            © 2026 Cleanfoods Brasil. Todos os direitos reservados. Sem glúten, sem lactose, sem frescura.
+        <div
+            class="text-center mt-20 pt-6 pb-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
+            © 2026 Cleanfoods Brasil. Todos os direitos reservados. Sem glúten, sem lactose.
             <div class="mt-4 text-[11px] tracking-widest">
-                <a href="https://www.grpsantana.com.br/" target="_blank" class="text-gray-300 hover:text-white transition-colors cursor-hover">
+                <a href="https://www.grpsantana.com.br/" target="_blank"
+                    class="text-gray-300 hover:text-white transition-colors cursor-hover">
                     Quer um site assim? <span class="font-bold text-cf-yellow">GRUPO SANTANA</span>
                 </a>
             </div>
@@ -329,13 +385,15 @@
     </footer>
 
     <!-- Shopping Cart Drawer -->
-    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-cf-darkgray border-l-4 border-cf-yellow z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div id="cart-drawer"
+        class="fixed top-0 right-0 h-full w-full max-w-md bg-cf-darkgray border-l-4 border-cf-yellow z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
         <!-- Drawer Header -->
         <div class="p-4 sm:p-6 border-b border-cf-gray flex justify-between items-center bg-cf-black">
             <h3 class="font-impact text-2xl text-cf-yellow uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-solid fa-basket-shopping"></i> Seu Carrinho
             </h3>
-            <button onclick="toggleCart()" class="text-gray-400 hover:text-white transition-colors text-2xl cursor-hover p-1">
+            <button onclick="toggleCart()"
+                class="text-gray-400 hover:text-white transition-colors text-2xl cursor-hover p-1">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -361,82 +419,126 @@
                     <span id="cart-discount-label">Desconto (0%)</span>
                     <span id="cart-discount-val">-R$ 0,00</span>
                 </div>
-                <div class="flex justify-between text-white text-lg font-impact tracking-wide pt-2 border-t border-cf-gray/40">
+                <div
+                    class="flex justify-between text-white text-lg font-impact tracking-wide pt-2 border-t border-cf-gray/40">
                     <span>TOTAL</span>
                     <span id="cart-total-val" class="text-cf-yellow">R$ 0,00</span>
                 </div>
             </div>
 
-            <button onclick="checkoutOrder()" class="w-full bg-cf-yellow text-cf-black font-impact text-xl uppercase tracking-wider py-4 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all flex items-center justify-center gap-2" style="clip-path: polygon(2% 0, 100% 0, 98% 100%, 0 100%);">
+            <button onclick="checkoutOrder()"
+                class="w-full bg-cf-yellow text-cf-black font-impact text-xl uppercase tracking-wider py-4 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all flex items-center justify-center gap-2"
+                style="clip-path: polygon(2% 0, 100% 0, 98% 100%, 0 100%);">
                 Finalizar Pedido
             </button>
         </div>
     </div>
 
     <!-- Success Toast Alert -->
-    <div id="toast-success" class="fixed top-4 md:top-auto md:bottom-6 left-4 md:left-auto right-4 md:right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center justify-center md:justify-start gap-3 transform -translate-y-24 md:translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div id="toast-success"
+        class="fixed top-4 md:top-auto md:bottom-6 left-4 md:left-auto right-4 md:right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center justify-center md:justify-start gap-3 transform -translate-y-24 md:translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
         <i class="fa-solid fa-circle-check text-2xl"></i>
         <span id="toast-text">PRODUTO ADICIONADO AO CARRINHO!</span>
     </div>
 
     <!-- Dish Detail Modal -->
-    <div id="dish-detail-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm p-4">
-        <div class="bg-cf-darkgray border-4 border-cf-yellow w-full max-w-md relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)] overflow-hidden flex flex-col max-h-[90vh]">
-            <button onclick="closeDishDetail()" class="absolute top-3 right-3 text-white bg-black/50 hover:bg-cf-yellow hover:text-black rounded-full w-8 h-8 flex items-center justify-center transition-all z-20 cursor-hover">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="w-full aspect-[2/1] bg-cf-black relative border-b-4 border-cf-yellow">
-                <img id="dish-detail-img" src="" class="w-full h-full object-cover">
-            </div>
-            <div class="p-5 flex flex-col flex-1 overflow-y-auto">
-                <div id="dish-detail-category" class="text-cf-yellow font-bold text-xs uppercase mb-1 tracking-widest"></div>
+    <div id="dish-detail-modal"
+        class="fixed inset-0 bg-black/90 z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="min-h-full flex items-center justify-center py-10">
+            <div
+                class="bg-cf-darkgray border-4 border-cf-yellow w-full max-w-md relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)] flex flex-col">
+                <button onclick="closeDishDetail()"
+                    class="absolute top-3 right-3 text-white bg-black/50 hover:bg-cf-yellow hover:text-black rounded-full w-8 h-8 flex items-center justify-center transition-all z-20 cursor-hover">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="w-full aspect-[2/1] bg-cf-black relative border-b-4 border-cf-yellow">
+                    <img id="dish-detail-img" src="" class="w-full h-full object-cover">
+                </div>
+                <div class="p-5 flex flex-col flex-1">
+                <div id="dish-detail-category" class="text-cf-yellow font-bold text-xs uppercase mb-1 tracking-widest">
+                </div>
                 <h3 id="dish-detail-name" class="font-impact text-2xl text-white uppercase mb-4 leading-tight"></h3>
                 <p class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1">
-                    Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o seu melhor desempenho.
+                    Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o seu
+                    melhor desempenho.
                 </p>
                 <div class="bg-cf-black p-3 border border-gray-700 flex flex-col gap-3 rounded">
                     <div id="dish-detail-p" class="flex justify-between items-center w-full"></div>
-                    <div id="dish-detail-g" class="flex justify-between items-center w-full pt-3 border-t border-gray-800"></div>
+                    <div id="dish-detail-g"
+                        class="flex justify-between items-center w-full pt-3 border-t border-gray-800"></div>
+                </div>
+
+                <!-- Nutrition Table -->
+                <div class="mt-4 border border-cf-gray rounded overflow-hidden flex-shrink-0">
+                    <div class="w-full bg-cf-darkgray text-white font-impact text-sm tracking-wider uppercase p-3 flex justify-between items-center">
+                        <span><i class="fa-solid fa-leaf text-cf-yellow mr-2"></i> Tabela Nutricional</span>
+                    </div>
+                    <div id="nutrition-content" class="bg-cf-black text-gray-300 font-body text-xs">
+                        <div class="grid grid-cols-2 gap-px bg-cf-gray">
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Valor Energético</span> <strong id="det-energy" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Carboidratos</span> <strong id="det-carbs" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Proteínas</span> <strong id="det-proteins" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Totais</span> <strong id="det-total-fat" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Saturadas</span> <strong id="det-sat-fat" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Trans</span> <strong id="det-trans-fat" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Fibra Alimentar</span> <strong id="det-fiber" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Sódio</span> <strong id="det-sodium" class="text-white"></strong></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Checkout Modal -->
-    <div id="checkout-modal" class="fixed inset-0 bg-black/85 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
-        <div class="bg-cf-darkgray border-4 border-cf-yellow p-5 md:p-8 max-w-xl w-full mx-4 relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.2)] overflow-y-auto max-h-[90vh]">
-            <button onclick="toggleCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-cf-yellow hover:scale-110 transition-all text-2xl p-1 cursor-hover">
+    <div id="checkout-modal"
+        class="fixed inset-0 bg-black/85 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+        <div
+            class="bg-cf-darkgray border-4 border-cf-yellow p-5 md:p-8 max-w-xl w-full mx-4 relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.2)] overflow-y-auto max-h-[90vh]">
+            <button onclick="toggleCheckoutModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-cf-yellow hover:scale-110 transition-all text-2xl p-1 cursor-hover">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            
+
             <div class="border-b-4 border-cf-yellow pb-4 mb-6">
                 <h3 class="font-impact text-3xl text-white uppercase tracking-widest flex items-center gap-3">
-                    <span class="bg-cf-yellow text-cf-black px-2.5 py-1 text-xl flex items-center rounded-sm"><i class="fa-solid fa-list-check"></i></span>
+                    <span class="bg-cf-yellow text-cf-black px-2.5 py-1 text-xl flex items-center rounded-sm"><i
+                            class="fa-solid fa-list-check"></i></span>
                     Finalizar Pedido
                 </h3>
             </div>
-            
-            <form id="checkout-form" onsubmit="event.preventDefault(); submitCheckoutForm();" class="space-y-5 font-body text-sm font-semibold">
+
+            <form id="checkout-form" onsubmit="event.preventDefault(); submitCheckoutForm();"
+                class="space-y-5 font-body text-sm font-semibold">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Nome Completo *</label>
-                        <input type="text" id="client-name" required placeholder="Ex: João Silva" class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Nome
+                            Completo *</label>
+                        <input type="text" id="client-name" required placeholder="Ex: João Silva"
+                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
                     </div>
                     <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Telefone com DDD *</label>
-                        <input type="tel" id="client-phone" required placeholder="Ex: (11) 98888-7777" class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Telefone
+                            com DDD *</label>
+                        <input type="tel" id="client-phone" required placeholder="Ex: (11) 98888-7777"
+                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
                     </div>
-                </div>
-                
-                <div>
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Endereço de Entrega *</label>
-                    <textarea id="client-address" required rows="2" placeholder="Ex: Av. Paulista, 1000 - Apto 51 - Bela Vista, São Paulo - SP" class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
                 </div>
 
                 <div>
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Forma de Pagamento *</label>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Endereço de
+                        Entrega *</label>
+                    <textarea id="client-address" required rows="2"
+                        placeholder="Ex: Av. Paulista, 1000 - Apto 51 - Bela Vista, São Paulo - SP"
+                        class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Forma de
+                        Pagamento *</label>
                     <div class="relative">
-                        <select id="client-payment" required class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all appearance-none cursor-pointer">
+                        <select id="client-payment" required
+                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all appearance-none cursor-pointer">
                             <option value="" disabled selected>Escolha como pagar</option>
                             <option value="Pix">Pix</option>
                             <option value="Cartão de Crédito">Cartão de Crédito</option>
@@ -444,7 +546,8 @@
                             <option value="Dinheiro">Dinheiro</option>
                             <option value="Vale Refeição (VR)">Vale Refeição (VR)</option>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-cf-yellow">
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-cf-yellow">
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
                     </div>
@@ -453,25 +556,34 @@
                 <!-- Delivery Date & Time Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Data da Entrega *</label>
-                        <input type="date" id="delivery-date" required class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Data da
+                            Entrega *</label>
+                        <input type="date" id="delivery-date" required
+                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
                     </div>
                     <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Horário da Entrega (11h às 19h) *</label>
-                        <input type="time" id="delivery-time" required min="11:00" max="19:00" class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Horário da
+                            Entrega (11h às 19h) *</label>
+                        <input type="time" id="delivery-time" required min="11:00" max="19:00"
+                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
                     </div>
                 </div>
-                
+
                 <div>
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Observações (Opcional)</label>
-                    <textarea id="client-notes" rows="2" placeholder="Ex: Retirar cebola do strogonoff, troco para R$ 50..." class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Observações
+                        (Opcional)</label>
+                    <textarea id="client-notes" rows="2"
+                        placeholder="Ex: Retirar cebola do strogonoff, troco para R$ 50..."
+                        class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
                 </div>
 
                 <div class="bg-cf-black p-5 border-2 border-dashed border-cf-gray rounded-sm space-y-3 mt-5 relative">
-                    <div class="absolute -top-3 left-4 bg-cf-black px-2 text-xs font-impact text-cf-yellow uppercase tracking-widest">
+                    <div
+                        class="absolute -top-3 left-4 bg-cf-black px-2 text-xs font-impact text-cf-yellow uppercase tracking-widest">
                         Resumo do Pedido
                     </div>
-                    <div id="checkout-items-list" class="space-y-2 text-xs text-gray-300 font-bold max-h-32 overflow-y-auto pr-1">
+                    <div id="checkout-items-list"
+                        class="space-y-2 text-xs text-gray-300 font-bold max-h-32 overflow-y-auto pr-1">
                         <!-- Dynamic Items -->
                     </div>
                     <div class="border-t-2 border-dashed border-cf-gray/60 pt-3 space-y-1.5 text-xs font-bold">
@@ -483,7 +595,8 @@
                             <span id="checkout-discount-label">Desconto (0%)</span>
                             <span id="checkout-discount-val">-R$ 0,00</span>
                         </div>
-                        <div class="flex justify-between text-white font-impact text-base pt-2 border-t border-cf-gray/40 tracking-wider">
+                        <div
+                            class="flex justify-between text-white font-impact text-base pt-2 border-t border-cf-gray/40 tracking-wider">
                             <span>TOTAL</span>
                             <span id="checkout-total-val" class="text-cf-yellow">R$ 0,00</span>
                         </div>
@@ -491,23 +604,31 @@
                 </div>
 
                 <div class="pt-2">
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
                         <i class="fa-solid fa-ticket text-cf-yellow"></i> Cupom de Desconto
                     </label>
                     <div class="flex gap-2">
-                        <input type="text" id="cart-coupon-input" placeholder="Ex: MONSTRO10" class="flex-1 bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold uppercase focus:border-cf-yellow focus:outline-none transition-all placeholder:text-gray-600">
-                        <button type="button" onclick="applyCartCoupon()" class="bg-cf-yellow text-cf-black font-impact tracking-wider px-6 py-2.5 hover:bg-white hover:text-cf-black transition-colors uppercase text-sm rounded-sm font-bold border-2 border-cf-yellow hover:border-white" style="clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);">
+                        <input type="text" id="cart-coupon-input" placeholder="Ex: MONSTRO10"
+                            class="flex-1 bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold uppercase focus:border-cf-yellow focus:outline-none transition-all placeholder:text-gray-600">
+                        <button type="button" onclick="applyCartCoupon()"
+                            class="bg-cf-yellow text-cf-black font-impact tracking-wider px-6 py-2.5 hover:bg-white hover:text-cf-black transition-colors uppercase text-sm rounded-sm font-bold border-2 border-cf-yellow hover:border-white"
+                            style="clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);">
                             Aplicar
                         </button>
                     </div>
                     <div id="coupon-feedback" class="text-xs font-bold mt-2 hidden"></div>
                 </div>
-                
+
                 <div class="flex gap-4 pt-4">
-                    <button type="button" onclick="toggleCheckoutModal()" class="w-1/2 bg-cf-gray text-white font-impact text-lg uppercase tracking-widest py-3 border-2 border-cf-gray hover:bg-white hover:text-cf-black hover:border-white transition-all cursor-hover rounded-sm" style="clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);">
+                    <button type="button" onclick="toggleCheckoutModal()"
+                        class="w-1/2 bg-cf-gray text-white font-impact text-lg uppercase tracking-widest py-3 border-2 border-cf-gray hover:bg-white hover:text-cf-black hover:border-white transition-all cursor-hover rounded-sm"
+                        style="clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);">
                         Voltar
                     </button>
-                    <button type="submit" class="w-1/2 bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-widest py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all cursor-hover flex items-center justify-center gap-1.5" style="clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);">
+                    <button type="submit"
+                        class="w-1/2 bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-widest py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all cursor-hover flex items-center justify-center gap-1.5"
+                        style="clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);">
                         Confirmar Pedido <i class="fa-solid fa-arrow-right text-base"></i>
                     </button>
                 </div>
@@ -516,27 +637,37 @@
     </div>
 
     <!-- Thank You Modal -->
-    <div id="thank-you-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-cf-darkgray border-4 border-cf-yellow p-5 sm:p-8 max-w-md w-full mx-4 text-center relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)]">
-            <div class="w-20 h-20 bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg border-4 border-white animate-bounce">
+    <div id="thank-you-modal"
+        class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div
+            class="bg-cf-darkgray border-4 border-cf-yellow p-5 sm:p-8 max-w-md w-full mx-4 text-center relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)]">
+            <div
+                class="w-20 h-20 bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg border-4 border-white animate-bounce">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
-            
+
             <h3 class="font-impact text-4xl text-cf-yellow uppercase mb-2">Pedido Recebido!</h3>
             <h4 class="font-street text-xl text-white mb-6">Obrigado pela preferência!</h4>
-            
+
             <p class="font-body text-gray-300 font-semibold mb-6 text-sm">
-                Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar conosco a qualquer momento!
+                Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar
+                conosco a qualquer momento!
             </p>
 
-            <div class="bg-cf-black p-4 border border-cf-gray rounded mb-6 text-left space-y-2 font-mono text-xs text-gray-400">
-                <div><span class="text-white font-bold">CÓDIGO:</span> <span id="thank-order-id" class="text-cf-yellow font-bold">#CF-1001</span></div>
-                <div><span class="text-white font-bold">VALOR TOTAL:</span> <span id="thank-order-total" class="text-cf-yellow font-bold">R$ 0,00</span></div>
-                <div><span class="text-white font-bold">PAGAMENTO:</span> <span id="thank-order-payment" class="text-white">Pix</span></div>
-                <div><span class="text-white font-bold">ENTREGA:</span> <span id="thank-order-delivery" class="text-white">—</span></div>
+            <div
+                class="bg-cf-black p-4 border border-cf-gray rounded mb-6 text-left space-y-2 font-mono text-xs text-gray-400">
+                <div><span class="text-white font-bold">CÓDIGO:</span> <span id="thank-order-id"
+                        class="text-cf-yellow font-bold">#CF-1001</span></div>
+                <div><span class="text-white font-bold">VALOR TOTAL:</span> <span id="thank-order-total"
+                        class="text-cf-yellow font-bold">R$ 0,00</span></div>
+                <div><span class="text-white font-bold">PAGAMENTO:</span> <span id="thank-order-payment"
+                        class="text-white">Pix</span></div>
+                <div><span class="text-white font-bold">ENTREGA:</span> <span id="thank-order-delivery"
+                        class="text-white">—</span></div>
             </div>
-            
-            <button onclick="closeThankYouModal()" class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
+
+            <button onclick="closeThankYouModal()"
+                class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
                 Continuar Navegando
             </button>
         </div>
@@ -549,7 +680,7 @@
     <!-- GSAP for Animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
+
     <script>
 
 
@@ -566,7 +697,7 @@
         }
 
         // Global Cart and Menu variables
-        const defaultDishes = [
+        const defaultDishesRaw = [
             // FRANGO
             { id: 'price-frango-desfiado-pure-batata-doce-legumes', name: '01. Frango desfiado com purê de batata doce e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
             { id: 'price-frango-desfiado-arroz-integral-legumes', name: '02. Frango desfiado com arroz integral e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
@@ -591,6 +722,19 @@
             { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' }
         ];
 
+        const defaultNutrition = {
+            energy: '202kcal',
+            carbs: '24gr',
+            proteins: '23gr',
+            totalFat: '2gr',
+            saturatedFat: '0gr',
+            transFat: '0gr',
+            fiber: '4gr',
+            sodium: '200mg'
+        };
+
+        const defaultDishes = defaultDishesRaw.map(d => ({...d, nutrition: {...defaultNutrition}}));
+
         let dishes = [];
         let cart = JSON.parse(localStorage.getItem('cleanfoods_cart')) || {};
         let appliedCoupon = null;
@@ -613,7 +757,8 @@
                                 priceP: d.price_p || d.priceP || '0,00',
                                 priceG: d.price_g || d.priceG || '0,00',
                                 available: d.available !== false,
-                                image: (localD && localD.image) ? localD.image : (d.image || '')
+                                image: (localD && localD.image) ? localD.image : (d.image || ''),
+                                nutrition: d.nutrition || (localD && localD.nutrition) || {...defaultNutrition}
                             };
                         }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
                     } else {
@@ -623,7 +768,8 @@
                             name: d.name,
                             category: d.category,
                             price_p: d.priceP,
-                            price_g: d.priceG
+                            price_g: d.priceG,
+                            nutrition: d.nutrition
                         }));
                         const { error: insertError } = await supabaseClient.from('dishes').insert(dbDishes);
                         if (insertError) throw insertError;
@@ -763,11 +909,11 @@
             const toast = document.getElementById('toast-success');
             const toastText = document.getElementById('toast-text');
             if (!toast || !toastText) return;
-            
+
             toastText.innerText = text;
             toast.classList.remove('-translate-y-24', 'md:translate-y-24', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-            
+
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('-translate-y-24', 'md:translate-y-24', 'opacity-0');
@@ -1047,7 +1193,7 @@
         function toggleCheckoutModal() {
             const modal = document.getElementById('checkout-modal');
             if (!modal) return;
-            
+
             if (modal.classList.contains('hidden')) {
                 // Pre-fill inputs from localStorage if saved
                 const savedName = localStorage.getItem('cleanfoods_client_name') || '';
@@ -1057,7 +1203,7 @@
                 const nameInput = document.getElementById('client-name');
                 const phoneInput = document.getElementById('client-phone');
                 const addressTextarea = document.getElementById('client-address');
-                
+
                 if (nameInput) nameInput.value = savedName;
                 if (phoneInput) phoneInput.value = savedPhone;
                 if (addressTextarea) addressTextarea.value = savedAddress;
@@ -1260,7 +1406,7 @@
         // Filtering Logic
         function filterCategory(category) {
             activeCategory = category;
-            
+
             // Highlight active button
             const categories = ['Todos', 'Frango', 'Patinho', 'Gourmet'];
             categories.forEach(cat => {
@@ -1284,10 +1430,10 @@
 
             grid.innerHTML = '';
 
-            let filteredDishes = activeCategory === 'Todos' 
-                ? dishes 
+            let filteredDishes = activeCategory === 'Todos'
+                ? dishes
                 : dishes.filter(d => d.category === activeCategory);
-                
+
             filteredDishes = filteredDishes.filter(d => d.available !== false);
 
             if (filteredDishes.length === 0) {
@@ -1305,7 +1451,7 @@
 
                 const card = document.createElement('div');
                 card.className = "bg-cf-darkgray border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between hover:-translate-y-1.5 transition-transform duration-300 shadow-xl cursor-hover group";
-                
+
                 let groupLabel = 'Linha ' + dish.category;
                 if (dish.category === 'Gourmet') groupLabel = 'Linha Gourmet';
 
@@ -1371,6 +1517,22 @@
                 gContainer.innerHTML = `<span class="text-gray-500 font-bold">G (450g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
             }
 
+            const n = dish.nutrition || {...defaultNutrition};
+            document.getElementById('det-energy').innerText = n.energy || '-';
+            document.getElementById('det-carbs').innerText = n.carbs || '-';
+            document.getElementById('det-proteins').innerText = n.proteins || '-';
+            document.getElementById('det-total-fat').innerText = n.totalFat || '-';
+            document.getElementById('det-sat-fat').innerText = n.saturatedFat || '-';
+            document.getElementById('det-trans-fat').innerText = n.transFat || '-';
+            document.getElementById('det-fiber').innerText = n.fiber || '-';
+            document.getElementById('det-sodium').innerText = n.sodium || '-';
+
+            // Ensure accordion is closed when opening new dish
+            const nutriContent = document.getElementById('nutrition-content');
+            const nutriIcon = document.getElementById('nutrition-icon');
+            if(nutriContent) nutriContent.classList.add('hidden');
+            if(nutriIcon) nutriIcon.classList.remove('rotate-180');
+
             const modal = document.getElementById('dish-detail-modal');
             modal.classList.remove('hidden');
             document.body.classList.add('cart-open-overflow');
@@ -1388,7 +1550,19 @@
             }, 300);
         }
 
-        window.onload = async function() {
+        function toggleNutrition() {
+            const content = document.getElementById('nutrition-content');
+            const icon = document.getElementById('nutrition-icon');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        window.onload = async function () {
             // Load dishes from remote database or fallback to localStorage
             await loadDishes();
 
@@ -1413,4 +1587,5 @@
         };
     </script>
 </body>
+
 </html>

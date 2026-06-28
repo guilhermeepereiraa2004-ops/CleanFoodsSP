@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cleanfoods | Painel de Controle Admin</title>
     <link rel="icon" type="image/jpeg" href="Logonova.jpeg">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -54,7 +57,10 @@
 
         .noise-bg {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: 50;
             opacity: 0.03;
@@ -62,9 +68,17 @@
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--black); }
-        ::-webkit-scrollbar-thumb { background: var(--yellow); }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--yellow);
+        }
 
         .torn-edge {
             clip-path: polygon(0 0, 100% 1%, 99% 100%, 1% 99%);
@@ -79,6 +93,7 @@
             transition: all 0.3s ease;
             clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%);
         }
+
         .btn-street:hover {
             background: #ffffff;
             transform: scale(1.03) rotate(1deg);
@@ -96,6 +111,7 @@
         .kanban-column {
             transition: background-color 0.2s ease, border-color 0.2s ease;
         }
+
         .kanban-column.drag-over {
             border-color: var(--yellow) !important;
             background-color: rgba(246, 197, 0, 0.05) !important;
@@ -104,6 +120,7 @@
         .kanban-card {
             transition: transform 0.15s ease, border-color 0.15s ease;
         }
+
         .kanban-card.dragging {
             opacity: 0.4;
         }
@@ -112,11 +129,15 @@
         .kanban-card * {
             pointer-events: none;
         }
-        .kanban-card button, .kanban-card a, .kanban-card i {
+
+        .kanban-card button,
+        .kanban-card a,
+        .kanban-card i {
             pointer-events: auto;
         }
     </style>
 </head>
+
 <body class="antialiased relative min-h-screen flex">
     <div class="noise-bg"></div>
 
@@ -124,12 +145,13 @@
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-20 hidden"></div>
 
     <!-- SIDEBAR (Módulos na Lateral Esquerda) -->
-    <aside id="sidebar-menu" class="fixed md:sticky top-0 left-0 w-64 bg-cf-darkgray h-screen flex flex-col justify-between border-r-4 border-cf-yellow z-30 flex-shrink-0 transition-transform duration-300 -translate-x-full md:translate-x-0">
+    <aside id="sidebar-menu"
+        class="fixed md:sticky top-0 left-0 w-64 bg-cf-darkgray h-screen flex flex-col justify-between border-r-4 border-cf-yellow z-30 flex-shrink-0 transition-transform duration-300 -translate-x-full md:translate-x-0">
         <div>
             <!-- Sidebar Header / Logo -->
             <div class="p-6 border-b border-cf-gray flex flex-col items-center">
                 <a href="index.html" class="hover:opacity-85 transition-opacity mb-4">
-                    <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-14 w-auto object-contain">
+                    <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-24 w-auto object-contain">
                 </a>
                 <span class="font-impact text-md text-cf-yellow tracking-widest uppercase text-center">
                     PAINEL ADMIN
@@ -138,19 +160,24 @@
 
             <!-- Sidebar Navigation Links (Módulos) -->
             <nav class="mt-6 px-4 space-y-2">
-                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-link-active w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard"
+                    class="sidebar-link-active w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-chart-simple text-base w-5 text-center"></i> Dashboard
                 </button>
-                <button onclick="switchTab('cardapio')" id="btn-cardapio" class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                <button onclick="switchTab('cardapio')" id="btn-cardapio"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-utensils text-base w-5 text-center"></i> Cardápio
                 </button>
-                <button onclick="switchTab('pedidos')" id="btn-pedidos" class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                <button onclick="switchTab('pedidos')" id="btn-pedidos"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-box-open text-base w-5 text-center"></i> Pedidos
                 </button>
-                <button onclick="switchTab('cupons')" id="btn-cupons" class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                <button onclick="switchTab('cupons')" id="btn-cupons"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-ticket text-base w-5 text-center"></i> Cupons
                 </button>
-                <button onclick="switchTab('config')" id="btn-config" class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                <button onclick="switchTab('config')" id="btn-config"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-gears text-base w-5 text-center"></i> Ajustes
                 </button>
             </nav>
@@ -158,7 +185,8 @@
 
         <!-- Sidebar Footer -->
         <div class="p-6 border-t border-cf-gray">
-            <a href="index.html" class="w-full font-impact text-center block text-xs md:text-sm text-white hover:text-cf-yellow transition-colors tracking-widest uppercase">
+            <a href="index.html"
+                class="w-full font-impact text-center block text-xs md:text-sm text-white hover:text-cf-yellow transition-colors tracking-widest uppercase">
                 <i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Site
             </a>
         </div>
@@ -167,9 +195,11 @@
     <!-- MAIN CONTENT AREA -->
     <div class="flex-1 h-screen overflow-y-auto flex flex-col">
         <!-- Top Mini-Bar -->
-        <header class="w-full bg-cf-darkgray border-b border-cf-gray py-4 px-4 md:px-8 flex justify-between items-center z-10 sticky top-0">
+        <header
+            class="w-full bg-cf-darkgray border-b border-cf-gray py-4 px-4 md:px-8 flex justify-between items-center z-10 sticky top-0">
             <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar()" class="md:hidden text-white text-xl hover:text-cf-yellow focus:outline-none p-1">
+                <button onclick="toggleSidebar()"
+                    class="md:hidden text-white text-xl hover:text-cf-yellow focus:outline-none p-1">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <h2 id="current-tab-title" class="font-impact text-xl text-white tracking-widest uppercase">
@@ -186,8 +216,10 @@
         <!-- Dynamic Content Body -->
         <main class="p-4 sm:p-8 max-w-6xl w-full mx-auto">
             <!-- Welcome banner (Global) -->
-            <div class="bg-cf-darkgray border-t-8 border-white p-6 md:p-8 rounded-sm mb-8 relative overflow-hidden torn-edge">
-                <div class="absolute -right-10 -bottom-10 font-street text-[8rem] text-cf-gray opacity-10 select-none pointer-events-none">
+            <div
+                class="bg-cf-darkgray border-t-8 border-white p-6 md:p-8 rounded-sm mb-8 relative overflow-hidden torn-edge">
+                <div
+                    class="absolute -right-10 -bottom-10 font-street text-[8rem] text-cf-gray opacity-10 select-none pointer-events-none">
                     CLEAN
                 </div>
                 <h1 class="font-impact text-3xl md:text-5xl text-white uppercase mb-2">Bem-vindo, Administrador!</h1>
@@ -195,32 +227,41 @@
                     Gerencie o cardápio, crie cupons promocionais e configure os dados de contato do site principal.
                 </p>
             </div>
-            
+
             <!-- ================= TAB: DASHBOARD ================= -->
             <div id="tab-dashboard" class="tab-content">
                 <!-- Dashboard Stats Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    <div class="bg-cf-darkgray p-6 border-l-4 border-cf-yellow flex justify-between items-center shadow-lg">
+                    <div
+                        class="bg-cf-darkgray p-6 border-l-4 border-cf-yellow flex justify-between items-center shadow-lg">
                         <div>
-                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Faturamento Estimado</div>
+                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Faturamento
+                                Estimado</div>
                             <div class="font-impact text-3xl text-white" id="stat-revenue">R$ 0,00</div>
-                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-revenue-desc">Nenhuma venda registrada</div>
+                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-revenue-desc">Nenhuma venda
+                                registrada</div>
                         </div>
-                        <div class="text-cf-yellow text-4xl opacity-50"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <div class="text-cf-yellow text-4xl opacity-50"><i class="fa-solid fa-money-bill-wave"></i>
+                        </div>
                     </div>
                     <div class="bg-cf-darkgray p-6 border-l-4 border-white flex justify-between items-center shadow-lg">
                         <div>
-                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Marmitas Vendidas</div>
+                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Marmitas Vendidas
+                            </div>
                             <div class="font-impact text-3xl text-white" id="stat-meals">0 Marmitas</div>
-                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-meals-desc">Aguardando novos pedidos</div>
+                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-meals-desc">Aguardando novos
+                                pedidos</div>
                         </div>
                         <div class="text-white text-4xl opacity-50"><i class="fa-solid fa-box-open"></i></div>
                     </div>
-                    <div class="bg-cf-darkgray p-6 border-l-4 border-cf-yellow flex justify-between items-center shadow-lg">
+                    <div
+                        class="bg-cf-darkgray p-6 border-l-4 border-cf-yellow flex justify-between items-center shadow-lg">
                         <div>
-                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total de Pedidos</div>
+                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total de Pedidos
+                            </div>
                             <div class="font-impact text-3xl text-white" id="stat-orders-count">0 pedidos</div>
-                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-orders-desc">Sem pedidos no momento</div>
+                            <div class="text-xs text-gray-400 font-bold mt-1" id="stat-orders-desc">Sem pedidos no
+                                momento</div>
                         </div>
                         <div class="text-cf-yellow text-4xl opacity-50"><i class="fa-solid fa-receipt"></i></div>
                     </div>
@@ -228,7 +269,8 @@
 
                 <!-- Recent Activity -->
                 <div class="bg-cf-darkgray p-6 border border-cf-gray">
-                    <h3 class="font-impact text-xl text-white uppercase mb-4 border-b border-cf-gray pb-2 flex items-center gap-2">
+                    <h3
+                        class="font-impact text-xl text-white uppercase mb-4 border-b border-cf-gray pb-2 flex items-center gap-2">
                         <i class="fa-solid fa-clock-rotate-left text-cf-yellow"></i> Logs do Sistema
                     </h3>
                     <div class="text-center py-12 text-gray-500 font-body font-semibold text-sm">
@@ -241,18 +283,24 @@
             <!-- ================= TAB: CARDÁPIO ================= -->
             <div id="tab-cardapio" class="tab-content hidden">
                 <div class="bg-cf-darkgray p-6 md:p-8 border-4 border-cf-yellow">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-cf-gray pb-4">
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-cf-gray pb-4">
                         <div>
-                            <h2 class="font-impact text-2xl md:text-3xl text-cf-yellow uppercase flex items-center gap-2">
+                            <h2
+                                class="font-impact text-2xl md:text-3xl text-cf-yellow uppercase flex items-center gap-2">
                                 <i class="fa-solid fa-utensils"></i> Gerenciador do Cardápio
                             </h2>
-                            <p class="text-xs text-gray-400 font-semibold mt-1">Ajuste os valores das marmitas diretamente na exibição local.</p>
+                            <p class="text-xs text-gray-400 font-semibold mt-1">Ajuste os valores das marmitas
+                                diretamente na exibição local.</p>
                         </div>
                         <div class="flex items-center gap-3">
-                            <button onclick="openAddDishModal()" class="px-5 py-2.5 font-bold flex items-center gap-2 shadow-lg text-sm bg-white border-white text-cf-black hover:bg-cf-yellow hover:border-cf-yellow transition-all uppercase tracking-wider font-impact rounded-sm" style="clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%);">
+                            <button onclick="openAddDishModal()"
+                                class="px-5 py-2.5 font-bold flex items-center gap-2 shadow-lg text-sm bg-white border-white text-cf-black hover:bg-cf-yellow hover:border-cf-yellow transition-all uppercase tracking-wider font-impact rounded-sm"
+                                style="clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%);">
                                 <i class="fa-solid fa-circle-plus"></i> Novo Prato
                             </button>
-                            <button onclick="savePrices()" class="btn-street px-5 py-2.5 font-bold flex items-center gap-2 shadow-lg text-sm">
+                            <button onclick="savePrices()"
+                                class="btn-street px-5 py-2.5 font-bold flex items-center gap-2 shadow-lg text-sm">
                                 <i class="fa-solid fa-floppy-disk"></i> Salvar Preços
                             </button>
                         </div>
@@ -271,40 +319,61 @@
                     <h2 class="font-impact text-2xl md:text-3xl text-white uppercase mb-6 flex items-center gap-2">
                         <i class="fa-solid fa-list-check text-cf-yellow"></i> Pedidos Recentes
                     </h2>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-start" id="kanban-board-container">
                         <!-- Col: Pendente -->
-                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column" id="col-Pendente" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Pendente')">
+                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column"
+                            id="col-Pendente" ondragover="allowDrop(event)" ondragenter="dragEnter(event)"
+                            ondragleave="dragLeave(event)" ondrop="drop(event, 'Pendente')">
                             <div class="flex justify-between items-center mb-4 pb-2 border-b border-cf-gray">
-                                <span class="font-impact text-md text-cf-yellow tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-clock text-xs text-cf-yellow"></i> Pendente</span>
-                                <span id="count-Pendente" class="bg-cf-yellow text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
+                                <span
+                                    class="font-impact text-md text-cf-yellow tracking-wider uppercase flex items-center gap-1.5"><i
+                                        class="fa-solid fa-clock text-xs text-cf-yellow"></i> Pendente</span>
+                                <span id="count-Pendente"
+                                    class="bg-cf-yellow text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
                             </div>
                             <div id="cards-Pendente" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
                         </div>
-                        
+
                         <!-- Col: Em Preparo -->
-                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column" id="col-Em-Preparo" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Em Preparo')">
+                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column"
+                            id="col-Em-Preparo" ondragover="allowDrop(event)" ondragenter="dragEnter(event)"
+                            ondragleave="dragLeave(event)" ondrop="drop(event, 'Em Preparo')">
                             <div class="flex justify-between items-center mb-4 pb-2 border-b border-cf-gray">
-                                <span class="font-impact text-md text-white tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-fire text-xs text-white"></i> Em Preparo</span>
-                                <span id="count-Em-Preparo" class="bg-white text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
+                                <span
+                                    class="font-impact text-md text-white tracking-wider uppercase flex items-center gap-1.5"><i
+                                        class="fa-solid fa-fire text-xs text-white"></i> Em Preparo</span>
+                                <span id="count-Em-Preparo"
+                                    class="bg-white text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
                             </div>
-                            <div id="cards-Em-Preparo" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+                            <div id="cards-Em-Preparo" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1">
+                            </div>
                         </div>
-                        
+
                         <!-- Col: Enviado -->
-                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column" id="col-Enviado" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Enviado')">
+                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column"
+                            id="col-Enviado" ondragover="allowDrop(event)" ondragenter="dragEnter(event)"
+                            ondragleave="dragLeave(event)" ondrop="drop(event, 'Enviado')">
                             <div class="flex justify-between items-center mb-4 pb-2 border-b border-cf-gray">
-                                <span class="font-impact text-md text-cf-yellow tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-truck text-xs text-cf-yellow"></i> Enviado</span>
-                                <span id="count-Enviado" class="bg-cf-yellow text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
+                                <span
+                                    class="font-impact text-md text-cf-yellow tracking-wider uppercase flex items-center gap-1.5"><i
+                                        class="fa-solid fa-truck text-xs text-cf-yellow"></i> Enviado</span>
+                                <span id="count-Enviado"
+                                    class="bg-cf-yellow text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
                             </div>
                             <div id="cards-Enviado" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
                         </div>
-                        
+
                         <!-- Col: Concluído -->
-                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column" id="col-Concluido" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, 'Concluído')">
+                        <div class="bg-cf-black/40 border-2 border-cf-gray/60 p-4 rounded min-h-[500px] flex flex-col transition-all duration-300 kanban-column"
+                            id="col-Concluido" ondragover="allowDrop(event)" ondragenter="dragEnter(event)"
+                            ondragleave="dragLeave(event)" ondrop="drop(event, 'Concluído')">
                             <div class="flex justify-between items-center mb-4 pb-2 border-b border-cf-gray">
-                                <span class="font-impact text-md text-green-500 tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-xs text-green-500"></i> Concluído</span>
-                                <span id="count-Concluido" class="bg-green-500 text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
+                                <span
+                                    class="font-impact text-md text-green-500 tracking-wider uppercase flex items-center gap-1.5"><i
+                                        class="fa-solid fa-circle-check text-xs text-green-500"></i> Concluído</span>
+                                <span id="count-Concluido"
+                                    class="bg-green-500 text-cf-black font-impact text-xs px-2 py-0.5 rounded">0</span>
                             </div>
                             <div id="cards-Concluido" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
                         </div>
@@ -317,21 +386,27 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Form Form -->
                     <div class="lg:col-span-1 bg-cf-darkgray p-6 border-4 border-cf-yellow">
-                        <h3 class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
+                        <h3
+                            class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
                             <i class="fa-solid fa-circle-plus text-cf-yellow"></i> Novo Cupom
                         </h3>
                         <div class="space-y-4 font-body">
                             <div>
-                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Código do Cupom</label>
-                                <input type="text" id="coupon-code" placeholder="Ex: MONSTRO10" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold uppercase">
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Código do
+                                    Cupom</label>
+                                <input type="text" id="coupon-code" placeholder="Ex: MONSTRO10"
+                                    class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold uppercase">
                             </div>
                             <div>
                                 <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Desconto (%)</label>
-                                <input type="number" id="coupon-discount" placeholder="Ex: 10" min="1" max="100" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                                <input type="number" id="coupon-discount" placeholder="Ex: 10" min="1" max="100"
+                                    class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
                             </div>
                             <div>
-                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Filtrar por Dia da Semana</label>
-                                <select id="coupon-day" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Filtrar por Dia da
+                                    Semana</label>
+                                <select id="coupon-day"
+                                    class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
                                     <option value="Todo Dia">Todo Dia</option>
                                     <option value="Segunda-feira">Segunda-feira</option>
                                     <option value="Terça-feira">Terça-feira</option>
@@ -342,7 +417,8 @@
                                     <option value="Domingo">Domingo</option>
                                 </select>
                             </div>
-                            <button onclick="addCoupon()" class="btn-street w-full py-2.5 font-bold flex items-center justify-center gap-2 mt-4 shadow-lg text-sm">
+                            <button onclick="addCoupon()"
+                                class="btn-street w-full py-2.5 font-bold flex items-center justify-center gap-2 mt-4 shadow-lg text-sm">
                                 <i class="fa-solid fa-plus"></i> Criar Cupom
                             </button>
                         </div>
@@ -350,7 +426,8 @@
 
                     <!-- List Column -->
                     <div class="lg:col-span-2 bg-cf-darkgray p-6 border-4 border-white">
-                        <h3 class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
+                        <h3
+                            class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
                             <i class="fa-solid fa-ticket text-cf-yellow"></i> Cupons de Desconto
                         </h3>
                         <div class="overflow-x-auto">
@@ -379,22 +456,29 @@
                     <h2 class="font-impact text-2xl md:text-3xl text-cf-yellow uppercase mb-6 flex items-center gap-2">
                         <i class="fa-solid fa-gears"></i> Configurações do Negócio
                     </h2>
-                    
+
                     <div class="space-y-6 max-w-xl font-body">
                         <div>
-                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">WhatsApp de Contato (Link de Pedido)</label>
+                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">WhatsApp de Contato
+                                (Link de Pedido)</label>
                             <div class="flex gap-2">
-                                <span class="bg-cf-black border border-cf-gray text-gray-500 px-3 py-2 flex items-center rounded text-sm font-semibold">+55</span>
-                                <input type="text" id="config-whatsapp" value="11910993953" class="flex-1 bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                                <span
+                                    class="bg-cf-black border border-cf-gray text-gray-500 px-3 py-2 flex items-center rounded text-sm font-semibold">+55</span>
+                                <input type="text" id="config-whatsapp" value="11910993953"
+                                    class="flex-1 bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
                             </div>
-                            <span class="text-[10px] text-gray-500 font-semibold block mt-1">Insira apenas os números com DDD.</span>
+                            <span class="text-[10px] text-gray-500 font-semibold block mt-1">Insira apenas os números
+                                com DDD.</span>
                         </div>
                         <div>
-                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Localização da Unidade</label>
-                            <input type="text" id="config-address" value="Ipiranga, São Paulo - SP" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Localização da
+                                Unidade</label>
+                            <input type="text" id="config-address" value="Ipiranga, São Paulo - SP"
+                                class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
                         </div>
-                        
-                        <button onclick="saveConfig()" class="btn-street px-6 py-2.5 font-bold flex items-center gap-2 mt-4 shadow-lg">
+
+                        <button onclick="saveConfig()"
+                            class="btn-street px-6 py-2.5 font-bold flex items-center gap-2 mt-4 shadow-lg">
                             <i class="fa-solid fa-check"></i> Salvar Ajustes
                         </button>
                     </div>
@@ -404,24 +488,30 @@
     </div>
 
     <!-- Modal: Adicionar Novo Prato (Acionado apenas via botão) -->
-    <div id="add-dish-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+    <div id="add-dish-modal"
+        class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-md w-full mx-4 relative torn-edge shadow-2xl">
-            <button onclick="closeAddDishModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
+            <button onclick="closeAddDishModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            
+
             <h3 class="font-impact text-2xl text-cf-yellow uppercase mb-6 flex items-center gap-2">
                 <i class="fa-solid fa-circle-plus"></i> Adicionar Prato
             </h3>
-            
+
             <div class="space-y-4 font-body">
                 <div>
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Nome do Prato</label>
-                    <input type="text" id="dish-name" placeholder="Ex: Frango Grelhado C/ Arroz" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold uppercase" oninput="updateNewDishPreview()">
+                    <input type="text" id="dish-name" placeholder="Ex: Frango Grelhado C/ Arroz"
+                        class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold uppercase"
+                        oninput="updateNewDishPreview()">
                 </div>
                 <div>
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Categoria</label>
-                    <select id="dish-category" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold" onchange="updateNewDishPreview()">
+                    <select id="dish-category"
+                        class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold"
+                        onchange="updateNewDishPreview()">
                         <option value="Frango">Linha Frango</option>
                         <option value="Patinho">Linha Patinho</option>
                         <option value="Gourmet">Linha Gourmet</option>
@@ -430,45 +520,64 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço P (R$)</label>
-                        <input type="text" id="dish-price-p" placeholder="Ex: 19,50" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center" oninput="updateNewDishPreview()">
+                        <input type="text" id="dish-price-p" placeholder="Ex: 19,50"
+                            class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center"
+                            oninput="updateNewDishPreview()">
                     </div>
                     <div>
                         <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço G (R$)</label>
-                        <input type="text" id="dish-price-g" placeholder="Ex: 27,50" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center" oninput="updateNewDishPreview()">
+                        <input type="text" id="dish-price-g" placeholder="Ex: 27,50"
+                            class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center"
+                            oninput="updateNewDishPreview()">
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Foto do Prato</label>
-                    <input type="file" id="dish-image" accept="image/*" class="w-full bg-cf-black text-gray-400 border border-cf-gray rounded py-1 px-2 text-sm cursor-pointer file:mr-4 file:py-1 file:px-3 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-cf-yellow file:text-cf-black hover:file:bg-white cursor-hover" onchange="previewNewDishImage(this)">
+                    <input type="file" id="dish-image" accept="image/*"
+                        class="w-full bg-cf-black text-gray-400 border border-cf-gray rounded py-1 px-2 text-sm cursor-pointer file:mr-4 file:py-1 file:px-3 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-cf-yellow file:text-cf-black hover:file:bg-white cursor-hover"
+                        onchange="previewNewDishImage(this)">
                 </div>
 
                 <!-- Live Preview Card -->
                 <div id="new-dish-preview-container" class="mt-4 hidden">
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-2 text-center">Como o cliente vai ver:</label>
-                    <div class="bg-cf-darkgray border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between shadow-xl w-64 mx-auto group">
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-2 text-center">Como o cliente vai
+                        ver:</label>
+                    <div
+                        class="bg-cf-darkgray border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between shadow-xl w-64 mx-auto group">
                         <div class="h-32 bg-cf-black overflow-hidden relative border-b-4 border-cf-yellow">
-                            <img id="new-dish-preview-img" src="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute top-2 left-2 bg-cf-yellow text-cf-black text-[10px] uppercase font-bold px-2 py-1 rounded shadow" id="new-dish-preview-cat">Linha Frango</div>
+                            <img id="new-dish-preview-img" src=""
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute top-2 left-2 bg-cf-yellow text-cf-black text-[10px] uppercase font-bold px-2 py-1 rounded shadow"
+                                id="new-dish-preview-cat">Linha Frango</div>
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between">
-                            <h4 class="font-impact text-lg text-white uppercase mb-2" id="new-dish-preview-name">Nome do Prato</h4>
-                            <div class="flex justify-between items-center text-[10px] font-semibold pt-2 border-t border-gray-800 mt-auto">
-                                <span class="text-gray-400">P <span class="text-white bg-cf-gray px-1.5 py-0.5 rounded-sm ml-1" id="new-dish-preview-p">R$ —</span></span>
-                                <span class="text-cf-yellow ml-2">G <span class="bg-cf-yellow text-cf-black px-1.5 py-0.5 rounded-sm ml-1" id="new-dish-preview-g">R$ —</span></span>
+                            <h4 class="font-impact text-lg text-white uppercase mb-2" id="new-dish-preview-name">Nome do
+                                Prato</h4>
+                            <div
+                                class="flex justify-between items-center text-[10px] font-semibold pt-2 border-t border-gray-800 mt-auto">
+                                <span class="text-gray-400">P <span
+                                        class="text-white bg-cf-gray px-1.5 py-0.5 rounded-sm ml-1"
+                                        id="new-dish-preview-p">R$ —</span></span>
+                                <span class="text-cf-yellow ml-2">G <span
+                                        class="bg-cf-yellow text-cf-black px-1.5 py-0.5 rounded-sm ml-1"
+                                        id="new-dish-preview-g">R$ —</span></span>
                             </div>
                         </div>
                     </div>
                     <div class="text-center mt-3">
-                        <button onclick="removeNewDishImage()" class="text-red-500 hover:text-red-400 text-xs font-bold uppercase underline">
+                        <button onclick="removeNewDishImage()"
+                            class="text-red-500 hover:text-red-400 text-xs font-bold uppercase underline">
                             <i class="fa-solid fa-trash-can mr-1"></i> Remover Foto
                         </button>
                     </div>
                 </div>
                 <div class="flex gap-3 mt-6">
-                    <button onclick="closeAddDishModal()" class="w-1/2 py-2.5 bg-cf-gray text-white font-bold uppercase tracking-wider text-sm transition-all hover:bg-white hover:text-cf-black">
+                    <button onclick="closeAddDishModal()"
+                        class="w-1/2 py-2.5 bg-cf-gray text-white font-bold uppercase tracking-wider text-sm transition-all hover:bg-white hover:text-cf-black">
                         Cancelar
                     </button>
-                    <button onclick="addDish()" class="btn-street w-1/2 py-2.5 font-bold flex items-center justify-center gap-2 shadow-lg text-sm">
+                    <button onclick="addDish()"
+                        class="btn-street w-1/2 py-2.5 font-bold flex items-center justify-center gap-2 shadow-lg text-sm">
                         <i class="fa-solid fa-plus"></i> Adicionar
                     </button>
                 </div>
@@ -477,19 +586,23 @@
     </div>
 
     <!-- Modal: Detalhes do Pedido -->
-    <div id="order-detail-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-2xl w-full mx-4 relative torn-edge shadow-2xl overflow-y-auto max-h-[90vh]">
-            <button onclick="closeOrderDetailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
+    <div id="order-detail-modal"
+        class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div
+            class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-2xl w-full mx-4 relative torn-edge shadow-2xl overflow-y-auto max-h-[90vh]">
+            <button onclick="closeOrderDetailModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            
+
             <div class="flex justify-between items-start mb-6 pb-4 border-b border-cf-gray">
                 <div>
-                    <h3 class="font-impact text-2xl text-cf-yellow uppercase">Detalhes do Pedido <span id="detail-order-id">#CF-0000</span></h3>
+                    <h3 class="font-impact text-2xl text-cf-yellow uppercase">Detalhes do Pedido <span
+                            id="detail-order-id">#CF-0000</span></h3>
                     <p class="text-xs text-gray-400 font-semibold mt-1" id="detail-order-date"></p>
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-body text-sm mb-6">
                 <div class="space-y-3">
                     <div>
@@ -498,14 +611,16 @@
                     </div>
                     <div>
                         <span class="block text-xs uppercase font-bold text-gray-400">WhatsApp / Telefone</span>
-                        <a href="#" target="_blank" class="font-bold text-cf-yellow hover:underline flex items-center gap-1.5" id="detail-client-phone"></a>
+                        <a href="#" target="_blank"
+                            class="font-bold text-cf-yellow hover:underline flex items-center gap-1.5"
+                            id="detail-client-phone"></a>
                     </div>
                     <div>
                         <span class="block text-xs uppercase font-bold text-gray-400">Forma de Pagamento</span>
                         <span class="font-bold text-white" id="detail-payment"></span>
                     </div>
                 </div>
-                
+
                 <div class="space-y-3">
                     <div>
                         <span class="block text-xs uppercase font-bold text-gray-400">Endereço de Entrega</span>
@@ -517,21 +632,23 @@
                     </div>
                     <div>
                         <span class="block text-xs uppercase font-bold text-gray-400">Status Atual</span>
-                        <select id="detail-status-select" onchange="changeDetailOrderStatus(this.value)" class="mt-1 bg-cf-black border border-cf-gray text-white text-xs font-bold rounded px-2.5 py-1.5 focus:border-cf-yellow focus:outline-none"></select>
+                        <select id="detail-status-select" onchange="changeDetailOrderStatus(this.value)"
+                            class="mt-1 bg-cf-black border border-cf-gray text-white text-xs font-bold rounded px-2.5 py-1.5 focus:border-cf-yellow focus:outline-none"></select>
                     </div>
                 </div>
             </div>
-            
+
             <div id="detail-notes-container" class="bg-cf-black p-3 border border-cf-gray rounded mb-6 hidden">
                 <span class="block text-xs uppercase font-bold text-gray-400 mb-1">Observações do Cliente:</span>
                 <p class="text-sm italic text-gray-300 font-sans" id="detail-notes"></p>
             </div>
-            
+
             <div class="border-t-2 border-dashed border-cf-gray pt-6 mb-6">
                 <h4 class="font-impact text-lg text-white uppercase mb-4 tracking-wider">Itens do Pedido</h4>
-                <div class="bg-cf-black border border-cf-gray p-4 rounded font-mono text-xs space-y-3" id="detail-items-list"></div>
+                <div class="bg-cf-black border border-cf-gray p-4 rounded font-mono text-xs space-y-3"
+                    id="detail-items-list"></div>
             </div>
-            
+
             <div class="space-y-1.5 font-body text-sm text-right border-t border-cf-gray pt-4">
                 <div class="flex justify-between text-gray-400">
                     <span>Subtotal:</span>
@@ -546,12 +663,14 @@
                     <span class="text-cf-yellow font-impact text-lg" id="detail-total">R$ 0,00</span>
                 </div>
             </div>
-            
+
             <div class="flex gap-3 mt-8">
-                <button onclick="deleteDetailOrder()" class="w-1/2 py-2.5 bg-red-600/20 text-red-500 border border-red-500 font-bold uppercase tracking-wider text-xs transition-all hover:bg-red-600 hover:text-white">
+                <button onclick="deleteDetailOrder()"
+                    class="w-1/2 py-2.5 bg-red-600/20 text-red-500 border border-red-500 font-bold uppercase tracking-wider text-xs transition-all hover:bg-red-600 hover:text-white">
                     <i class="fa-solid fa-trash-can mr-1.5"></i> Apagar Pedido
                 </button>
-                <button onclick="closeOrderDetailModal()" class="w-1/2 btn-street py-2.5 font-bold flex items-center justify-center gap-2 text-sm">
+                <button onclick="closeOrderDetailModal()"
+                    class="w-1/2 btn-street py-2.5 font-bold flex items-center justify-center gap-2 text-sm">
                     Fechar Detalhes
                 </button>
             </div>
@@ -559,24 +678,30 @@
     </div>
 
     <!-- Modal: Image Cropper -->
-    <div id="cropper-modal" class="fixed inset-0 bg-black/95 flex items-center justify-center z-[60] hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-cf-darkgray border-4 border-cf-yellow p-4 md:p-6 w-full max-w-2xl mx-4 relative torn-edge shadow-2xl flex flex-col h-[85vh]">
-            <button onclick="closeCropperModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl z-10">
+    <div id="cropper-modal"
+        class="fixed inset-0 bg-black/95 flex items-center justify-center z-[60] hidden opacity-0 transition-opacity duration-300">
+        <div
+            class="bg-cf-darkgray border-4 border-cf-yellow p-4 md:p-6 w-full max-w-2xl mx-4 relative torn-edge shadow-2xl flex flex-col h-[85vh]">
+            <button onclick="closeCropperModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl z-10">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <h3 class="font-impact text-xl text-cf-yellow uppercase mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-crop"></i> Ajustar Foto
             </h3>
-            
-            <div class="flex-1 bg-black overflow-hidden relative border border-cf-gray mb-4 flex items-center justify-center">
+
+            <div
+                class="flex-1 bg-black overflow-hidden relative border border-cf-gray mb-4 flex items-center justify-center">
                 <img id="cropper-image" class="block max-w-full">
             </div>
-            
+
             <div class="flex gap-3 justify-end mt-auto">
-                <button onclick="closeCropperModal()" class="px-4 py-2 bg-cf-gray text-white font-bold uppercase text-sm hover:bg-white hover:text-cf-black transition-colors">
+                <button onclick="closeCropperModal()"
+                    class="px-4 py-2 bg-cf-gray text-white font-bold uppercase text-sm hover:bg-white hover:text-cf-black transition-colors">
                     Cancelar
                 </button>
-                <button onclick="confirmCrop()" class="btn-street px-6 py-2 font-bold flex items-center gap-2 text-sm shadow-lg">
+                <button onclick="confirmCrop()"
+                    class="btn-street px-6 py-2 font-bold flex items-center gap-2 text-sm shadow-lg">
                     <i class="fa-solid fa-check"></i> Cortar e Salvar
                 </button>
             </div>
@@ -584,38 +709,99 @@
     </div>
 
     <!-- Modal: Preview do Card -->
-    <div id="preview-dish-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+    <div id="preview-dish-modal"
+        class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-md w-full mx-4 relative torn-edge shadow-2xl">
-            <button onclick="closePreviewModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
+            <button onclick="closePreviewModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            
+
             <h3 class="font-impact text-2xl text-cf-yellow uppercase mb-6 flex items-center gap-2">
                 <i class="fa-solid fa-eye"></i> Visão do Cliente
             </h3>
-            
-            <label class="block text-xs uppercase font-bold text-gray-400 mb-2 text-center">Como o cliente vai ver:</label>
-            <div id="preview-modal-card-container" class="bg-cf-darkgray border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between shadow-xl w-64 mx-auto group mb-6">
+
+            <label class="block text-xs uppercase font-bold text-gray-400 mb-2 text-center">Como o cliente vai
+                ver:</label>
+            <div id="preview-modal-card-container"
+                class="bg-cf-darkgray border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between shadow-xl w-64 mx-auto group mb-6">
                 <!-- dynamically injected -->
             </div>
 
             <div class="text-center flex flex-wrap justify-center gap-2">
-                <button onclick="editExistingDishImage()" class="btn-street inline-flex items-center justify-center gap-2 px-3 py-2 font-bold text-xs shadow-lg">
+                <button onclick="editExistingDishImage()"
+                    class="btn-street inline-flex items-center justify-center gap-2 px-3 py-2 font-bold text-xs shadow-lg">
                     <i class="fa-solid fa-crop-simple"></i> Re-enquadrar
                 </button>
-                <label class="btn-street inline-flex items-center justify-center gap-2 px-3 py-2 font-bold cursor-pointer text-xs shadow-lg">
+                <label
+                    class="btn-street inline-flex items-center justify-center gap-2 px-3 py-2 font-bold cursor-pointer text-xs shadow-lg">
                     <i class="fa-solid fa-camera"></i> Trocar
-                    <input type="file" id="preview-modal-file-input" accept="image/*" class="hidden" onchange="previewModalImageChange(this)">
+                    <input type="file" id="preview-modal-file-input" accept="image/*" class="hidden"
+                        onchange="previewModalImageChange(this)">
                 </label>
-                <button onclick="removeExistingDishImage()" class="bg-red-600/20 text-red-500 border border-red-500 hover:bg-red-600 hover:text-white px-3 py-2 font-bold text-xs uppercase transition-all flex items-center gap-2 torn-edge">
+                <button onclick="removeExistingDishImage()"
+                    class="bg-red-600/20 text-red-500 border border-red-500 hover:bg-red-600 hover:text-white px-3 py-2 font-bold text-xs uppercase transition-all flex items-center gap-2 torn-edge">
                     <i class="fa-solid fa-trash-can"></i> Remover
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- Nutrition Modal -->
+    <div id="nutrition-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-cf-darkgray border border-cf-gray p-6 max-w-sm w-full mx-4 relative shadow-2xl rounded">
+            <button onclick="closeNutritionModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            <h3 class="font-impact text-2xl text-white uppercase tracking-widest mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-leaf text-cf-yellow"></i> Tabela Nutricional
+            </h3>
+            <p id="nutrition-dish-name" class="text-xs text-gray-400 font-bold mb-6 truncate uppercase"></p>
+            
+            <div class="space-y-3 font-body text-sm text-gray-300 font-semibold max-h-[60vh] overflow-y-auto pr-2">
+                <div class="flex justify-between items-center border-b border-cf-gray pb-2">
+                    <label>Valor Energético</label>
+                    <input type="text" id="nutri-energy" class="w-24 bg-cf-black border border-cf-gray rounded px-2 py-1 text-white text-right focus:border-cf-yellow outline-none" placeholder="Ex: 202kcal">
+                </div>
+                <div class="flex justify-between items-center border-b border-cf-gray pb-2">
+                    <label>Carboidratos</label>
+                    <input type="text" id="nutri-carbs" class="w-24 bg-cf-black border border-cf-gray rounded px-2 py-1 text-white text-right focus:border-cf-yellow outline-none" placeholder="Ex: 24gr">
+                </div>
+                <div class="flex justify-between items-center border-b border-cf-gray pb-2">
+                    <label>Proteínas</label>
+                    <input type="text" id="nutri-proteins" class="w-24 bg-cf-black border border-cf-gray rounded px-2 py-1 text-white text-right focus:border-cf-yellow outline-none" placeholder="Ex: 23gr">
+                </div>
+                <div class="flex justify-between items-center border-b border-cf-gray pb-2">
+                    <label>Gorduras Totais</label>
+                    <input type="text" id="nutri-total-fat" class="w-24 bg-cf-black border border-cf-gray rounded px-2 py-1 text-white text-right focus:border-cf-yellow outline-none" placeholder="Ex: 2gr">
+                </div>
+                <div class="flex justify-between items-center border-b border-cf-gray pb-2">
+                    <label>Gorduras Saturadas</label>
+                    <input type="text" id="nutri-sat-fat" class="w-24 bg-cf-black border border-cf-gray rounded px-2 py-1 text-white text-right focus:border-cf-yellow outline-none" placeholder="Ex: 0gr">
+                </div>
+                <div class="flex justify-between items-center border-b border-cf-gray pb-2">
+                    <label>Gorduras Trans</label>
+                    <input type="text" id="nutri-trans-fat" class="w-24 bg-cf-black border border-cf-gray rounded px-2 py-1 text-white text-right focus:border-cf-yellow outline-none" placeholder="Ex: 0gr">
+                </div>
+                <div class="flex justify-between items-center border-b border-cf-gray pb-2">
+                    <label>Fibra Alimentar</label>
+                    <input type="text" id="nutri-fiber" class="w-24 bg-cf-black border border-cf-gray rounded px-2 py-1 text-white text-right focus:border-cf-yellow outline-none" placeholder="Ex: 4gr">
+                </div>
+                <div class="flex justify-between items-center border-b border-cf-gray pb-2">
+                    <label>Sódio</label>
+                    <input type="text" id="nutri-sodium" class="w-24 bg-cf-black border border-cf-gray rounded px-2 py-1 text-white text-right focus:border-cf-yellow outline-none" placeholder="Ex: 200mg">
+                </div>
+            </div>
+
+            <button onclick="saveNutrition()" class="w-full mt-6 bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
+                SALVAR NUTRIÇÃO
+            </button>
+        </div>
+    </div>
+
     <!-- Success Toast Alert -->
-    <div id="toast-success" class="fixed bottom-6 right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div id="toast-success"
+        class="fixed bottom-6 right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
         <i class="fa-solid fa-circle-check text-2xl"></i>
         <span id="toast-text">ALTERAÇÕES SALVAS COM SUCESSO!</span>
     </div>
@@ -642,7 +828,7 @@
             const sidebar = document.getElementById('sidebar-menu');
             const overlay = document.getElementById('sidebar-overlay');
             if (!sidebar || !overlay) return;
-            
+
             if (sidebar.classList.contains('-translate-x-full')) {
                 sidebar.classList.remove('-translate-x-full');
                 sidebar.classList.add('translate-x-0');
@@ -707,7 +893,7 @@
         // Dishes management logic
         let dishes = [];
 
-        const defaultDishes = [
+        const defaultDishesRaw = [
             // FRANGO
             { id: 'price-frango-desfiado-pure-batata-doce-legumes', name: '01. Frango desfiado com purê de batata doce e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
             { id: 'price-frango-desfiado-arroz-integral-legumes', name: '02. Frango desfiado com arroz integral e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
@@ -731,6 +917,19 @@
             { id: 'price-patinho-desfiado-pure-mandioca-legumes', name: '15. Patinho desfiado com purê de mandioca e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
             { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' }
         ];
+
+        const defaultNutrition = {
+            energy: '202kcal',
+            carbs: '24gr',
+            proteins: '23gr',
+            totalFat: '2gr',
+            saturatedFat: '0gr',
+            transFat: '0gr',
+            fiber: '4gr',
+            sodium: '200mg'
+        };
+
+        const defaultDishes = defaultDishesRaw.map(d => ({...d, nutrition: {...defaultNutrition}}));
 
         async function loadDishes() {
             if (supabaseClient) {
@@ -779,20 +978,20 @@
         function renderDishesEditor() {
             const listContainer = document.getElementById('dishes-editor-list');
             if (!listContainer) return;
-            
+
             listContainer.innerHTML = '';
 
             const categories = ['Frango', 'Patinho', 'Gourmet'];
-            
+
             categories.forEach(cat => {
                 const catDishes = dishes.filter(d => d.category === cat);
-                
+
                 // Create Category Container
                 const catDiv = document.createElement('div');
                 catDiv.className = 'border-b border-cf-gray pb-4';
-                
+
                 let iconClass = cat === 'Frango' ? 'text-cf-yellow' : (cat === 'Patinho' ? 'text-white' : 'text-cf-yellow');
-                
+
                 catDiv.innerHTML = `
                     <div class="font-impact text-xl text-white uppercase mb-3 flex items-center gap-2">
                         <i class="fa-solid fa-circle ${iconClass} text-xs"></i> Linha ${cat}
@@ -801,10 +1000,10 @@
                         <!-- Items rendered here -->
                     </div>
                 `;
-                
+
                 listContainer.appendChild(catDiv);
                 const itemsContainer = document.getElementById(`cat-list-${cat}`);
-                
+
                 if (catDishes.length === 0) {
                     itemsContainer.innerHTML = `<div class="text-xs text-gray-500 font-semibold italic py-2">Nenhum prato nesta categoria.</div>`;
                     return;
@@ -824,10 +1023,13 @@
                                 </div>
                             </div>
                             <div class="flex flex-col">
-                                <span class="font-bold text-gray-200 uppercase text-sm">${dish.name}</span>
-                                <label class="text-[10px] text-cf-yellow cursor-pointer hover:underline mt-1">Alterar Foto
-                                    <input type="file" id="img-input-${dish.id}" accept="image/*" class="hidden" onchange="previewImage(this, '${dish.id}')">
-                                </label>
+                                <span class="text-white font-bold text-sm uppercase">${dish.name}</span>
+                                <div class="flex gap-3 items-center mt-1">
+                                    <label class="text-[10px] text-cf-yellow cursor-pointer hover:underline">Alterar Foto
+                                        <input type="file" id="img-input-${dish.id}" accept="image/*" class="hidden" onchange="previewImage(this, '${dish.id}')">
+                                    </label>
+                                    ${dish.image ? `<button onclick="removeDirectDishImage('${dish.id}')" class="text-[10px] text-red-500 hover:underline" title="Apagar Foto da Marmita"><i class="fa-solid fa-trash-can mr-1"></i>Apagar Foto</button>` : ''}
+                                </div>
                             </div>
                         </div>
                         <div class="flex items-center gap-3 font-body text-xs mt-3 md:mt-0">
@@ -845,6 +1047,9 @@
                                     <div class="w-9 h-5 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
                                 </label>
                             </div>
+                            <button onclick="openNutritionModal('${dish.id}')" class="text-cf-yellow hover:text-white transition-colors ml-2 text-base" title="Tabela Nutricional">
+                                <i class="fa-solid fa-leaf"></i>
+                            </button>
                             <button onclick="deleteDish('${dish.id}')" class="text-red-500 hover:text-red-400 transition-colors ml-2 text-base">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -870,7 +1075,7 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 300);
-            
+
             // Clear inputs and preview
             document.getElementById('dish-name').value = '';
             document.getElementById('dish-price-p').value = '';
@@ -889,7 +1094,7 @@
         function openCropperWithDataURL(dataUrl, context, dishId = null) {
             const img = document.getElementById('cropper-image');
             img.src = dataUrl;
-            
+
             const modal = document.getElementById('cropper-modal');
             modal.classList.remove('hidden');
             setTimeout(() => modal.classList.remove('opacity-0'), 10);
@@ -911,7 +1116,7 @@
 
         function openCropper(file, context, dishId = null) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 openCropperWithDataURL(e.target.result, context, dishId);
             };
             reader.readAsDataURL(file);
@@ -931,22 +1136,22 @@
 
         function confirmCrop() {
             if (!cropperInstance) return;
-            
+
             const canvas = cropperInstance.getCroppedCanvas({
                 maxWidth: 1600,
                 maxHeight: 800,
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high',
             });
-            
+
             const compressedBase64 = canvas.toDataURL('image/jpeg', 0.9);
-            
+
             if (cropperTargetContext === 'new') {
                 temporaryNewDishImageBase64 = compressedBase64;
                 document.getElementById('new-dish-preview-img').src = temporaryNewDishImageBase64;
                 document.getElementById('new-dish-preview-container').classList.remove('hidden');
                 updateNewDishPreview();
-            } 
+            }
             else if (cropperTargetContext === 'edit-inline' || cropperTargetContext === 'edit-modal') {
                 const dish = dishes.find(d => d.id === cropperTargetDishId);
                 if (dish) {
@@ -961,7 +1166,7 @@
                             if (img) img.src = compressedBase64;
                         }
                     }
-                    
+
                     if (cropperTargetContext === 'edit-modal' || cropperTargetContext === 'edit-inline') {
                         updatePreviewModalCard(dish);
                         if (currentPreviewDishId !== dish.id) {
@@ -971,7 +1176,7 @@
                     saveDishImageToDB(dish.id);
                 }
             }
-            
+
             closeCropperModal();
         }
 
@@ -987,7 +1192,7 @@
                         image: dish.image || ''
                     }).eq('id', dish.id);
                     if (error) {
-                         console.error("Erro no supabase ao salvar foto:", error);
+                        console.error("Erro no supabase ao salvar foto:", error);
                     }
                 } catch (err) {
                     console.error("Erro geral ao salvar foto:", err);
@@ -1013,14 +1218,14 @@
 
         function updateNewDishPreview() {
             if (!temporaryNewDishImageBase64) return;
-            
+
             const name = document.getElementById('dish-name').value.trim();
             const cat = document.getElementById('dish-category').value;
             const priceP = document.getElementById('dish-price-p').value.trim();
             const priceG = document.getElementById('dish-price-g').value.trim();
 
             document.getElementById('new-dish-preview-name').innerText = name || 'NOME DO PRATO';
-            
+
             let groupLabel = 'Linha ' + cat;
             if (cat === 'Gourmet') groupLabel = 'Linha Gourmet';
             document.getElementById('new-dish-preview-cat').innerText = groupLabel;
@@ -1033,10 +1238,10 @@
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = function(event) {
+                reader.onload = function (event) {
                     const img = new Image();
                     img.src = event.target.result;
-                    img.onload = function() {
+                    img.onload = function () {
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
@@ -1083,9 +1288,9 @@
 
             // Create a safe ID
             const id = 'price-' + name.toLowerCase()
-                                      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
-                                      .replace(/[^a-z0-9]+/g, '-') // replace spaces/special characters with hyphen
-                                      .replace(/(^-|-$)/g, ''); // trim starting/ending hyphens
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+                .replace(/[^a-z0-9]+/g, '-') // replace spaces/special characters with hyphen
+                .replace(/(^-|-$)/g, ''); // trim starting/ending hyphens
 
             // Check if ID already exists
             if (dishes.some(d => d.id === id)) {
@@ -1144,6 +1349,70 @@
             closeAddDishModal();
 
             showToast('PRATO ADICIONADO COM SUCESSO!');
+        }
+
+        let currentNutritionDishId = null;
+
+        function openNutritionModal(dishId) {
+            currentNutritionDishId = dishId;
+            const dish = dishes.find(d => d.id === dishId);
+            if (!dish) return;
+
+            document.getElementById('nutrition-dish-name').innerText = dish.name;
+            const n = dish.nutrition || {...defaultNutrition};
+
+            document.getElementById('nutri-energy').value = n.energy || '';
+            document.getElementById('nutri-carbs').value = n.carbs || '';
+            document.getElementById('nutri-proteins').value = n.proteins || '';
+            document.getElementById('nutri-total-fat').value = n.totalFat || '';
+            document.getElementById('nutri-sat-fat').value = n.saturatedFat || '';
+            document.getElementById('nutri-trans-fat').value = n.transFat || '';
+            document.getElementById('nutri-fiber').value = n.fiber || '';
+            document.getElementById('nutri-sodium').value = n.sodium || '';
+
+            const modal = document.getElementById('nutrition-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeNutritionModal() {
+            const modal = document.getElementById('nutrition-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+            currentNutritionDishId = null;
+        }
+
+        async function saveNutrition() {
+            if (!currentNutritionDishId) return;
+            const dish = dishes.find(d => d.id === currentNutritionDishId);
+            if (!dish) return;
+
+            dish.nutrition = {
+                energy: document.getElementById('nutri-energy').value.trim(),
+                carbs: document.getElementById('nutri-carbs').value.trim(),
+                proteins: document.getElementById('nutri-proteins').value.trim(),
+                totalFat: document.getElementById('nutri-total-fat').value.trim(),
+                saturatedFat: document.getElementById('nutri-sat-fat').value.trim(),
+                transFat: document.getElementById('nutri-trans-fat').value.trim(),
+                fiber: document.getElementById('nutri-fiber').value.trim(),
+                sodium: document.getElementById('nutri-sodium').value.trim(),
+            };
+
+            localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('dishes').update({
+                        nutrition: dish.nutrition
+                    }).eq('id', dish.id);
+                    if (error) console.error("Erro no supabase ao salvar nutrição:", error);
+                } catch (err) {
+                    console.error("Erro geral ao salvar nutrição:", err);
+                }
+            }
+
+            closeNutritionModal();
+            showToast('TABELA NUTRICIONAL SALVA!');
         }
 
         async function deleteDish(id) {
@@ -1228,21 +1497,23 @@
 
         function removeExistingDishImage() {
             if (!currentPreviewDishId) return;
-            const dish = dishes.find(d => d.id === currentPreviewDishId);
+            removeDirectDishImage(currentPreviewDishId);
+        }
+
+        function removeDirectDishImage(dishId) {
+            const dish = dishes.find(d => d.id === dishId);
             if (dish) {
+                if(!confirm(`Tem certeza que deseja apagar a foto do prato:\n${dish.name}?`)) return;
+
                 dish.image = '';
-                updatePreviewModalCard(dish);
                 
-                const imgInputId = `img-input-${dish.id}`;
-                const inlineInput = document.getElementById(imgInputId);
-                if (inlineInput) {
-                    const row = inlineInput.closest('.flex-col').previousElementSibling;
-                    if (row) {
-                        const img = row.querySelector('img');
-                        if (img) img.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
-                    }
+                // If it's currently open in preview, update preview card
+                if (currentPreviewDishId === dishId) {
+                    updatePreviewModalCard(dish);
                 }
+
                 saveDishImageToDB(dish.id);
+                renderDishesEditor();
             }
         }
 
@@ -1272,7 +1543,7 @@
                 const pInput = document.getElementById(`p-input-${dish.id}`);
                 const gInput = document.getElementById(`g-input-${dish.id}`);
                 const availInput = document.getElementById(`avail-input-${dish.id}`);
-                
+
                 if (pInput) dish.priceP = pInput.value.trim();
                 if (gInput) dish.priceG = gInput.value.trim();
                 if (availInput) dish.available = availInput.checked;
@@ -1414,9 +1685,9 @@
             } else {
                 localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
             }
-            
+
             renderCoupons();
-            
+
             // Clear inputs
             codeInput.value = '';
             discountInput.value = '';
@@ -1440,7 +1711,7 @@
             } else {
                 localStorage.setItem('cleanfoods_coupons', JSON.stringify(coupons));
             }
-            
+
             renderCoupons();
             showToast('STATUS DO CUPOM ATUALIZADO!');
         }
@@ -1484,7 +1755,7 @@
             coupons.forEach((coupon, index) => {
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-cf-gray/20 hover:bg-cf-black/20 transition-colors';
-                
+
                 tr.innerHTML = `
                     <td class="py-4 px-4 font-mono font-bold text-cf-yellow uppercase">${coupon.code}</td>
                     <td class="py-4 px-4 text-center font-mono">${coupon.discount}%</td>
@@ -1594,7 +1865,7 @@
                         `;
                     }
                 }
-                
+
                 for (const status in counts) {
                     if (counts[status]) counts[status].innerText = '0';
                 }
@@ -1604,7 +1875,7 @@
             orders.forEach(order => {
                 const status = order.status || 'Pendente';
                 if (!containers[status]) return;
-                
+
                 statusCounts[status]++;
 
                 const card = document.createElement('div');
@@ -1612,7 +1883,7 @@
                 let borderStyle = 'border-l-4 border-cf-yellow';
                 if (status === 'Em Preparo') borderStyle = 'border-l-4 border-white';
                 if (status === 'Concluído') borderStyle = 'border-l-4 border-green-500';
-                
+
                 card.className = `kanban-card bg-cf-darkgray p-4 ${borderStyle} rounded cursor-grab active:cursor-grabbing hover:scale-[1.02] hover:bg-cf-gray/40 transition-all shadow-md select-none relative`;
                 card.setAttribute('draggable', 'true');
                 card.setAttribute('ondragstart', `dragStart(event, '${order.id}')`);
@@ -1655,7 +1926,7 @@
             for (const status in counts) {
                 if (counts[status]) {
                     counts[status].innerText = statusCounts[status];
-                    
+
                     // Show a message if column is empty
                     if (statusCounts[status] === 0 && containers[status]) {
                         containers[status].innerHTML = `
@@ -1794,7 +2065,7 @@
 
             // Populate text elements
             document.getElementById('detail-order-id').innerText = '#' + order.id;
-            
+
             // Format order date
             let formattedDate = 'Sem registro';
             if (order.date) {
@@ -1803,18 +2074,18 @@
             }
             document.getElementById('detail-order-date').innerText = `Realizado em: ${formattedDate}`;
             document.getElementById('detail-client-name').innerText = order.clientName;
-            
+
             // Phone link with Whatsapp
             const phoneVal = order.clientPhone.replace(/\D/g, '');
             const phoneEl = document.getElementById('detail-client-phone');
             phoneEl.innerText = order.clientPhone;
             phoneEl.href = `https://wa.me/55${phoneVal}`;
-            
+
             document.getElementById('detail-payment').innerText = order.payment;
             document.getElementById('detail-address').innerText = order.address;
-            
+
             const formattedDeliveryDate = formatDateToBR(order.deliveryDate);
-            document.getElementById('detail-delivery').innerText = order.deliveryDate 
+            document.getElementById('detail-delivery').innerText = order.deliveryDate
                 ? `${formattedDeliveryDate} às ${order.deliveryTime}`
                 : 'Não agendado';
 
@@ -1842,11 +2113,11 @@
             // Populate Items Table/List
             const itemsListContainer = document.getElementById('detail-items-list');
             itemsListContainer.innerHTML = '';
-            
+
             order.items.forEach(item => {
                 const itemEl = document.createElement('div');
                 itemEl.className = 'flex justify-between items-center border-b border-cf-gray/30 pb-2 last:border-b-0 last:pb-0';
-                
+
                 const sizeBadge = item.size ? `<span class="bg-cf-yellow text-cf-black font-bold px-1.5 py-0.5 rounded text-[10px] ml-1.5">${item.size}</span>` : '';
                 const price = parseFloat(item.price || 0);
                 const quantity = parseInt(item.quantity || 1);
@@ -1868,7 +2139,7 @@
             const total = parseFloat(order.total || 0);
 
             document.getElementById('detail-subtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-            
+
             const discountRow = document.getElementById('detail-discount-row');
             if (discount > 0) {
                 document.getElementById('detail-discount').innerText = `-R$ ${discount.toFixed(2).replace('.', ',')}`;
@@ -1929,22 +2200,22 @@
 
             if (revSpan) revSpan.innerText = `R$ ${totalRevenue.toFixed(2).replace('.', ',')}`;
             if (revDesc) {
-                revDesc.innerText = orders.length > 0 
-                    ? `Faturamento acumulado` 
+                revDesc.innerText = orders.length > 0
+                    ? `Faturamento acumulado`
                     : `Nenhuma venda registrada`;
             }
 
             if (mealsSpan) mealsSpan.innerText = `${totalMeals} Marmitas`;
             if (mealsDesc) {
-                mealsDesc.innerText = totalMeals > 0 
-                    ? `Total de marmitas prontas` 
+                mealsDesc.innerText = totalMeals > 0
+                    ? `Total de marmitas prontas`
                     : `Aguardando novos pedidos`;
             }
 
             if (ordersSpan) ordersSpan.innerText = `${orders.length} pedidos`;
             if (ordersDesc) {
-                ordersDesc.innerText = orders.length > 0 
-                    ? `Aguardando novos pedidos` 
+                ordersDesc.innerText = orders.length > 0
+                    ? `Aguardando novos pedidos`
                     : `Sem pedidos no momento`;
             }
         }
@@ -1955,7 +2226,7 @@
             const toast = document.getElementById('toast-success');
             toast.classList.remove('translate-y-24', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-            
+
             // Hide toast after 3 seconds
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
@@ -1964,4 +2235,5 @@
         }
     </script>
 </body>
+
 </html>
