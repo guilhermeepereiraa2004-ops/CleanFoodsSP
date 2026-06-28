@@ -263,6 +263,16 @@
             filter: grayscale(0%) contrast(110%);
         }
 
+        /* Floating Animation */
+        @keyframes float-anim {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float-anim 6s ease-in-out infinite;
+        }
+
         /* Attention Grabber */
         @keyframes attention-pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(246, 197, 0, 0.8); }
@@ -313,10 +323,10 @@
                 padding-bottom: clamp(1rem, 4vh, 3rem) !important;
             }
             #hero-header-spacer {
-                height: clamp(20px, 4vh, 60px) !important;
+                height: clamp(40px, 8vh, 100px) !important;
             }
             header img {
-                height: clamp(4rem, 11vh, 7.5rem) !important;
+                height: clamp(5rem, 15vh, 12rem) !important;
             }
             #hero-container {
                 gap: clamp(1rem, 4vh, 4rem) !important;
@@ -336,7 +346,7 @@
                 margin-top: 0 !important;
             }
             #hero-image-container {
-                max-width: clamp(380px, 66vh, 680px) !important;
+                max-width: clamp(450px, 85vh, 1000px) !important;
             }
             #hero-subtitle {
                 font-size: clamp(0.875rem, 1.8vh, 1.125rem) !important;
@@ -376,14 +386,12 @@
     </button>
 
     <!-- Header Minimal/Raw -->
-    <header class="absolute top-0 w-full pt-4 pb-4 px-4 md:px-8 flex justify-between items-center z-40 mix-blend-difference">
+    <header class="absolute top-0 w-full pt-4 pb-4 px-4 md:px-8 flex justify-between items-start z-40 mix-blend-difference">
         <a href="#hero" class="cursor-hover">
-            <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-12 sm:h-16 md:h-20 lg:h-24 w-auto object-contain">
+            <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-20 sm:h-28 md:h-32 lg:h-40 w-auto object-contain">
         </a>
-        <div class="flex items-center gap-3 sm:gap-4 md:gap-6">
-            <a href="cardapio-completo.html" class="font-impact text-sm sm:text-base md:text-lg text-cf-black bg-cf-yellow px-4 py-2 hover:bg-white hover:text-cf-black transition-all tracking-widest cursor-hover border-2 border-cf-yellow hover:border-white shadow-[0_0_15px_rgba(246,197,0,0.6)] animate-pulse rounded-sm flex items-center gap-2">
-                VER CARDÁPIO <i class="fa-solid fa-utensils"></i>
-            </a>
+        <div class="flex items-center gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-4">
+
             <a href="admin.html" class="font-impact text-[10px] sm:text-xs md:text-sm text-cf-black bg-white hover:bg-cf-yellow border border-white hover:border-cf-yellow px-2 py-1 transition-colors tracking-wider cursor-hover uppercase rounded-sm flex items-center gap-1 shadow-md">
                 ADMIN <i class="fa-solid fa-user-gear text-[10px]"></i>
             </a>
@@ -393,7 +401,7 @@
     <section class="relative min-h-screen grid grid-rows-[auto_1fr] pb-12" id="hero">
         <!-- Smoke Video Background -->
         <video id="smoke-video" autoplay muted loop playsinline>
-            <source src="smoke.mp4" type="video/mp4">
+            <source src="smoke.webm" type="video/webm">
         </video>
 
         <!-- Spacer matching header height to prevent overlap -->
@@ -425,7 +433,7 @@
                     <span class="block text-cf-yellow marker-highlight px-2 mt-1 md:mt-2">PESADO.</span>
                 </h1>
                 <p id="hero-subtitle" class="font-body text-gray-300 text-sm sm:text-base lg:text-lg max-w-md border-l-4 border-cf-yellow pl-4 reveal-up font-semibold">
-                    Marmitas fitness reais para quem treina de verdade. Sem glúten, sem lactose, sem frescura.
+                    Marmitas fitness reais para quem treina de verdade. Sem glúten, sem lactose.
                 </p>
                 
                 <div class="pt-2 md:pt-4 reveal-up mt-4">
@@ -436,19 +444,21 @@
             </div>
 
             <!-- Hero Image Collage -->
-            <div class="relative w-full flex justify-center items-center reveal-right mt-8 lg:mt-0">
+            <div class="relative w-full flex justify-center items-center reveal-right mt-12 lg:mt-0 animate-float z-10">
                 <!-- Inner Aspect Ratio Box -->
-                <div id="hero-image-container" class="relative w-full max-w-[360px] sm:max-w-[500px] lg:max-w-[620px] aspect-[4/5] flex items-center justify-center">
-                    <!-- Decorative Frame -->
-                    <div class="absolute inset-0 border-4 border-cf-yellow transform rotate-3 z-0"></div>
-                    <div class="absolute inset-[5%] border-2 border-white border-dashed transform -rotate-2 z-0 opacity-50"></div>
+                <div id="hero-image-container" class="relative w-full max-w-[460px] sm:max-w-[650px] lg:max-w-[850px] xl:max-w-[1000px] aspect-[4/3] flex items-center justify-center">
                     
-                    <img src="Marmita%20monstro.png" alt="Marmita Cleanfoods" class="w-[90%] h-[90%] object-cover z-10 torn-edge shadow-2xl relative">
+                    <!-- Decorative Brutalist Frames -->
+                    <div class="absolute inset-0 bg-white transform translate-x-4 translate-y-4 md:translate-x-8 md:translate-y-8 z-0 border-2 border-cf-black"></div>
+                    <div class="absolute inset-0 bg-cf-yellow transform rotate-2 z-0 border-4 border-cf-black"></div>
                     
-                    <!-- Floating Graphic -->
-                    <div class="absolute bottom-[5%] -left-[5%] bg-cf-yellow text-cf-black font-impact text-2xl lg:text-4xl p-2 lg:p-4 transform -rotate-12 z-20 shadow-lg whitespace-nowrap">
-                        100% REAL
-                    </div>
+                    <!-- Dotted/Halftone Pattern Overlay -->
+                    <div class="absolute -inset-4 md:-inset-8 border-2 border-white/20 border-dashed transform -rotate-1 z-0 opacity-40 pointer-events-none"></div>
+                    
+                    <!-- Main Image -->
+                    <img src="Foto nova hero section.png" alt="Marmita Cleanfoods" class="w-[96%] h-[96%] object-cover z-10 torn-edge shadow-2xl relative border-4 border-cf-black">
+                    
+                    <!-- Floating Graphics / Badges Removed -->
                 </div>
             </div>
         </div>
@@ -497,7 +507,7 @@
 
             <div class="mb-20 text-center relative reveal-up">
                 <h2 class="font-impact text-6xl md:text-8xl text-outline absolute left-1/2 -translate-x-1/2 top-[-40px] w-full opacity-30 select-none">O ARSENAL</h2>
-                <h3 class="font-impact text-5xl md:text-7xl text-white relative z-10">ESCOLHA SEU <span class="text-cf-yellow border-b-8 border-cf-yellow">COMBUSTÍVEL</span></h3>
+                <h3 class="font-impact text-5xl md:text-7xl text-white relative z-10">MONTE SEU <span class="text-cf-yellow border-b-8 border-cf-yellow">COMBO</span></h3>
                 <p class="font-street text-xl text-gray-400 mt-6">Tamanhos projetados pro seu shape:</p>
                 <div class="flex justify-center gap-6 mt-4 font-impact text-2xl">
                     <span class="bg-cf-darkgray px-4 py-2 border-l-4 border-white">P: 225g</span>
@@ -539,43 +549,27 @@
             <!-- Destaque GOURMET -->
             <div class="mt-32 relative reveal-up">
                 <div class="absolute inset-0 bg-cf-yellow transform -skew-y-3 z-0 scale-105"></div>
-                <div class="relative z-10 bg-cf-black border-4 border-cf-yellow p-5 sm:p-8 md:p-12 flex flex-col md:flex-row gap-10 items-center">
+                <div class="relative z-10 bg-cf-black border-4 border-cf-yellow p-5 sm:p-8 md:p-12 flex flex-col gap-6 items-center">
                     
-                    <div class="md:w-1/2">
+                    <div class="w-full text-center">
                         <h4 class="font-street text-2xl text-white mb-2 transform -rotate-2">Pra sair da rotina</h4>
                         <h3 class="font-impact text-5xl md:text-6xl text-cf-yellow uppercase mb-6 marker-highlight">Linha Gourmet</h3>
                         <p class="font-body text-gray-300 font-semibold mb-8">Sabor de refeição livre, macros de dieta estrita. O bagulho é louco.</p>
                         
-                        <div id="menu-gourmet-list" class="space-y-4 font-body w-full">
+                        <div id="menu-gourmet-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 font-body w-full text-left">
                             <!-- Dynamic items -->
                         </div>
-                        <div class="mt-8 text-left relative z-10">
+                        <div class="mt-12 text-center relative z-10">
                             <a href="cardapio-completo.html" class="inline-block border-2 border-cf-yellow text-cf-yellow font-impact tracking-wider px-6 py-2 hover:bg-cf-yellow hover:text-cf-black transition-colors rounded-sm text-sm uppercase cursor-hover">
                                 Ver Cardápio Completo
                             </a>
-                        </div>
-                    </div>
-                    
-                    <div class="md:w-1/2 relative flex justify-center cursor-hover">
-                        <!-- Imagem estilo lambe-lambe -->
-                        <img src="Marmita%20gourmet.jpg" alt="Gourmet" class="w-full max-w-md torn-edge shadow-[15px_15px_0px_#fff] transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                        <div class="absolute -top-5 -right-5 bg-black text-white font-impact text-3xl px-4 py-2 transform rotate-12 border-2 border-white">
-                            NOVO
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- Central Action Buttons -->
-            <div class="mt-20 flex flex-col sm:flex-row justify-center items-center gap-6 reveal-up">
-                <a href="cardapio-completo.html" class="btn-street text-xl sm:text-2xl px-8 sm:px-10 py-4 sm:py-5 cursor-hover btn-attention text-center w-full sm:w-auto">
-                    <i class="fa-solid fa-book-open mr-2"></i> ACESSAR CARDÁPIO COMPLETO
-                </a>
-                <a href="https://wa.me/5511910993953" target="_blank" class="btn-street-outline text-xl sm:text-2xl px-8 sm:px-10 py-4 sm:py-5 cursor-hover text-center w-full sm:w-auto">
-                    FAZER PEDIDO AGORA
-                </a>
-            </div>
+
 
         </div>
     </section>
@@ -601,7 +595,7 @@
                             <i class="fa-solid fa-fire"></i>
                         </div>
                         <h3 class="font-impact text-3xl text-white mb-2 uppercase">A Escolha</h3>
-                        <p class="font-body text-gray-400 font-semibold">Monte seu arsenal. Escolha entre frango, patinho ou linha gourmet pelo WhatsApp.</p>
+                        <p class="font-body text-gray-400 font-semibold">Monte seu arsenal. Escolha entre frango, patinho ou linha gourmet direto pelo site.</p>
                     </div>
                 </div>
 
@@ -670,7 +664,7 @@
         </div>
         
         <div class="text-center mt-20 pt-6 pb-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
-            © 2026 Cleanfoods Brasil. Todos os direitos reservados. Sem glúten, sem lactose, sem frescura.
+            © 2026 Cleanfoods Brasil. Todos os direitos reservados. Sem glúten, sem lactose.
             <div class="mt-4 text-[11px] tracking-widest">
                 <a href="https://www.grpsantana.com.br/" target="_blank" class="text-gray-300 hover:text-white transition-colors cursor-hover">
                     Quer um site assim? <span class="font-bold text-cf-yellow">GRUPO SANTANA</span>
@@ -751,6 +745,25 @@
                 <div class="bg-cf-black p-3 border border-gray-700 flex flex-col gap-3 rounded">
                     <div id="dish-detail-p" class="flex justify-between items-center w-full"></div>
                     <div id="dish-detail-g" class="flex justify-between items-center w-full pt-3 border-t border-gray-800"></div>
+                </div>
+                
+                <!-- Nutrition Table -->
+                <div class="mt-4 border border-cf-gray rounded overflow-hidden flex-shrink-0">
+                    <div class="w-full bg-cf-darkgray text-white font-impact text-sm tracking-wider uppercase p-3 flex justify-between items-center">
+                        <span><i class="fa-solid fa-leaf text-cf-yellow mr-2"></i> Tabela Nutricional</span>
+                    </div>
+                    <div id="nutrition-content" class="bg-cf-black text-gray-300 font-body text-xs">
+                        <div class="grid grid-cols-2 gap-px bg-cf-gray">
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Valor Energético</span> <strong id="det-energy" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Carboidratos</span> <strong id="det-carbs" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Proteínas</span> <strong id="det-proteins" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Totais</span> <strong id="det-total-fat" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Saturadas</span> <strong id="det-sat-fat" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Trans</span> <strong id="det-trans-fat" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Fibra Alimentar</span> <strong id="det-fiber" class="text-white"></strong></div>
+                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Sódio</span> <strong id="det-sodium" class="text-white"></strong></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -957,9 +970,119 @@
             { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' }
         ];
 
-        let dishes = [];
+        let dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
         let cart = JSON.parse(localStorage.getItem('cleanfoods_cart')) || {};
         let appliedCoupon = null;
+
+        function renderMenu() {
+            const frangoList = document.getElementById('menu-frango-list');
+            const patinhoList = document.getElementById('menu-patinho-list');
+            const gourmetList = document.getElementById('menu-gourmet-list');
+
+            if (frangoList) frangoList.innerHTML = '';
+            if (patinhoList) patinhoList.innerHTML = '';
+            if (gourmetList) gourmetList.innerHTML = '';
+
+            let countFrango = 0;
+            let countPatinho = 0;
+            let countGourmet = 0;
+
+            const activeDishes = dishes.filter(d => d.available !== false);
+
+            activeDishes.forEach(dish => {
+                const placeholderImg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
+                const imgSrc = dish.image || placeholderImg;
+
+                if (dish.category === 'Frango' && frangoList && countFrango < 4) {
+                    countFrango++;
+                    const card = document.createElement('div');
+                    card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-white transition-colors cursor-hover';
+                    
+                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
+                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+                        
+                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
+                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+
+                    card.innerHTML = `
+                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                            <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
+                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
+                                ${pHTML}
+                                ${gHTML}
+                            </div>
+                        </div>
+                    `;
+                    frangoList.appendChild(card);
+                } else if (dish.category === 'Patinho' && patinhoList && countPatinho < 4) {
+                    countPatinho++;
+                    const card = document.createElement('div');
+                    card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-cf-yellow transition-colors cursor-hover';
+                    
+                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
+                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+                        
+                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
+                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+
+                    card.innerHTML = `
+                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                            <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
+                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
+                                ${pHTML}
+                                ${gHTML}
+                            </div>
+                        </div>
+                    `;
+                    patinhoList.appendChild(card);
+                } else if (dish.category === 'Gourmet' && gourmetList && countGourmet < 4) {
+                    countGourmet++;
+                    const card = document.createElement('div');
+                    card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-cf-yellow transition-colors cursor-hover';
+                    
+                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
+                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+                        
+                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
+                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
+
+                    card.innerHTML = `
+                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                            <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
+                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
+                                ${pHTML}
+                                ${gHTML}
+                            </div>
+                        </div>
+                    `;
+                    gourmetList.appendChild(card);
+                }
+            });
+        }
 
         // Supabase Database helpers
         async function loadDishes() {
@@ -975,7 +1098,8 @@
                             priceP: d.price_p || d.priceP || '0,00',
                             priceG: d.price_g || d.priceG || '0,00',
                             available: d.available !== false,
-                            image: d.image || ''
+                            image: d.image || '',
+                            nutrition: d.nutrition
                         })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
                     } else {
                         // Seed database
@@ -997,6 +1121,7 @@
             } else {
                 dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
             }
+            if (typeof renderMenu === 'function') renderMenu();
         }
 
         async function loadSettings() {
@@ -1660,6 +1785,27 @@
                 gContainer.innerHTML = `<span class="text-gray-500 font-bold">G (450g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
             }
 
+            const defaultNutrition = {
+                energy: '202kcal',
+                carbs: '24gr',
+                proteins: '23gr',
+                totalFat: '2gr',
+                saturatedFat: '0gr',
+                transFat: '0gr',
+                fiber: '4gr',
+                sodium: '200mg'
+            };
+
+            const n = dish.nutrition || {...defaultNutrition};
+            document.getElementById('det-energy').innerText = n.energy || '-';
+            document.getElementById('det-carbs').innerText = n.carbs || '-';
+            document.getElementById('det-proteins').innerText = n.proteins || '-';
+            document.getElementById('det-total-fat').innerText = n.totalFat || '-';
+            document.getElementById('det-sat-fat').innerText = n.saturatedFat || '-';
+            document.getElementById('det-trans-fat').innerText = n.transFat || '-';
+            document.getElementById('det-fiber').innerText = n.fiber || '-';
+            document.getElementById('det-sodium').innerText = n.sodium || '-';
+
             const modal = document.getElementById('dish-detail-modal');
             modal.classList.remove('hidden');
             document.body.classList.add('cart-open-overflow');
@@ -1677,126 +1823,7 @@
             }, 300);
         }
 
-        window.onload = async function() {
-            // Load dishes from remote database or fallback to localStorage
-            await loadDishes();
-
-            const frangoList = document.getElementById('menu-frango-list');
-            const patinhoList = document.getElementById('menu-patinho-list');
-            const gourmetList = document.getElementById('menu-gourmet-list');
-
-            if (frangoList) frangoList.innerHTML = '';
-            if (patinhoList) patinhoList.innerHTML = '';
-            if (gourmetList) gourmetList.innerHTML = '';
-
-            let countFrango = 0;
-            let countPatinho = 0;
-            let countGourmet = 0;
-
-            const activeDishes = dishes.filter(d => d.available !== false);
-
-            activeDishes.forEach(dish => {
-                const placeholderImg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
-                const imgSrc = dish.image || placeholderImg;
-
-                if (dish.category === 'Frango' && frangoList && countFrango < 4) {
-                    countFrango++;
-                    const card = document.createElement('div');
-                    card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-white transition-colors cursor-hover';
-                    
-                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
-                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-                        
-                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
-                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-
-                    card.innerHTML = `
-                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
-                            <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
-                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
-                            </div>
-                        </div>
-                        <div class="p-4 flex-1 flex flex-col justify-between">
-                            <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
-                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
-                                ${pHTML}
-                                ${gHTML}
-                            </div>
-                        </div>
-                    `;
-                    frangoList.appendChild(card);
-                } else if (dish.category === 'Patinho' && patinhoList && countPatinho < 4) {
-                    countPatinho++;
-                    const card = document.createElement('div');
-                    card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-cf-yellow transition-colors cursor-hover';
-                    
-                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
-                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-                        
-                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
-                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-
-                    card.innerHTML = `
-                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
-                            <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
-                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
-                            </div>
-                        </div>
-                        <div class="p-4 flex-1 flex flex-col justify-between">
-                            <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
-                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
-                                ${pHTML}
-                                ${gHTML}
-                            </div>
-                        </div>
-                    `;
-                    patinhoList.appendChild(card);
-                } else if (dish.category === 'Gourmet' && gourmetList && countGourmet < 4) {
-                    countGourmet++;
-                    const card = document.createElement('div');
-                    card.className = 'bg-[#1a1a1a] border-l-4 border-cf-yellow rounded overflow-hidden flex flex-col group hover:bg-cf-darkgray transition-colors cursor-hover';
-                    
-                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
-                        ? `<span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>`
-                        : `<span class="text-gray-500 cursor-not-allowed">P: <span class="bg-cf-darkgray border border-gray-800 text-gray-600 px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">—</span></span>`;
-                        
-                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
-                        ? `<span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>`
-                        : `<span class="text-gray-500 cursor-not-allowed">G: <span class="bg-cf-darkgray border border-gray-800 text-gray-600 px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">—</span></span>`;
-
-                    card.innerHTML = `
-                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
-                            <img src="${imgSrc}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
-                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
-                            </div>
-                        </div>
-                        <div class="p-4 flex-1 flex flex-col justify-between">
-                            <span class="font-bold text-white text-sm uppercase mb-3 line-clamp-2">${dish.name}</span>
-                            <div class="mt-auto font-impact text-sm tracking-wide flex justify-between gap-2">
-                                ${pHTML}
-                                ${gHTML}
-                            </div>
-                        </div>
-                    `;
-                    gourmetList.appendChild(card);
-                }
-            });
-
-            // Load configurations and coupons asynchronously from Supabase / localStorage
-            await loadSettings();
-            await loadCoupons();
-
-            // Update badges and render cart state on load
-            updateCartBadges();
-            renderCart();
-
+        document.addEventListener('DOMContentLoaded', async function() {
             // Trigger GSAP reveal animations immediately (no preloader)
             const heroTimeline = gsap.timeline();
             heroTimeline.fromTo("#hero .reveal-up", 
@@ -1808,6 +1835,20 @@
                 { x: 0, autoAlpha: 1, rotation: 0, duration: 1, ease: "power3.out" },
                 "-=0.5"
             );
+
+            // Render menu instantly with cached or default dishes
+            renderMenu();
+
+            // Load dishes in background to fetch latest prices/availability
+            loadDishes();
+
+            // Load configurations and coupons asynchronously from Supabase / localStorage
+            await loadSettings();
+            await loadCoupons();
+
+            // Update badges and render cart state on load
+            updateCartBadges();
+            renderCart();
 
             // ScrollTrigger Animations for Menu and other sections
             const revealElements = document.querySelectorAll('.reveal-up:not(#hero .reveal-up), .reveal-right:not(#hero .reveal-right)');
@@ -1851,7 +1892,7 @@
                     scrub: 1
                 }
             });
-        };
+        });
 
         // ===== SMOKE VIDEO SCROLL FADE =====
         (function() {
