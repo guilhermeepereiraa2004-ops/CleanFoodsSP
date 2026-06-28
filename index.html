@@ -263,6 +263,16 @@
             filter: grayscale(0%) contrast(110%);
         }
 
+        /* Attention Grabber */
+        @keyframes attention-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(246, 197, 0, 0.8); }
+            50% { transform: scale(1.05) rotate(1deg); box-shadow: 0 0 25px 15px rgba(246, 197, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(246, 197, 0, 0); }
+        }
+        .btn-attention {
+            animation: attention-pulse 1.5s infinite;
+        }
+
         /* Cart Drawer Slide */
         #cart-drawer.open {
             transform: translateX(0);
@@ -347,6 +357,13 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
+    <!-- Floating Cardapio Button -->
+    <div id="floating-cardapio-btn" class="fixed bottom-6 left-6 z-40 opacity-0 pointer-events-none transform translate-y-24 scale-75 transition-all duration-500 ease-out">
+        <a href="cardapio-completo.html" class="bg-cf-yellow text-cf-black font-impact text-xl sm:text-2xl uppercase tracking-wider px-6 py-4 border-4 border-cf-black hover:border-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(246,197,0,0.8)] cursor-hover btn-attention">
+            <i class="fa-solid fa-book-open mr-2"></i> CARDÁPIO
+        </a>
+    </div>
+
     <!-- Floating WhatsApp -->
     <a href="https://wa.me/5511910993953" target="_blank" class="fixed bottom-6 right-6 w-16 h-16 bg-cf-yellow rounded-full flex items-center justify-center text-cf-black text-3xl z-40 shadow-[0_0_20px_rgba(246,197,0,0.5)] hover:scale-110 transition-transform cursor-hover border-4 border-cf-black hover:border-white">
         <i class="fa-brands fa-whatsapp"></i>
@@ -364,10 +381,10 @@
             <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-12 sm:h-16 md:h-20 lg:h-24 w-auto object-contain">
         </a>
         <div class="flex items-center gap-3 sm:gap-4 md:gap-6">
-            <a href="cardapio-completo.html" class="font-impact text-sm sm:text-base md:text-lg text-white hover:text-cf-yellow transition-colors tracking-widest cursor-hover">
-                CARDÁPIO <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+            <a href="cardapio-completo.html" class="font-impact text-sm sm:text-base md:text-lg text-cf-black bg-cf-yellow px-4 py-2 hover:bg-white hover:text-cf-black transition-all tracking-widest cursor-hover border-2 border-cf-yellow hover:border-white shadow-[0_0_15px_rgba(246,197,0,0.6)] animate-pulse rounded-sm flex items-center gap-2">
+                VER CARDÁPIO <i class="fa-solid fa-utensils"></i>
             </a>
-            <a href="admin.html" class="font-impact text-[10px] sm:text-xs md:text-sm text-cf-black bg-cf-yellow hover:bg-white hover:text-cf-black border border-cf-yellow hover:border-white px-2 py-1 transition-colors tracking-wider cursor-hover uppercase rounded-sm flex items-center gap-1 shadow-md">
+            <a href="admin.html" class="font-impact text-[10px] sm:text-xs md:text-sm text-cf-black bg-white hover:bg-cf-yellow border border-white hover:border-cf-yellow px-2 py-1 transition-colors tracking-wider cursor-hover uppercase rounded-sm flex items-center gap-1 shadow-md">
                 ADMIN <i class="fa-solid fa-user-gear text-[10px]"></i>
             </a>
         </div>
@@ -411,9 +428,9 @@
                     Marmitas fitness reais para quem treina de verdade. Sem glúten, sem lactose, sem frescura.
                 </p>
                 
-                <div class="pt-2 md:pt-4 reveal-up">
-                    <a href="cardapio-completo.html" id="hero-cta" class="btn-street text-lg lg:text-xl px-6 py-3 lg:px-8 lg:py-4 cursor-hover">
-                        NOSSO CARDÁPIO <i class="fa-solid fa-utensils ml-2"></i>
+                <div class="pt-2 md:pt-4 reveal-up mt-4">
+                    <a href="cardapio-completo.html" id="hero-cta" class="btn-street text-lg lg:text-2xl px-6 py-3 lg:px-10 lg:py-5 cursor-hover btn-attention">
+                        VER CARDÁPIO COMPLETO <i class="fa-solid fa-utensils ml-2"></i>
                     </a>
                 </div>
             </div>
@@ -488,14 +505,19 @@
                 </div>
             </div>
 
-            <div class="menu-grid">
+            <div class="menu-grid grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Categoria: Frango -->
                 <div class="bg-cf-darkgray border-t-8 border-white p-5 sm:p-8 relative torn-edge reveal-up cursor-hover transition-transform hover:-translate-y-2">
                     <div class="absolute -top-6 -right-6 font-street text-8xl text-cf-gray opacity-20 z-0">01</div>
                     <h4 class="font-impact text-4xl text-white mb-6 relative z-10 uppercase">Linha Frango</h4>
-                             <ul id="menu-frango-list" class="space-y-6 font-body relative z-10">
+                    <div id="menu-frango-list" class="grid grid-cols-1 sm:grid-cols-2 gap-6 font-body relative z-10">
                         <!-- Dynamic items -->
-                    </ul>
+                    </div>
+                    <div class="mt-8 text-center relative z-10">
+                        <a href="cardapio-completo.html" class="inline-block border-2 border-white text-white font-impact tracking-wider px-6 py-2 hover:bg-white hover:text-cf-black transition-colors rounded-sm text-sm uppercase cursor-hover">
+                            Ver Cardápio Completo
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Categoria: Patinho -->
@@ -503,9 +525,14 @@
                     <div class="absolute -top-6 -right-6 font-street text-8xl text-cf-gray opacity-20 z-0">02</div>
                     <h4 class="font-impact text-4xl text-cf-yellow mb-6 relative z-10 uppercase">Linha Patinho</h4>
                     
-                    <ul id="menu-patinho-list" class="space-y-6 font-body relative z-10">
+                    <div id="menu-patinho-list" class="grid grid-cols-1 sm:grid-cols-2 gap-6 font-body relative z-10">
                         <!-- Dynamic items -->
-                    </ul>
+                    </div>
+                    <div class="mt-8 text-center relative z-10">
+                        <a href="cardapio-completo.html" class="inline-block border-2 border-cf-yellow text-cf-yellow font-impact tracking-wider px-6 py-2 hover:bg-cf-yellow hover:text-cf-black transition-colors rounded-sm text-sm uppercase cursor-hover">
+                            Ver Cardápio Completo
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -522,6 +549,11 @@
                         <div id="menu-gourmet-list" class="space-y-4 font-body w-full">
                             <!-- Dynamic items -->
                         </div>
+                        <div class="mt-8 text-left relative z-10">
+                            <a href="cardapio-completo.html" class="inline-block border-2 border-cf-yellow text-cf-yellow font-impact tracking-wider px-6 py-2 hover:bg-cf-yellow hover:text-cf-black transition-colors rounded-sm text-sm uppercase cursor-hover">
+                                Ver Cardápio Completo
+                            </a>
+                        </div>
                     </div>
                     
                     <div class="md:w-1/2 relative flex justify-center cursor-hover">
@@ -537,10 +569,10 @@
 
             <!-- Central Action Buttons -->
             <div class="mt-20 flex flex-col sm:flex-row justify-center items-center gap-6 reveal-up">
-                <a href="cardapio-completo.html" class="btn-street-outline text-xl sm:text-2xl px-8 sm:px-10 py-4 sm:py-5 cursor-hover">
-                    <i class="fa-solid fa-book-open mr-2"></i> VER CARDÁPIO COMPLETO
+                <a href="cardapio-completo.html" class="btn-street text-xl sm:text-2xl px-8 sm:px-10 py-4 sm:py-5 cursor-hover btn-attention text-center w-full sm:w-auto">
+                    <i class="fa-solid fa-book-open mr-2"></i> ACESSAR CARDÁPIO COMPLETO
                 </a>
-                <a href="https://wa.me/5511910993953" target="_blank" class="btn-street text-xl sm:text-2xl px-8 sm:px-10 py-4 sm:py-5 cursor-hover">
+                <a href="https://wa.me/5511910993953" target="_blank" class="btn-street-outline text-xl sm:text-2xl px-8 sm:px-10 py-4 sm:py-5 cursor-hover text-center w-full sm:w-auto">
                     FAZER PEDIDO AGORA
                 </a>
             </div>
@@ -637,8 +669,13 @@
             </div>
         </div>
         
-        <div class="text-center mt-20 pt-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
+        <div class="text-center mt-20 pt-6 pb-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
             © 2026 Cleanfoods Brasil. Todos os direitos reservados. Sem glúten, sem lactose, sem frescura.
+            <div class="mt-4 text-[11px] tracking-widest">
+                <a href="https://www.grpsantana.com.br/" target="_blank" class="text-gray-300 hover:text-white transition-colors cursor-hover">
+                    Quer um site assim? <span class="font-bold text-cf-yellow">GRUPO SANTANA</span>
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -694,6 +731,29 @@
     <div id="toast-success" class="fixed top-4 md:top-auto md:bottom-6 left-4 md:left-auto right-4 md:right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center justify-center md:justify-start gap-3 transform -translate-y-24 md:translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
         <i class="fa-solid fa-circle-check text-2xl"></i>
         <span id="toast-text">PRODUTO ADICIONADO AO CARRINHO!</span>
+    </div>
+
+    <!-- Dish Detail Modal -->
+    <div id="dish-detail-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm p-4">
+        <div class="bg-cf-darkgray border-4 border-cf-yellow w-full max-w-md relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)] overflow-hidden flex flex-col max-h-[90vh]">
+            <button onclick="closeDishDetail()" class="absolute top-3 right-3 text-white bg-black/50 hover:bg-cf-yellow hover:text-black rounded-full w-8 h-8 flex items-center justify-center transition-all z-20 cursor-hover">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-full aspect-[2/1] bg-cf-black relative border-b-4 border-cf-yellow">
+                <img id="dish-detail-img" src="" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5 flex flex-col flex-1 overflow-y-auto">
+                <div id="dish-detail-category" class="text-cf-yellow font-bold text-xs uppercase mb-1 tracking-widest"></div>
+                <h3 id="dish-detail-name" class="font-impact text-2xl text-white uppercase mb-4 leading-tight"></h3>
+                <p class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1">
+                    Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o seu melhor desempenho.
+                </p>
+                <div class="bg-cf-black p-3 border border-gray-700 flex flex-col gap-3 rounded">
+                    <div id="dish-detail-p" class="flex justify-between items-center w-full"></div>
+                    <div id="dish-detail-g" class="flex justify-between items-center w-full pt-3 border-t border-gray-800"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Checkout Modal -->
@@ -913,7 +973,9 @@
                             name: d.name,
                             category: d.category,
                             priceP: d.price_p || d.priceP || '0,00',
-                            priceG: d.price_g || d.priceG || '0,00'
+                            priceG: d.price_g || d.priceG || '0,00',
+                            available: d.available !== false,
+                            image: d.image || ''
                         })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
                     } else {
                         // Seed database
@@ -1101,11 +1163,14 @@
             localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
             updateCartBadges();
             renderCart();
-            
-            // Automatically open cart drawer
-            const drawer = document.getElementById('cart-drawer');
-            if (drawer && !drawer.classList.contains('open')) {
-                toggleCart();
+
+            // Animate floating cart button to draw attention
+            const floatingCart = document.getElementById('floating-cart');
+            if (floatingCart) {
+                floatingCart.classList.add('animate-bounce');
+                setTimeout(() => {
+                    floatingCart.classList.remove('animate-bounce');
+                }, 1000);
             }
 
             showToast("PRODUTO ADICIONADO AO CARRINHO!");
@@ -1567,6 +1632,51 @@
         // GSAP Animations Registration
         gsap.registerPlugin(ScrollTrigger);
 
+        // Dish Detail Modal Functions
+        function openDishDetail(dishId) {
+            const dish = dishes.find(d => d.id === dishId);
+            if (!dish) return;
+
+            const placeholderImg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
+            const imgEl = document.getElementById('dish-detail-img');
+            imgEl.src = dish.image || placeholderImg;
+
+            document.getElementById('dish-detail-category').innerText = dish.category === 'Gourmet' ? 'Linha Gourmet' : 'Linha ' + dish.category;
+            document.getElementById('dish-detail-name').innerText = dish.name;
+
+            const pContainer = document.getElementById('dish-detail-p');
+            if (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') {
+                pContainer.innerHTML = `<span class="text-gray-400 font-bold">P (225g)</span>
+                    <button onclick="addToCart('${dish.id}', 'P'); closeDishDetail();" class="text-white bg-cf-gray px-4 py-2 rounded-sm cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
+            } else {
+                pContainer.innerHTML = `<span class="text-gray-500 font-bold">P (225g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+            }
+
+            const gContainer = document.getElementById('dish-detail-g');
+            if (dish.priceG && dish.priceG !== '—' && dish.priceG !== '') {
+                gContainer.innerHTML = `<span class="text-cf-yellow font-bold">G (450g)</span>
+                    <button onclick="addToCart('${dish.id}', 'G'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceG} <i class="fa-solid fa-cart-plus"></i></button>`;
+            } else {
+                gContainer.innerHTML = `<span class="text-gray-500 font-bold">G (450g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+            }
+
+            const modal = document.getElementById('dish-detail-modal');
+            modal.classList.remove('hidden');
+            document.body.classList.add('cart-open-overflow');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeDishDetail() {
+            const modal = document.getElementById('dish-detail-modal');
+            modal.classList.add('opacity-0');
+            document.body.classList.remove('cart-open-overflow');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
         window.onload = async function() {
             // Load dishes from remote database or fallback to localStorage
             await loadDishes();
@@ -1579,10 +1689,20 @@
             if (patinhoList) patinhoList.innerHTML = '';
             if (gourmetList) gourmetList.innerHTML = '';
 
-            dishes.forEach(dish => {
-                if (dish.category === 'Frango' && frangoList) {
-                    const li = document.createElement('li');
-                    li.className = 'border-b border-gray-700 pb-4';
+            let countFrango = 0;
+            let countPatinho = 0;
+            let countGourmet = 0;
+
+            const activeDishes = dishes.filter(d => d.available !== false);
+
+            activeDishes.forEach(dish => {
+                const placeholderImg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
+                const imgSrc = dish.image || placeholderImg;
+
+                if (dish.category === 'Frango' && frangoList && countFrango < 4) {
+                    countFrango++;
+                    const card = document.createElement('div');
+                    card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-white transition-colors cursor-hover';
                     
                     let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
                         ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
@@ -1592,37 +1712,55 @@
                         ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
                         : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
 
-                    li.innerHTML = `
-                        <div class="text-xl font-bold text-white uppercase mb-2">${dish.name}</div>
-                        <div class="flex justify-between items-center text-sm font-semibold">
-                            ${pHTML}
-                            ${gHTML}
+                    card.innerHTML = `
+                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                            <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
+                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
+                                ${pHTML}
+                                ${gHTML}
+                            </div>
                         </div>
                     `;
-                    frangoList.appendChild(li);
-                } else if (dish.category === 'Patinho' && patinhoList) {
-                    const li = document.createElement('li');
-                    li.className = 'border-b border-gray-700 pb-4';
+                    frangoList.appendChild(card);
+                } else if (dish.category === 'Patinho' && patinhoList && countPatinho < 4) {
+                    countPatinho++;
+                    const card = document.createElement('div');
+                    card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-cf-yellow transition-colors cursor-hover';
                     
                     let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
                         ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
                         : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
                         
                     let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
-                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
+                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
                         : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
 
-                    li.innerHTML = `
-                        <div class="text-xl font-bold text-white uppercase mb-2">${dish.name}</div>
-                        <div class="flex justify-between items-center text-sm font-semibold">
-                            ${pHTML}
-                            ${gHTML}
+                    card.innerHTML = `
+                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                            <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
+                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
+                                ${pHTML}
+                                ${gHTML}
+                            </div>
                         </div>
                     `;
-                    patinhoList.appendChild(li);
-                } else if (dish.category === 'Gourmet' && gourmetList) {
-                    const div = document.createElement('div');
-                    div.className = 'bg-[#1a1a1a] p-4 flex flex-col md:flex-row md:justify-between md:items-center border-l-4 border-cf-yellow';
+                    patinhoList.appendChild(card);
+                } else if (dish.category === 'Gourmet' && gourmetList && countGourmet < 4) {
+                    countGourmet++;
+                    const card = document.createElement('div');
+                    card.className = 'bg-[#1a1a1a] border-l-4 border-cf-yellow rounded overflow-hidden flex flex-col group hover:bg-cf-darkgray transition-colors cursor-hover';
                     
                     let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
                         ? `<span class="text-gray-400 cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'P')">P: <span class="bg-cf-gray text-white px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>`
@@ -1632,14 +1770,22 @@
                         ? `<span class="text-cf-yellow cursor-pointer hover:text-white transition-colors" onclick="addToCart('${dish.id}', 'G')">G: <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">R$<span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[8px]"></i></span></span>`
                         : `<span class="text-gray-500 cursor-not-allowed">G: <span class="bg-cf-darkgray border border-gray-800 text-gray-600 px-2 py-1 rounded text-xs ml-1 inline-flex items-center gap-1">—</span></span>`;
 
-                    div.innerHTML = `
-                        <span class="font-bold text-white text-lg uppercase">${dish.name}</span>
-                        <div class="mt-2 md:mt-0 font-impact text-xl tracking-wide flex gap-4">
-                            ${pHTML}
-                            ${gHTML}
+                    card.innerHTML = `
+                        <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                            <img src="${imgSrc}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                                <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <span class="font-bold text-white text-sm uppercase mb-3 line-clamp-2">${dish.name}</span>
+                            <div class="mt-auto font-impact text-sm tracking-wide flex justify-between gap-2">
+                                ${pHTML}
+                                ${gHTML}
+                            </div>
                         </div>
                     `;
-                    gourmetList.appendChild(div);
+                    gourmetList.appendChild(card);
                 }
             });
 
@@ -1732,6 +1878,30 @@
             }
 
             window.addEventListener('scroll', onScroll, { passive: true });
+        })();
+
+        // ===== FLOATING CARDAPIO SCROLL REVEAL =====
+        (function() {
+            const floatBtn = document.getElementById('floating-cardapio-btn');
+            const heroSection = document.getElementById('hero');
+            if (!floatBtn || !heroSection) return;
+
+            function checkFloatBtn() {
+                const heroRect = heroSection.getBoundingClientRect();
+                // Show button when hero section is mostly out of view
+                if (heroRect.bottom < window.innerHeight / 2) {
+                    floatBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-24', 'scale-75');
+                    floatBtn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0', 'scale-100');
+                } else {
+                    floatBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-24', 'scale-75');
+                    floatBtn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0', 'scale-100');
+                }
+            }
+
+            // Run once on load to check initial scroll position
+            checkFloatBtn();
+
+            window.addEventListener('scroll', checkFloatBtn, { passive: true });
         })();
     </script>
 </body>

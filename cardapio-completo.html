@@ -318,8 +318,13 @@
                 </div>
             </div>
         </div>
-        <div class="text-center mt-20 pt-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
+        <div class="text-center mt-20 pt-6 pb-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
             © 2026 Cleanfoods Brasil. Todos os direitos reservados. Sem glúten, sem lactose, sem frescura.
+            <div class="mt-4 text-[11px] tracking-widest">
+                <a href="https://www.grpsantana.com.br/" target="_blank" class="text-gray-300 hover:text-white transition-colors cursor-hover">
+                    Quer um site assim? <span class="font-bold text-cf-yellow">GRUPO SANTANA</span>
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -372,6 +377,29 @@
     <div id="toast-success" class="fixed top-4 md:top-auto md:bottom-6 left-4 md:left-auto right-4 md:right-6 bg-cf-yellow text-cf-black font-impact tracking-wider border-2 border-cf-black px-6 py-4 shadow-[5px_5px_0px_#fff] z-50 flex items-center justify-center md:justify-start gap-3 transform -translate-y-24 md:translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
         <i class="fa-solid fa-circle-check text-2xl"></i>
         <span id="toast-text">PRODUTO ADICIONADO AO CARRINHO!</span>
+    </div>
+
+    <!-- Dish Detail Modal -->
+    <div id="dish-detail-modal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm p-4">
+        <div class="bg-cf-darkgray border-4 border-cf-yellow w-full max-w-md relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)] overflow-hidden flex flex-col max-h-[90vh]">
+            <button onclick="closeDishDetail()" class="absolute top-3 right-3 text-white bg-black/50 hover:bg-cf-yellow hover:text-black rounded-full w-8 h-8 flex items-center justify-center transition-all z-20 cursor-hover">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-full aspect-[2/1] bg-cf-black relative border-b-4 border-cf-yellow">
+                <img id="dish-detail-img" src="" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5 flex flex-col flex-1 overflow-y-auto">
+                <div id="dish-detail-category" class="text-cf-yellow font-bold text-xs uppercase mb-1 tracking-widest"></div>
+                <h3 id="dish-detail-name" class="font-impact text-2xl text-white uppercase mb-4 leading-tight"></h3>
+                <p class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1">
+                    Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o seu melhor desempenho.
+                </p>
+                <div class="bg-cf-black p-3 border border-gray-700 flex flex-col gap-3 rounded">
+                    <div id="dish-detail-p" class="flex justify-between items-center w-full"></div>
+                    <div id="dish-detail-g" class="flex justify-between items-center w-full pt-3 border-t border-gray-800"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Checkout Modal -->
@@ -575,13 +603,19 @@
                     const { data, error } = await supabaseClient.from('dishes').select('*');
                     if (error) throw error;
                     if (data && data.length > 0) {
-                        dishes = data.map(d => ({
-                            id: d.id,
-                            name: d.name,
-                            category: d.category,
-                            priceP: d.price_p || d.priceP || '0,00',
-                            priceG: d.price_g || d.priceG || '0,00'
-                        })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
+                        const localDishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || [];
+                        dishes = data.map(d => {
+                            const localD = localDishes.find(ld => ld.id === d.id);
+                            return {
+                                id: d.id,
+                                name: d.name,
+                                category: d.category,
+                                priceP: d.price_p || d.priceP || '0,00',
+                                priceG: d.price_g || d.priceG || '0,00',
+                                available: d.available !== false,
+                                image: (localD && localD.image) ? localD.image : (d.image || '')
+                            };
+                        }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
                     } else {
                         // Seed database
                         const dbDishes = defaultDishes.map(d => ({
@@ -769,11 +803,14 @@
             localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
             updateCartBadges();
             renderCart();
-            
-            // Automatically open cart drawer
-            const drawer = document.getElementById('cart-drawer');
-            if (drawer && !drawer.classList.contains('open')) {
-                toggleCart();
+
+            // Animate floating cart button to draw attention
+            const floatingCart = document.getElementById('floating-cart');
+            if (floatingCart) {
+                floatingCart.classList.add('animate-bounce');
+                setTimeout(() => {
+                    floatingCart.classList.remove('animate-bounce');
+                }, 1000);
             }
 
             showToast("PRODUTO ADICIONADO AO CARRINHO!");
@@ -1247,9 +1284,11 @@
 
             grid.innerHTML = '';
 
-            const filteredDishes = activeCategory === 'Todos' 
+            let filteredDishes = activeCategory === 'Todos' 
                 ? dishes 
                 : dishes.filter(d => d.category === activeCategory);
+                
+            filteredDishes = filteredDishes.filter(d => d.available !== false);
 
             if (filteredDishes.length === 0) {
                 grid.innerHTML = `
@@ -1261,8 +1300,11 @@
             }
 
             filteredDishes.forEach(dish => {
+                const placeholderImg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
+                const imgSrc = dish.image || placeholderImg;
+
                 const card = document.createElement('div');
-                card.className = "bg-cf-darkgray border-t-8 border-cf-yellow p-6 relative torn-edge flex flex-col justify-between hover:-translate-y-1.5 transition-transform duration-300 shadow-xl cursor-hover";
+                card.className = "bg-cf-darkgray border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between hover:-translate-y-1.5 transition-transform duration-300 shadow-xl cursor-hover group";
                 
                 let groupLabel = 'Linha ' + dish.category;
                 if (dish.category === 'Gourmet') groupLabel = 'Linha Gourmet';
@@ -1282,17 +1324,68 @@
                 }
 
                 card.innerHTML = `
-                    <div>
-                        <div class="text-xs uppercase font-bold text-gray-500 mb-1.5">${groupLabel}</div>
-                        <h4 class="font-impact text-2xl text-white uppercase mb-6">${dish.name}</h4>
+                    <div class="h-48 bg-cf-black overflow-hidden relative border-b-4 border-cf-yellow cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                        <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-3 left-3 bg-cf-yellow text-cf-black text-[10px] uppercase font-bold px-2 py-1 rounded shadow pointer-events-none">${groupLabel}</div>
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                            <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
+                        </div>
                     </div>
-                    <div class="flex justify-between items-center text-sm font-semibold pt-4 border-t border-gray-800">
-                        ${priceP_HTML}
-                        ${priceG_HTML}
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <h4 class="font-impact text-2xl text-white uppercase mb-4">${dish.name}</h4>
+                        <div class="flex justify-between items-center text-sm font-semibold pt-4 border-t border-gray-800 mt-auto">
+                            ${priceP_HTML}
+                            ${priceG_HTML}
+                        </div>
                     </div>
                 `;
                 grid.appendChild(card);
             });
+        }
+
+        // Dish Detail Modal Functions
+        function openDishDetail(dishId) {
+            const dish = dishes.find(d => d.id === dishId);
+            if (!dish) return;
+
+            const placeholderImg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
+            const imgEl = document.getElementById('dish-detail-img');
+            imgEl.src = dish.image || placeholderImg;
+
+            document.getElementById('dish-detail-category').innerText = dish.category === 'Gourmet' ? 'Linha Gourmet' : 'Linha ' + dish.category;
+            document.getElementById('dish-detail-name').innerText = dish.name;
+
+            const pContainer = document.getElementById('dish-detail-p');
+            if (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') {
+                pContainer.innerHTML = `<span class="text-gray-400 font-bold">P (225g)</span>
+                    <button onclick="addToCart('${dish.id}', 'P'); closeDishDetail();" class="text-white bg-cf-gray px-4 py-2 rounded-sm cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
+            } else {
+                pContainer.innerHTML = `<span class="text-gray-500 font-bold">P (225g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+            }
+
+            const gContainer = document.getElementById('dish-detail-g');
+            if (dish.priceG && dish.priceG !== '—' && dish.priceG !== '') {
+                gContainer.innerHTML = `<span class="text-cf-yellow font-bold">G (450g)</span>
+                    <button onclick="addToCart('${dish.id}', 'G'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceG} <i class="fa-solid fa-cart-plus"></i></button>`;
+            } else {
+                gContainer.innerHTML = `<span class="text-gray-500 font-bold">G (450g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+            }
+
+            const modal = document.getElementById('dish-detail-modal');
+            modal.classList.remove('hidden');
+            document.body.classList.add('cart-open-overflow');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeDishDetail() {
+            const modal = document.getElementById('dish-detail-modal');
+            modal.classList.add('opacity-0');
+            document.body.classList.remove('cart-open-overflow');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
 
         window.onload = async function() {
