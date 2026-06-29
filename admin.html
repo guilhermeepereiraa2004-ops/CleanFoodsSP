@@ -135,10 +135,84 @@
         .kanban-card i {
             pointer-events: auto;
         }
+
+        /* Login Animations */
+        @keyframes loginEnter {
+            0% { opacity: 0; transform: scale(0.9) translateY(40px) rotate(-2deg); }
+            100% { opacity: 1; transform: scale(1) translateY(0) rotate(0); }
+        }
+        .animate-login-enter {
+            animation: loginEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes slideBg {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+        .bg-pattern {
+            background-image: radial-gradient(rgba(246,197,0,0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: slideBg 3s linear infinite;
+        }
     </style>
 </head>
 
 <body class="antialiased relative min-h-screen flex">
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="fixed inset-0 bg-cf-black z-[100] flex items-center justify-center overflow-hidden">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 bg-pattern opacity-50"></div>
+        <div class="absolute top-1/4 left-0 w-[150%] overflow-hidden -rotate-3 opacity-5 pointer-events-none flex whitespace-nowrap">
+            <div class="font-impact text-[10rem] text-white tracking-widest leading-none">
+                CLEANFOODS RESTRICTED AREA CLEANFOODS RESTRICTED AREA
+            </div>
+        </div>
+        <div class="absolute bottom-1/4 left-0 w-[150%] overflow-hidden rotate-2 opacity-5 pointer-events-none flex whitespace-nowrap">
+            <div class="font-impact text-[10rem] text-cf-yellow tracking-widest leading-none">
+                ADMIN ACCESS ONLY ADMIN ACCESS ONLY ADMIN ACCESS ONLY
+            </div>
+        </div>
+        
+        <!-- Noise Overlay -->
+        <div class="noise-bg z-0 pointer-events-none"></div>
+
+        <!-- Login Box -->
+        <div class="relative z-10 bg-cf-darkgray border-4 border-cf-yellow p-8 md:p-12 max-w-md w-full mx-4 torn-edge shadow-[10px_10px_0px_rgba(246,197,0,1)] md:shadow-[15px_15px_0px_rgba(246,197,0,1)] animate-login-enter flex flex-col items-center">
+            
+            <img src="Logonova.jpeg" alt="Logo" class="h-24 mx-auto mb-2 object-contain hover:scale-110 transition-transform duration-300 mix-blend-screen">
+            <h2 class="font-street text-cf-yellow text-xl mb-1 -rotate-2">Acesso Restrito</h2>
+            <h1 class="font-impact text-4xl md:text-5xl text-white uppercase mb-8 tracking-widest text-center">Admin Login</h1>
+            
+            <form id="login-form" onsubmit="event.preventDefault(); handleAdminLogin();" class="space-y-5 w-full font-body">
+                <div class="relative group">
+                    <label class="block text-[10px] uppercase font-bold text-cf-yellow mb-1 tracking-wider">E-mail</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-cf-yellow transition-colors text-sm"></i>
+                        <input type="email" id="login-email" required class="w-full bg-cf-black text-white border-2 border-cf-gray rounded-none pl-11 pr-4 py-3 font-bold focus:border-cf-yellow outline-none transition-all focus:shadow-[0_0_20px_rgba(246,197,0,0.2)]" placeholder="••••••••">
+                    </div>
+                </div>
+                <div class="relative group">
+                    <label class="block text-[10px] uppercase font-bold text-cf-yellow mb-1 tracking-wider">Senha</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-cf-yellow transition-colors text-sm"></i>
+                        <input type="password" id="login-password" required class="w-full bg-cf-black text-white border-2 border-cf-gray rounded-none pl-11 pr-4 py-3 font-bold focus:border-cf-yellow outline-none transition-all focus:shadow-[0_0_20px_rgba(246,197,0,0.2)]" placeholder="••••••••">
+                    </div>
+                </div>
+                
+                <div id="login-error" class="text-red-500 text-xs font-bold hidden text-center bg-red-500/10 border border-red-500 py-2.5 torn-edge animate-pulse">
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Credenciais inválidas!
+                </div>
+                
+                <button type="submit" class="btn-street w-full py-4 text-lg font-bold mt-4 flex justify-center items-center gap-2 hover:shadow-[0_0_25px_rgba(255,255,255,0.4)]">
+                    Entrar no Painel <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+                
+                <button type="button" onclick="window.location.href='index.html'" class="w-full text-xs text-gray-400 hover:text-white uppercase font-bold tracking-widest mt-6 flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar ao Site
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div class="noise-bg"></div>
 
     <!-- Sidebar Overlay for Mobile -->
@@ -151,7 +225,7 @@
             <!-- Sidebar Header / Logo -->
             <div class="p-6 border-b border-cf-gray flex flex-col items-center">
                 <a href="index.html" class="hover:opacity-85 transition-opacity mb-4">
-                    <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-24 w-auto object-contain">
+                    <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-24 w-auto object-contain mix-blend-screen">
                 </a>
                 <span class="font-impact text-md text-cf-yellow tracking-widest uppercase text-center">
                     PAINEL ADMIN
@@ -2232,6 +2306,27 @@
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-24', 'opacity-0');
             }, 3000);
+        }
+
+        // Login Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.getItem('cleanfoods_admin_logged') === 'true') {
+                document.getElementById('login-overlay').style.display = 'none';
+            }
+        });
+
+        function handleAdminLogin() {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            const err = document.getElementById('login-error');
+            
+            if (email.toLowerCase() === 'cleanfoods@gmail.com'.toLowerCase() && pass === 'naoseinao') {
+                sessionStorage.setItem('cleanfoods_admin_logged', 'true');
+                document.getElementById('login-overlay').style.display = 'none';
+                err.classList.add('hidden');
+            } else {
+                err.classList.remove('hidden');
+            }
         }
     </script>
 </body>
