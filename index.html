@@ -633,23 +633,36 @@
         </div>
     </div>
 
+
+
     <section id="cardapio" class="py-20 relative z-10">
         <div class="container mx-auto px-4">
 
             <!-- Promo Coupon Banner -->
             <div id="promo-coupon-banner"
-                class="hidden max-w-2xl mx-auto mb-16 bg-cf-yellow text-cf-black p-4 md:p-6 border-4 border-white transform rotate-1 flex flex-col md:flex-row justify-between items-center gap-4 shadow-xl select-none z-20">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-ticket text-3xl md:text-4xl animate-bounce"></i>
+                class="hidden max-w-2xl mx-auto mb-16 relative bg-cf-yellow text-cf-black p-6 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl select-none z-20 transform rotate-1 border-t-4 border-b-4 border-cf-yellow">
+                
+                <!-- Ticket Cutouts -->
+                <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-cf-black rounded-full"></div>
+                <div class="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-cf-black rounded-full"></div>
+                
+                <!-- Left side content -->
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <i class="fa-solid fa-ticket text-4xl animate-pulse"></i>
                     <div>
-                        <h4 class="font-impact text-xl md:text-2xl uppercase leading-none">PROMOÇÃO ATIVA!</h4>
-                        <p class="font-body text-xs md:text-sm font-semibold mt-1">Use o cupom de hoje para ganhar <span
-                                id="coupon-discount-val">10</span>% de desconto.</p>
+                        <h4 class="font-impact text-2xl md:text-3xl uppercase leading-none mb-1">CUPOM VIP!</h4>
+                        <p class="font-body text-sm font-bold">Ganhe <span id="coupon-discount-val" class="text-xl">10</span>% de desconto hoje.</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
+
+                <!-- Perforated Line -->
+                <div class="w-full md:w-0 h-0 md:h-20 border-t-4 md:border-t-0 md:border-l-4 border-dashed border-cf-black opacity-30"></div>
+
+                <!-- Right side coupon -->
+                <div class="flex flex-col items-center gap-1 w-full md:w-auto">
+                    <span class="text-xs uppercase font-bold tracking-widest">Código Exclusivo:</span>
                     <span
-                        class="font-street text-lg bg-cf-black text-white px-4 py-2 border-2 border-white select-all cursor-copy"
+                        class="font-impact text-2xl md:text-3xl bg-cf-black text-cf-yellow px-6 py-2 select-all cursor-copy tracking-wider"
                         id="coupon-code-val">MONSTRO10</span>
                 </div>
             </div>
@@ -664,6 +677,79 @@
                 <div class="flex justify-center gap-6 mt-4 font-impact text-2xl">
                     <span class="bg-cf-darkgray px-4 py-2 border-l-4 border-white">P: 225g</span>
                     <span class="bg-cf-yellow text-cf-black px-4 py-2 transform rotate-2">G: 450g</span>
+                </div>
+                
+            <div class="grid grid-cols-3 justify-center gap-2 sm:gap-4 md:gap-6 mt-12 font-impact max-w-4xl mx-auto reveal-up px-2 md:px-0">
+                
+                <!-- Ticket 1 -->
+                <button onclick="selectCombo(10)" class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between">
+                    <!-- Cutouts -->
+                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
+                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
+                    
+                    <div>
+                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                            <span class="md:hidden">VIP</span><span class="hidden md:inline">TICKET VIP</span>
+                        </div>
+                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                            10<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
+                        </span>
+                        <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact">5% OFF</span>
+                    </div>
+                    <div class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                        <i class="fa-solid fa-ticket hidden md:inline-block"></i>
+                        <span>Selecionar</span>
+                    </div>
+                </button>
+
+                <!-- Ticket 2 -->
+                <button onclick="window.location.href='cardapio-completo.html?promo=combo'" class="relative bg-cf-yellow border-2 border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between md:scale-105 shadow-[0_0_20px_rgba(246,197,0,0.4)] z-10">
+                    
+                    <!-- Cutouts -->
+                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-white transition-colors z-10"></div>
+                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-white transition-colors z-10"></div>
+                    
+                    <div>
+                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                            <span class="md:hidden">PREMIUM</span><span class="hidden md:inline">TICKET PREMIUM</span>
+                        </div>
+                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                            20<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
+                        </span>
+                        <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">10% OFF</span>
+                        <span class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+1 SALGADO</span>
+                    </div>
+                    <div class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                        <i class="fa-solid fa-ticket hidden md:inline-block"></i>
+                        <span>Selecionar</span>
+                    </div>
+                </button>
+
+                <!-- Ticket 3 -->
+                <button onclick="selectCombo(30)" class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between">
+                    <!-- Cutouts -->
+                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
+                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
+                    
+                    <div>
+                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                            <span class="md:hidden">MONSTRO</span><span class="hidden md:inline">TICKET MONSTRO</span>
+                        </div>
+                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                            30<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
+                        </span>
+                        <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">20% OFF</span>
+                        <span class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+ FRETE GRÁTIS</span>
+                    </div>
+                    <div class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                        <i class="fa-solid fa-ticket hidden md:inline-block"></i>
+                        <span>Selecionar</span>
+                    </div>
+                </button>
+
+            </div>
+                <div class="text-xs sm:text-sm text-center font-body text-gray-400 font-bold mt-6">
+                    * Escolha o ticket acima para ativar sua meta de descontos.
                 </div>
             </div>
 
@@ -2062,7 +2148,6 @@
 
             const modal = document.getElementById('dish-detail-modal');
             modal.classList.remove('hidden');
-            document.body.classList.add('cart-open-overflow');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
             }, 10);
@@ -2071,7 +2156,6 @@
         function closeDishDetail() {
             const modal = document.getElementById('dish-detail-modal');
             modal.classList.add('opacity-0');
-            document.body.classList.remove('cart-open-overflow');
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 300);
@@ -2198,6 +2282,11 @@
 
             window.addEventListener('scroll', checkFloatBtn, { passive: true });
         })();
+        
+        function selectCombo(goal) {
+            localStorage.setItem('cleanfoods_combo_goal', goal);
+            window.location.href = 'cardapio-completo.html?promo=active';
+        }
     </script>
 </body>
 
