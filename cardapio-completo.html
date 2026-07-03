@@ -1105,7 +1105,15 @@
             }
 
             const priceStr = size === 'P' ? dish.priceP : dish.priceG;
+            if (!priceStr || priceStr === '—' || priceStr === '') {
+                showToast("ESTE TAMANHO NÃO ESTÁ DISPONÍVEL!");
+                return;
+            }
             const price = parseFloat(priceStr.replace(',', '.'));
+            if (isNaN(price) || price <= 0) {
+                showToast("PREÇO INVÁLIDO PARA ESTE ITEM!");
+                return;
+            }
 
             const key = `${dishId}-${size}`;
 
@@ -1449,7 +1457,7 @@
                 // Pre-fill inputs from localStorage if saved
                 const savedName = localStorage.getItem('cleanfoods_client_name') || '';
                 const savedPhone = localStorage.getItem('cleanfoods_client_phone') || '';
-                const savedAddress = localStorage.getItem('cleanfoods_address') || '';
+                const savedAddress = localStorage.getItem('cleanfoods_client_address') || '';
 
                 const nameInput = document.getElementById('client-name');
                 const phoneInput = document.getElementById('client-phone');
@@ -1504,7 +1512,9 @@
         }
 
         // Validate checkout modal fields and submit order locally
+        let isSubmitting = false;
         async function submitCheckoutForm() {
+            if (isSubmitting) return;
             const nameInput = document.getElementById('client-name');
             const phoneInput = document.getElementById('client-phone');
             const addressInput = document.getElementById('client-address');
@@ -1526,6 +1536,13 @@
                 return;
             }
 
+            // Validar formato do telefone (mínimo 10 dígitos)
+            const phoneDigits = phone.replace(/\D/g, '');
+            if (phoneDigits.length < 10 || phoneDigits.length > 11) {
+                alert("Informe um telefone válido com DDD (ex: 11999998888)");
+                return;
+            }
+
             // Validar horário (11:00 às 19:00)
             const [hours, minutes] = deliveryTime.split(':').map(Number);
             if (hours < 11 || (hours === 19 && minutes > 0) || hours > 19) {
@@ -1533,9 +1550,11 @@
                 return;
             }
 
+            isSubmitting = true;
+
             localStorage.setItem('cleanfoods_client_name', name);
             localStorage.setItem('cleanfoods_client_phone', phone);
-            localStorage.setItem('cleanfoods_address', address);
+            localStorage.setItem('cleanfoods_client_address', address);
 
             let subtotal = 0;
             let totalMarmitas = 0;
@@ -1574,6 +1593,15 @@
                 });
             }
 
+            // Revalidar cupom antes de aplicar
+            if (appliedCoupon) {
+                const daysOfWeek = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+                const todayDay = daysOfWeek[new Date().getDay()];
+                if (!appliedCoupon.active || (appliedCoupon.day !== 'Todo Dia' && appliedCoupon.day !== todayDay)) {
+                    appliedCoupon = null;
+                }
+            }
+
             let couponDiscountPercent = appliedCoupon ? appliedCoupon.discount : 0;
             let discountAmount = 0;
             
@@ -1585,7 +1613,7 @@
             
             const finalTotal = Math.max(0, subtotal - discountAmount);
 
-            const orderId = 'CF-' + Math.floor(1000 + Math.random() * 9000);
+            const orderId = 'CF-' + Date.now().toString(36).slice(-5).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
 
             const order = {
                 id: orderId,
@@ -1636,6 +1664,33 @@
                 localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
             }
 
+            // Save Transaction (Financeiro)
+            const transactionId = 'TX-' + Date.now().toString(36).slice(-5).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
+            const transaction = {
+                id: transactionId,
+                type: 'Entrada',
+                description: `Pedido ${orderId} - ${name}`,
+                value: parseFloat(finalTotal.toFixed(2)),
+                date: new Date().toISOString(),
+                category: 'Pedido'
+            };
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('transactions').insert([transaction]);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao enviar transação para o Supabase, salvando localmente:", err);
+                    let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                    transactions.push(transaction);
+                    localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
+                }
+            } else {
+                let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                transactions.push(transaction);
+                localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
+            }
+
             const orderIdSpan = document.getElementById('thank-order-id');
             const orderTotalSpan = document.getElementById('thank-order-total');
             const orderPaymentSpan = document.getElementById('thank-order-payment');
@@ -1664,6 +1719,8 @@
             localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
             updateCartBadges();
             renderCart();
+
+            isSubmitting = false;
         }
 
         function checkoutOrder() {

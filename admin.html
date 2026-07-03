@@ -254,6 +254,14 @@
                     class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-gears text-base w-5 text-center"></i> Ajustes
                 </button>
+                <button onclick="switchTab('financeiro')" id="btn-financeiro"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-sack-dollar text-base w-5 text-center"></i> Financeiro
+                </button>
+                <button onclick="switchTab('clientes')" id="btn-clientes"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-users text-base w-5 text-center"></i> Clientes
+                </button>
             </nav>
         </div>
 
@@ -870,6 +878,141 @@
             <button onclick="saveNutrition()" class="w-full mt-6 bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
                 SALVAR NUTRIÇÃO
             </button>
+        </div>
+    </div>
+
+    <!-- ================= TAB: FINANCEIRO ================= -->
+    <div id="tab-financeiro" class="tab-content hidden">
+        <div class="bg-cf-darkgray p-6 md:p-8 border-4 border-cf-yellow">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                <h2 class="font-impact text-2xl md:text-3xl text-cf-yellow uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-sack-dollar"></i> Financeiro
+                </h2>
+                <button onclick="toggleMonthlyComparison()" class="px-5 py-2.5 font-bold flex items-center gap-2 shadow-lg text-sm bg-white border-white text-cf-black hover:bg-cf-yellow hover:border-cf-yellow transition-all uppercase tracking-wider font-impact rounded-sm" style="clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%);">
+                    <i class="fa-solid fa-calendar-days"></i> Comparativo Mensal
+                </button>
+            </div>
+
+            <!-- Dashboard Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-cf-black p-6 border-l-4 border-green-500 flex justify-between items-center shadow-lg">
+                    <div>
+                        <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total de Entradas</div>
+                        <div class="font-impact text-3xl text-white" id="fin-total-in">R$ 0,00</div>
+                    </div>
+                    <div class="text-green-500 text-4xl opacity-50"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                </div>
+                <div class="bg-cf-black p-6 border-l-4 border-red-500 flex justify-between items-center shadow-lg">
+                    <div>
+                        <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total de Saídas</div>
+                        <div class="font-impact text-3xl text-white" id="fin-total-out">R$ 0,00</div>
+                    </div>
+                    <div class="text-red-500 text-4xl opacity-50"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                </div>
+                <div class="bg-cf-black p-6 border-l-4 border-cf-yellow flex justify-between items-center shadow-lg">
+                    <div>
+                        <div class="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Saldo Atual</div>
+                        <div class="font-impact text-3xl text-white" id="fin-balance">R$ 0,00</div>
+                    </div>
+                    <div class="text-cf-yellow text-4xl opacity-50"><i class="fa-solid fa-wallet"></i></div>
+                </div>
+            </div>
+
+            <!-- Monthly Comparison -->
+            <div id="fin-monthly-container" class="bg-cf-black p-5 border border-cf-gray rounded mb-8 hidden">
+                <h3 class="font-impact text-xl text-white uppercase mb-4 tracking-wider"><i class="fa-solid fa-calendar-days text-cf-yellow mr-2"></i> Comparativo Mensal</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left font-body text-sm">
+                        <thead class="bg-cf-darkgray text-gray-400 font-bold uppercase text-xs border-b-2 border-cf-gray">
+                            <tr>
+                                <th class="p-3">Mês/Ano</th>
+                                <th class="p-3 text-right">Entradas</th>
+                                <th class="p-3 text-right">Saídas</th>
+                                <th class="p-3 text-right">Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fin-monthly-list" class="divide-y divide-cf-gray text-gray-300 font-semibold">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add Transaction Form -->
+            <div class="bg-cf-black p-5 border border-cf-gray rounded mb-8">
+                <h3 class="font-impact text-xl text-white uppercase mb-4 tracking-wider"><i class="fa-solid fa-plus text-cf-yellow mr-2"></i> Nova Transação</h3>
+                <form id="finance-form" onsubmit="event.preventDefault(); submitTransaction();" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                    <div class="md:col-span-1">
+                        <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Tipo</label>
+                        <select id="fin-type" class="w-full bg-cf-darkgray border border-cf-gray text-white p-2 rounded focus:border-cf-yellow outline-none text-sm font-semibold">
+                            <option value="Entrada">Entrada (+)</option>
+                            <option value="Saída">Saída (-)</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Descrição</label>
+                        <input type="text" id="fin-desc" required placeholder="Ex: Compra de embalagens" class="w-full bg-cf-darkgray border border-cf-gray text-white p-2 rounded focus:border-cf-yellow outline-none text-sm font-semibold placeholder:text-gray-600">
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Valor (R$)</label>
+                        <input type="number" step="0.01" id="fin-value" required placeholder="0.00" class="w-full bg-cf-darkgray border border-cf-gray text-white p-2 rounded focus:border-cf-yellow outline-none text-sm font-semibold placeholder:text-gray-600">
+                    </div>
+                    <div class="md:col-span-1">
+                        <button type="submit" class="w-full bg-cf-yellow text-cf-black font-impact text-sm uppercase tracking-wider py-2 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
+                            Adicionar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Transactions List -->
+            <div>
+                <h3 class="font-impact text-xl text-white uppercase mb-4 tracking-wider"><i class="fa-solid fa-list text-cf-yellow mr-2"></i> Histórico de Transações</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left font-body text-sm">
+                        <thead class="bg-cf-black text-gray-400 font-bold uppercase text-xs border-b-2 border-cf-gray">
+                            <tr>
+                                <th class="p-3">Data</th>
+                                <th class="p-3">Descrição</th>
+                                <th class="p-3">Categoria</th>
+                                <th class="p-3 text-right">Valor</th>
+                                <th class="p-3 text-center">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fin-transactions-list" class="divide-y divide-cf-gray text-gray-300 font-semibold">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TAB: CLIENTES ================= -->
+    <div id="tab-clientes" class="tab-content hidden">
+        <div class="bg-cf-darkgray p-6 md:p-8 border-4 border-cf-yellow">
+            <h2 class="font-impact text-2xl md:text-3xl text-cf-yellow uppercase mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-users"></i> Clientes
+            </h2>
+
+            <div class="bg-cf-black border border-cf-gray rounded">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left font-body text-sm">
+                        <thead class="bg-cf-darkgray text-gray-400 font-bold uppercase text-xs border-b-2 border-cf-gray">
+                            <tr>
+                                <th class="p-4">Nome</th>
+                                <th class="p-4">Telefone</th>
+                                <th class="p-4">Endereço (Último pedido)</th>
+                                <th class="p-4 text-center">Qtd. Pedidos</th>
+                                <th class="p-4 text-right">Total Gasto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cli-list" class="divide-y divide-cf-gray text-gray-300 font-semibold">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2327,6 +2470,270 @@
             } else {
                 err.classList.remove('hidden');
             }
+        }
+
+        // ================= FINANCEIRO LOGIC =================
+        async function loadTransactions() {
+            let transactions = [];
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('transactions').select('*').order('date', { ascending: false });
+                    if (error) throw error;
+                    transactions = data;
+                } catch (err) {
+                    console.error('Erro ao carregar transações do Supabase, usando local:', err);
+                    transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                }
+            } else {
+                transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+            }
+            
+            // Sort local array descending if fetched from local
+            transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            renderTransactions(transactions);
+        }
+
+        function renderTransactions(transactions) {
+            const list = document.getElementById('fin-transactions-list');
+            if(!list) return;
+            list.innerHTML = '';
+            
+            let totalIn = 0;
+            let totalOut = 0;
+
+            const monthlyData = {};
+
+            transactions.forEach(t => {
+                const val = parseFloat(t.value);
+                if (t.type === 'Entrada') totalIn += val;
+                else totalOut += val;
+
+                const dateObj = new Date(t.date);
+                const monthYear = dateObj.toLocaleDateString('pt-BR', { month: '2-digit', year: 'numeric' });
+                
+                if (!monthlyData[monthYear]) {
+                    monthlyData[monthYear] = { in: 0, out: 0 };
+                }
+                if (t.type === 'Entrada') monthlyData[monthYear].in += val;
+                else monthlyData[monthYear].out += val;
+
+                const dateStr = dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const colorClass = t.type === 'Entrada' ? 'text-green-500' : 'text-red-500';
+                const prefix = t.type === 'Entrada' ? '+' : '-';
+
+                list.innerHTML += `
+                    <tr class="hover:bg-cf-gray/30 transition-colors">
+                        <td class="p-3 text-xs">${dateStr}</td>
+                        <td class="p-3">${t.description}</td>
+                        <td class="p-3"><span class="bg-cf-gray px-2 py-1 rounded text-[10px] uppercase">${t.category || 'Manual'}</span></td>
+                        <td class="p-3 text-right font-impact text-lg ${colorClass}">${prefix} R$ ${val.toFixed(2).replace('.', ',')}</td>
+                        <td class="p-3 text-center">
+                            <button onclick="deleteTransaction('${t.id}')" class="text-gray-500 hover:text-red-500 transition-colors"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            if (transactions.length === 0) {
+                list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Nenhuma transação registrada.</td></tr>`;
+            }
+
+            const balance = totalIn - totalOut;
+            document.getElementById('fin-total-in').innerText = 'R$ ' + totalIn.toFixed(2).replace('.', ',');
+            document.getElementById('fin-total-out').innerText = 'R$ ' + totalOut.toFixed(2).replace('.', ',');
+            const balanceEl = document.getElementById('fin-balance');
+            balanceEl.innerText = 'R$ ' + balance.toFixed(2).replace('.', ',');
+            balanceEl.className = 'font-impact text-3xl ' + (balance >= 0 ? 'text-white' : 'text-red-500');
+
+            const monthlyList = document.getElementById('fin-monthly-list');
+            if (monthlyList) {
+                monthlyList.innerHTML = '';
+                const sortedMonths = Object.keys(monthlyData).sort((a, b) => {
+                    const [ma, ya] = a.split('/');
+                    const [mb, yb] = b.split('/');
+                    return new Date(`${yb}-${mb}-01`) - new Date(`${ya}-${ma}-01`);
+                });
+
+                if (sortedMonths.length === 0) {
+                    monthlyList.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-500">Nenhum dado mensal.</td></tr>`;
+                } else {
+                    sortedMonths.forEach(my => {
+                        const mData = monthlyData[my];
+                        const mBalance = mData.in - mData.out;
+                        const balClass = mBalance >= 0 ? 'text-white' : 'text-red-500';
+                        monthlyList.innerHTML += `
+                            <tr class="hover:bg-cf-gray/30 transition-colors">
+                                <td class="p-3 font-impact text-lg uppercase tracking-wider text-cf-yellow">${my}</td>
+                                <td class="p-3 text-right font-semibold text-green-500">+ R$ ${mData.in.toFixed(2).replace('.', ',')}</td>
+                                <td class="p-3 text-right font-semibold text-red-500">- R$ ${mData.out.toFixed(2).replace('.', ',')}</td>
+                                <td class="p-3 text-right font-impact text-lg ${balClass}">R$ ${mBalance.toFixed(2).replace('.', ',')}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+        }
+
+        async function submitTransaction() {
+            const type = document.getElementById('fin-type').value;
+            const desc = document.getElementById('fin-desc').value.trim();
+            const val = parseFloat(document.getElementById('fin-value').value);
+
+            if (!desc || isNaN(val) || val <= 0) {
+                alert('Preencha os campos corretamente.');
+                return;
+            }
+
+            const transactionId = 'TX-' + Date.now().toString(36).slice(-5).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
+            const transaction = {
+                id: transactionId,
+                type: type,
+                description: desc,
+                value: val,
+                date: new Date().toISOString(),
+                category: 'Manual'
+            };
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('transactions').insert([transaction]);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao enviar transação para o Supabase:", err);
+                    let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                    transactions.push(transaction);
+                    localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
+                }
+            } else {
+                let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                transactions.push(transaction);
+                localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
+            }
+
+            document.getElementById('finance-form').reset();
+            showToast('Transação adicionada com sucesso!');
+            loadTransactions();
+        }
+
+        async function deleteTransaction(id) {
+            if (!confirm('Deseja excluir esta transação?')) return;
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('transactions').delete().eq('id', id);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao deletar transação:", err);
+                    let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                    transactions = transactions.filter(t => t.id !== id);
+                    localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
+                }
+            } else {
+                let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                transactions = transactions.filter(t => t.id !== id);
+                localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
+            }
+
+            showToast('Transação excluída!');
+            loadTransactions();
+        }
+
+        // Hook into switchTab to load transactions when tab is opened
+        const originalSwitchTab = switchTab;
+        switchTab = function(tabId) {
+            originalSwitchTab(tabId);
+            if (tabId === 'financeiro') {
+                loadTransactions();
+            }
+            if (tabId === 'clientes') {
+                loadClients();
+            }
+        };
+
+        function toggleMonthlyComparison() {
+            const container = document.getElementById('fin-monthly-container');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        // ================= CLIENTES LOGIC =================
+        async function loadClients() {
+            let allOrders = [];
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('orders').select('*');
+                    if (error) throw error;
+                    allOrders = data;
+                } catch (err) {
+                    console.error('Erro ao carregar pedidos para clientes, usando local:', err);
+                    allOrders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+                }
+            } else {
+                allOrders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+            }
+
+            const clientsMap = {};
+
+            allOrders.forEach(o => {
+                const phone = o.client_phone || o.clientPhone || '';
+                const name = o.client_name || o.clientName || 'Cliente Desconhecido';
+                const key = phone ? phone.replace(/\\D/g, '') : name.toLowerCase();
+                
+                if (!key) return; // Skip if no way to identify
+
+                if (!clientsMap[key]) {
+                    clientsMap[key] = {
+                        name: name,
+                        phone: phone,
+                        address: o.address || '',
+                        totalOrders: 0,
+                        totalSpent: 0,
+                        lastOrderDate: new Date(0) // Initialize with very old date
+                    };
+                }
+
+                const orderDate = new Date(o.date || o.created_at || 0);
+                if (orderDate > clientsMap[key].lastOrderDate) {
+                    clientsMap[key].lastOrderDate = orderDate;
+                    clientsMap[key].address = o.address || clientsMap[key].address;
+                    clientsMap[key].name = name;
+                    clientsMap[key].phone = phone;
+                }
+
+                clientsMap[key].totalOrders += 1;
+                clientsMap[key].totalSpent += parseFloat(o.total || 0);
+            });
+
+            // Convert to array and sort by total spent descending
+            const clientsArray = Object.values(clientsMap).sort((a, b) => b.totalSpent - a.totalSpent);
+            renderClients(clientsArray);
+        }
+
+        function renderClients(clients) {
+            const list = document.getElementById('cli-list');
+            if (!list) return;
+            list.innerHTML = '';
+
+            if (clients.length === 0) {
+                list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">Nenhum cliente registrado.</td></tr>`;
+                return;
+            }
+
+            clients.forEach(c => {
+                list.innerHTML += `
+                    <tr class="hover:bg-cf-gray/30 transition-colors">
+                        <td class="p-4 font-bold text-white">${c.name}</td>
+                        <td class="p-4">${c.phone}</td>
+                        <td class="p-4 text-xs text-gray-400 max-w-xs truncate" title="${c.address}">${c.address}</td>
+                        <td class="p-4 text-center"><span class="bg-cf-gray px-2 py-1 rounded font-impact text-cf-yellow">${c.totalOrders}</span></td>
+                        <td class="p-4 text-right font-impact text-lg text-green-500">R$ ${c.totalSpent.toFixed(2).replace('.', ',')}</td>
+                    </tr>
+                `;
+            });
         }
     </script>
 </body>
