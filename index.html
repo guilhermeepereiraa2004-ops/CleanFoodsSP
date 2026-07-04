@@ -943,7 +943,7 @@
 
     <!-- Shopping Cart Drawer -->
     <div id="cart-drawer"
-        class="fixed top-0 right-0 h-full w-full max-w-md bg-cf-darkgray border-l-4 border-cf-yellow z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+        class="fixed top-0 right-0 h-[100dvh] w-full max-w-md bg-cf-darkgray border-l-4 border-cf-yellow z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
         <!-- Drawer Header -->
         <div class="p-4 sm:p-6 border-b border-cf-gray flex justify-between items-center bg-cf-black">
             <h3 class="font-impact text-2xl text-cf-yellow uppercase tracking-wider flex items-center gap-2">
@@ -1086,7 +1086,7 @@
                 </h3>
             </div>
 
-            <form id="checkout-form" onsubmit="event.preventDefault(); submitCheckoutForm();"
+            <form id="checkout-form" novalidate onsubmit="event.preventDefault(); submitCheckoutForm();"
                 class="space-y-5 font-body text-sm font-semibold">
                 <!-- Name & Phone Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1146,7 +1146,7 @@
                     <div>
                         <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Horário da
                             Entrega (11h às 19h) *</label>
-                        <input type="time" id="delivery-time" required min="11:00" max="19:00"
+                        <input type="time" id="delivery-time" required
                             class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
                     </div>
                 </div>
@@ -1959,8 +1959,34 @@
             const deliveryDate = dateInput ? dateInput.value : '';
             const deliveryTime = timeInput ? timeInput.value : '';
 
-            if (!name || !phone || !address || !payment || !deliveryDate || !deliveryTime) {
-                alert("Por favor, preencha todos os campos obrigatórios (*)");
+            if (!name) {
+                alert("Por favor, preencha o campo Nome Completo.");
+                if (nameInput) nameInput.focus();
+                return;
+            }
+            if (!phone) {
+                alert("Por favor, preencha o campo Telefone.");
+                if (phoneInput) phoneInput.focus();
+                return;
+            }
+            if (!address) {
+                alert("Por favor, preencha o campo Endereço de Entrega.");
+                if (addressInput) addressInput.focus();
+                return;
+            }
+            if (!payment) {
+                alert("Por favor, escolha uma Forma de Pagamento.");
+                if (paymentInput) paymentInput.focus();
+                return;
+            }
+            if (!deliveryDate) {
+                alert("Por favor, selecione a Data da Entrega.");
+                if (dateInput) dateInput.focus();
+                return;
+            }
+            if (!deliveryTime) {
+                alert("Por favor, informe o Horário da Entrega.");
+                if (timeInput) timeInput.focus();
                 return;
             }
 
@@ -1968,6 +1994,7 @@
             const phoneDigits = phone.replace(/\D/g, '');
             if (phoneDigits.length < 10 || phoneDigits.length > 11) {
                 alert("Informe um telefone válido com DDD (ex: 11999998888)");
+                if (phoneInput) phoneInput.focus();
                 return;
             }
 
@@ -1975,6 +2002,20 @@
             const [hours, minutes] = deliveryTime.split(':').map(Number);
             if (hours < 11 || (hours === 19 && minutes > 0) || hours > 19) {
                 alert("O horário de entrega deve ser entre 11h e 19h.");
+                if (timeInput) timeInput.focus();
+                return;
+            }
+
+            // Validar data da entrega (de hoje até hoje + 7 dias)
+            const selectedDate = new Date(deliveryDate + 'T00:00:00');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const maxDate = new Date(today);
+            maxDate.setDate(today.getDate() + 7);
+
+            if (selectedDate < today || selectedDate > maxDate) {
+                alert("A data de entrega deve ser a partir de hoje e no máximo nos próximos 7 dias.");
+                if (dateInput) dateInput.focus();
                 return;
             }
 
