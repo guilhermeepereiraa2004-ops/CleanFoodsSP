@@ -207,7 +207,7 @@
                 </button>
                 
                 <button type="button" onclick="window.location.href='index.html'" class="w-full text-xs text-gray-400 hover:text-white uppercase font-bold tracking-widest mt-6 flex items-center justify-center gap-2 transition-colors">
-                    <i class="fa-solid fa-arrow-left"></i> Voltar ao Site
+                    <i class="fa-solid fa-arrow-left"></i> Voltar ao Início
                 </button>
             </form>
         </div>
@@ -220,12 +220,12 @@
 
     <!-- SIDEBAR (Módulos na Lateral Esquerda) -->
     <aside id="sidebar-menu"
-        class="fixed md:sticky top-0 left-0 w-64 bg-cf-darkgray h-screen flex flex-col justify-between border-r-4 border-cf-yellow z-30 flex-shrink-0 transition-transform duration-300 -translate-x-full md:translate-x-0">
-        <div>
+        class="fixed md:sticky top-0 left-0 w-64 bg-cf-darkgray h-screen flex flex-col justify-between border-r-4 border-cf-yellow z-30 flex-shrink-0 transition-transform duration-300 -translate-x-full md:translate-x-0 overflow-y-auto">
+        <div class="flex flex-col flex-1">
             <!-- Sidebar Header / Logo -->
-            <div class="p-6 border-b border-cf-gray flex flex-col items-center">
-                <a href="index.html" class="hover:opacity-85 transition-opacity mb-4">
-                    <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-24 w-auto object-contain mix-blend-screen">
+            <div class="p-4 border-b border-cf-gray flex flex-col items-center">
+                <a href="index.html" class="hover:opacity-85 transition-opacity mb-2">
+                    <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-16 w-auto object-contain mix-blend-screen">
                 </a>
                 <span class="font-impact text-md text-cf-yellow tracking-widest uppercase text-center">
                     PAINEL ADMIN
@@ -233,44 +233,48 @@
             </div>
 
             <!-- Sidebar Navigation Links (Módulos) -->
-            <nav class="mt-6 px-4 space-y-2">
+            <nav class="mt-4 px-3 space-y-1 flex-1">
                 <button onclick="switchTab('dashboard')" id="btn-dashboard"
-                    class="sidebar-link-active w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-chart-simple text-base w-5 text-center"></i> Dashboard
+                    class="sidebar-link-active w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-chart-simple text-sm w-4 text-center"></i> Dashboard
                 </button>
                 <button onclick="switchTab('cardapio')" id="btn-cardapio"
-                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-utensils text-base w-5 text-center"></i> Cardápio
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-utensils text-sm w-4 text-center"></i> Cardápio
                 </button>
                 <button onclick="switchTab('pedidos')" id="btn-pedidos"
-                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-box-open text-base w-5 text-center"></i> Pedidos
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-box-open text-sm w-4 text-center"></i> Pedidos
                 </button>
                 <button onclick="switchTab('cupons')" id="btn-cupons"
-                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-ticket text-base w-5 text-center"></i> Cupons
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-ticket text-sm w-4 text-center"></i> Cupons
                 </button>
                 <button onclick="switchTab('config')" id="btn-config"
-                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-gears text-base w-5 text-center"></i> Ajustes
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-gears text-sm w-4 text-center"></i> Ajustes
                 </button>
                 <button onclick="switchTab('financeiro')" id="btn-financeiro"
-                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-sack-dollar text-base w-5 text-center"></i> Financeiro
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-sack-dollar text-sm w-4 text-center"></i> Financeiro
                 </button>
                 <button onclick="switchTab('clientes')" id="btn-clientes"
-                    class="w-full flex items-center gap-3 px-4 py-3 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-sm font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-users text-base w-5 text-center"></i> Clientes
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-users text-sm w-4 text-center"></i> Clientes
                 </button>
             </nav>
         </div>
 
         <!-- Sidebar Footer -->
-        <div class="p-6 border-t border-cf-gray">
+        <div class="p-4 border-t border-cf-gray flex flex-col gap-1.5 mt-auto">
             <a href="index.html"
                 class="w-full font-impact text-center block text-xs md:text-sm text-white hover:text-cf-yellow transition-colors tracking-widest uppercase">
-                <i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Site
+                <i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Início
             </a>
+            <button onclick="logoutAdmin()"
+                class="w-full font-impact text-center block text-xs md:text-sm text-red-500 hover:text-red-400 transition-colors tracking-widest uppercase mt-1">
+                <i class="fa-solid fa-right-from-bracket mr-1"></i> Sair
+            </button>
         </div>
     </aside>
 
@@ -556,6 +560,11 @@
                             <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Localização da
                                 Unidade</label>
                             <input type="text" id="config-address" value="Ipiranga, São Paulo - SP"
+                                class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Valor do Frete (R$)</label>
+                            <input type="number" step="0.01" id="config-frete" value="0.00" placeholder="Ex: 10.00"
                                 class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
                         </div>
 
@@ -1797,6 +1806,7 @@
         async function loadSettings() {
             let savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
             let savedAddress = localStorage.getItem('cleanfoods_address');
+            let savedFrete = localStorage.getItem('cleanfoods_frete');
 
             if (supabaseClient) {
                 try {
@@ -1807,6 +1817,8 @@
                         if (waSetting) savedWhatsapp = waSetting.value;
                         const addrSetting = data.find(s => s.key === 'address');
                         if (addrSetting) savedAddress = addrSetting.value;
+                        const freteSetting = data.find(s => s.key === 'frete');
+                        if (freteSetting) savedFrete = freteSetting.value;
                     }
                 } catch (err) {
                     console.error("Erro ao carregar configurações do Supabase:", err);
@@ -1815,11 +1827,13 @@
 
             if (savedWhatsapp) document.getElementById('config-whatsapp').value = savedWhatsapp;
             if (savedAddress) document.getElementById('config-address').value = savedAddress;
+            if (savedFrete) document.getElementById('config-frete').value = savedFrete;
         }
 
         async function saveConfig() {
             const whatsapp = document.getElementById('config-whatsapp').value.trim();
             const address = document.getElementById('config-address').value.trim();
+            const frete = document.getElementById('config-frete').value.trim();
 
             if (supabaseClient) {
                 try {
@@ -1827,14 +1841,18 @@
                     if (waError) throw waError;
                     const { error: addrError } = await supabaseClient.from('settings').upsert({ key: 'address', value: address });
                     if (addrError) throw addrError;
+                    const { error: freteError } = await supabaseClient.from('settings').upsert({ key: 'frete', value: frete });
+                    if (freteError) throw freteError;
                 } catch (err) {
                     console.error("Erro ao salvar configurações no Supabase:", err);
                     localStorage.setItem('cleanfoods_whatsapp', whatsapp);
                     localStorage.setItem('cleanfoods_address', address);
+                    localStorage.setItem('cleanfoods_frete', frete);
                 }
             } else {
                 localStorage.setItem('cleanfoods_whatsapp', whatsapp);
                 localStorage.setItem('cleanfoods_address', address);
+                localStorage.setItem('cleanfoods_frete', frete);
             }
 
             showToast('CONFIGURAÇÕES SALVAS COM SUCESSO!');
@@ -2469,6 +2487,13 @@
                 err.classList.add('hidden');
             } else {
                 err.classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            if (confirm("Deseja realmente sair do painel administrativo?")) {
+                sessionStorage.removeItem('cleanfoods_admin_logged');
+                window.location.reload();
             }
         }
 

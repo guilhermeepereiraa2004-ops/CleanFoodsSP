@@ -978,6 +978,10 @@
                     <span id="cart-discount-label">Desconto (0%)</span>
                     <span id="cart-discount-val">-R$ 0,00</span>
                 </div>
+                <div id="cart-shipping-row" class="flex justify-between text-gray-400 hidden">
+                    <span id="cart-shipping-label">Frete</span>
+                    <span id="cart-shipping-val">R$ 0,00</span>
+                </div>
                 <div
                     class="flex justify-between text-white text-lg font-impact tracking-wide pt-2 border-t border-cf-gray/40">
                     <span>TOTAL</span>
@@ -1180,6 +1184,10 @@
                         <div id="checkout-discount-row" class="flex justify-between text-green-400 hidden">
                             <span id="checkout-discount-label">Desconto (0%)</span>
                             <span id="checkout-discount-val">-R$ 0,00</span>
+                        </div>
+                        <div id="checkout-shipping-row" class="flex justify-between text-gray-400 hidden">
+                            <span id="checkout-shipping-label">Frete</span>
+                            <span id="checkout-shipping-val">R$ 0,00</span>
                         </div>
                         <div
                             class="flex justify-between text-white font-impact text-base pt-2 border-t border-cf-gray/40 tracking-wider">
@@ -1467,6 +1475,7 @@
         async function loadSettings() {
             let savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
             let savedAddress = localStorage.getItem('cleanfoods_address');
+            let savedFrete = localStorage.getItem('cleanfoods_frete');
 
             if (supabaseClient) {
                 try {
@@ -1477,11 +1486,16 @@
                         if (waSetting) savedWhatsapp = waSetting.value;
                         const addrSetting = data.find(s => s.key === 'address');
                         if (addrSetting) savedAddress = addrSetting.value;
+                        const freteSetting = data.find(s => s.key === 'frete');
+                        if (freteSetting) savedFrete = freteSetting.value;
                     }
                 } catch (err) {
                     console.error("Erro ao carregar configurações do Supabase:", err);
                 }
             }
+
+            if (savedFrete) window.systemShippingFee = parseFloat(savedFrete);
+            else window.systemShippingFee = 0;
 
             if (savedWhatsapp) {
                 const waLinks = document.querySelectorAll('a[href*="wa.me/"]');
@@ -1837,7 +1851,23 @@
                 if (discountRow) discountRow.classList.add('hidden');
             }
 
-            const finalTotal = Math.max(0, subtotal - discountAmount);
+            let shippingFee = window.systemShippingFee || 0;
+            let totalMarmitas = 0;
+            for (const key in cart) totalMarmitas += cart[key].quantity;
+            if (totalMarmitas >= 30) shippingFee = 0; // Combo monstro gives frete grátis
+
+            const shippingRow = document.getElementById('cart-shipping-row');
+            const shippingSpan = document.getElementById('cart-shipping-val');
+            if (shippingRow && shippingSpan) {
+                if (shippingFee > 0) {
+                    shippingRow.classList.remove('hidden');
+                    shippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
+                } else {
+                    shippingRow.classList.add('hidden');
+                }
+            }
+
+            const finalTotal = Math.max(0, subtotal - discountAmount + shippingFee);
 
             if (subtotalSpan) subtotalSpan.innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
             if (totalSpan) totalSpan.innerText = `R$ ${finalTotal.toFixed(2).replace('.', ',')}`;
@@ -1862,6 +1892,8 @@
             const chkDiscountRow = document.getElementById('checkout-discount-row');
             const chkDiscountLabel = document.getElementById('checkout-discount-label');
             const chkDiscountSpan = document.getElementById('checkout-discount-val');
+            const chkShippingRow = document.getElementById('checkout-shipping-row');
+            const chkShippingSpan = document.getElementById('checkout-shipping-val');
             const chkTotalSpan = document.getElementById('checkout-total-val');
 
             if (appliedCoupon && subtotal > 0) {
@@ -1870,6 +1902,15 @@
                 if (chkDiscountSpan) chkDiscountSpan.innerText = `-R$ ${discountAmount.toFixed(2).replace('.', ',')}`;
             } else {
                 if (chkDiscountRow) chkDiscountRow.classList.add('hidden');
+            }
+
+            if (chkShippingRow && chkShippingSpan) {
+                if (shippingFee > 0) {
+                    chkShippingRow.classList.remove('hidden');
+                    chkShippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
+                } else {
+                    chkShippingRow.classList.add('hidden');
+                }
             }
 
             if (chkSubtotalSpan) chkSubtotalSpan.innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
@@ -2082,7 +2123,22 @@
             } else {
                 discountAmount = subtotal * (couponDiscountPercent / 100);
             }
-            const finalTotal = Math.max(0, subtotal - discountAmount);
+            
+            let shippingFee = window.systemShippingFee || 0;
+            if (totalMarmitas >= 30) {
+                shippingFee = 0;
+            }
+
+            const finalTotal = Math.max(0, subtotal - discountAmount + shippingFee);
+
+            if (shippingFee > 0) {
+                orderItems.push({
+                    name: `🚚 Frete`,
+                    size: 'Único',
+                    price: shippingFee,
+                    quantity: 1
+                });
+            }
 
             // Generate unique order ID
             const orderId = 'CF-' + Date.now().toString(36).slice(-5).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
@@ -2162,6 +2218,57 @@
                 let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
                 transactions.push(transaction);
                 localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
+            }
+
+            // If Pix or Credit Card, redirect to Mercado Pago
+            if (payment === 'Pix' || payment === 'Cartão de Crédito') {
+                const submitBtn = document.querySelector('#checkout-form button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando Pagamento...';
+                
+                try {
+                    const response = await fetch(`${window.SUPABASE_URL}/functions/v1/create-payment`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            orderId: orderId,
+                            payer: { name: name, email: name.replace(/\s+/g, '').toLowerCase() + '@cleanfoods.com' },
+                            items: orderItems.map(item => ({
+                                id: item.name.replace(/\s+/g, '_').substring(0, 50),
+                                title: item.name,
+                                quantity: item.quantity,
+                                unit_price: item.price
+                            }))
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok && data.init_point) {
+                        // Pre-fill localStorage to trigger thank you modal on return
+                        localStorage.setItem('cleanfoods_pending_order', JSON.stringify({
+                            id: orderId,
+                            total: finalTotal.toFixed(2),
+                            payment: payment,
+                            deliveryDate: deliveryDate,
+                            deliveryTime: deliveryTime
+                        }));
+                        window.location.href = data.init_point;
+                        return; // Prevent clearing cart until return
+                    } else {
+                        console.error(data);
+                        alert("Erro ao gerar link de pagamento. Detalhes: " + (data.error || "Desconhecido"));
+                        submitBtn.innerHTML = originalText;
+                        isSubmitting = false;
+                        return;
+                    }
+                } catch (e) {
+                    console.error(e);
+                    alert("Erro ao conectar com servidor de pagamento.");
+                    submitBtn.innerHTML = originalText;
+                    isSubmitting = false;
+                    return;
+                }
             }
 
             // Populate Thank You Modal details
@@ -2288,6 +2395,49 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function () {
+            // Handle Payment Return
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            const order_id = urlParams.get('order_id');
+            
+            if (status === 'success' || status === 'pending') {
+                const pendingOrder = JSON.parse(localStorage.getItem('cleanfoods_pending_order'));
+                if (pendingOrder && pendingOrder.id === order_id) {
+                    const orderIdSpan = document.getElementById('thank-order-id');
+                    const orderTotalSpan = document.getElementById('thank-order-total');
+                    const orderPaymentSpan = document.getElementById('thank-order-payment');
+                    const orderDeliverySpan = document.getElementById('thank-order-delivery');
+
+                    if (orderIdSpan) orderIdSpan.innerText = '#' + pendingOrder.id;
+                    if (orderTotalSpan) orderTotalSpan.innerText = 'R$ ' + pendingOrder.total.replace('.', ',');
+                    if (orderPaymentSpan) orderPaymentSpan.innerText = pendingOrder.payment;
+                    if (orderDeliverySpan) {
+                        const parts = pendingOrder.deliveryDate.split('-');
+                        const formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : pendingOrder.deliveryDate;
+                        orderDeliverySpan.innerText = `${formattedDate} às ${pendingOrder.deliveryTime}`;
+                    }
+
+                    const thankModal = document.getElementById('thank-you-modal');
+                    if (thankModal) {
+                        thankModal.classList.remove('hidden');
+                        setTimeout(() => {
+                            thankModal.classList.remove('opacity-0');
+                        }, 10);
+                    }
+                    
+                    // Clear the cart
+                    cart = {};
+                    localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
+                    localStorage.removeItem('cleanfoods_pending_order');
+                    
+                    // Remove url params
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            } else if (status === 'failure') {
+                alert('Ocorreu um erro no pagamento ou ele foi recusado. Por favor, tente novamente.');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
             // Trigger GSAP reveal animations immediately (no preloader)
             const heroTimeline = gsap.timeline();
             heroTimeline.fromTo("#hero .reveal-up",
