@@ -2243,6 +2243,30 @@
                 try {
                     const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', order.id);
                     if (error) throw error;
+                    
+                    // Lógica do Financeiro: Adiciona quando concluído, remove se não for
+                    const transactionId = 'TX-' + order.id;
+                    if (newStatus === 'Concluído') {
+                        const transaction = {
+                            id: transactionId,
+                            type: 'Entrada',
+                            description: `Pedido ${order.id} - ${order.client_name || order.clientName || 'Cliente'}`,
+                            value: parseFloat(order.total),
+                            date: new Date().toISOString().split('T')[0],
+                            category: 'Pedido'
+                        };
+                        
+                        // Tenta deletar antes para evitar duplicação caso clique várias vezes
+                        await supabaseClient.from('transactions').delete().eq('id', transactionId);
+                        const { error: txError } = await supabaseClient.from('transactions').insert([transaction]);
+                        if (txError) console.error("Erro ao inserir transação:", txError);
+                        else loadTransactions();
+                    } else {
+                        // Se o status mudou para algo diferente, remove do financeiro
+                        await supabaseClient.from('transactions').delete().eq('id', transactionId);
+                        loadTransactions();
+                    }
+                    
                 } catch (err) {
                     console.error("Erro ao atualizar status do pedido no Supabase:", err);
                     localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));

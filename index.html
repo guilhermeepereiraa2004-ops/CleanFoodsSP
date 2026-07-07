@@ -1215,8 +1215,18 @@
                     <div id="coupon-feedback" class="text-xs font-bold mt-2 hidden"></div>
                 </div>
 
+                <!-- Test Mode Warning -->
+                <div class="bg-red-900/40 border-2 border-red-500 p-3 mb-4 rounded-sm shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                    <p class="text-xs font-impact text-red-500 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Sistema em Testes
+                    </p>
+                    <p class="text-xs text-gray-300 mt-1.5 font-semibold leading-relaxed">
+                        No momento estamos realizando testes na plataforma. <strong>Não faça pagamentos reais e não insira dados do seu cartão de crédito!</strong>
+                    </p>
+                </div>
+
                 <!-- Action Buttons -->
-                <div class="flex gap-4 pt-4">
+                <div class="flex gap-4 pt-2">
                     <button type="button" onclick="toggleCheckoutModal()"
                         class="w-1/2 bg-cf-gray text-white font-impact text-lg uppercase tracking-widest py-3 border-2 border-cf-gray hover:bg-white hover:text-cf-black hover:border-white transition-all cursor-hover rounded-sm"
                         style="clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);">
@@ -2193,32 +2203,7 @@
                 localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
             }
 
-            // Save Transaction (Financeiro)
-            const transactionId = 'TX-' + Date.now().toString(36).slice(-5).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
-            const transaction = {
-                id: transactionId,
-                type: 'Entrada',
-                description: `Pedido ${orderId} - ${name}`,
-                value: parseFloat(finalTotal.toFixed(2)),
-                date: new Date().toISOString(),
-                category: 'Pedido'
-            };
-
-            if (supabaseClient) {
-                try {
-                    const { error } = await supabaseClient.from('transactions').insert([transaction]);
-                    if (error) throw error;
-                } catch (err) {
-                    console.error("Erro ao enviar transação para o Supabase, salvando localmente:", err);
-                    let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
-                    transactions.push(transaction);
-                    localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
-                }
-            } else {
-                let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
-                transactions.push(transaction);
-                localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
-            }
+            // A transação no financeiro agora será criada apenas quando o pedido for concluído no painel admin.
 
             // If Pix or Credit Card, redirect to Mercado Pago
             if (payment === 'Pix' || payment === 'Cartão de Crédito') {
@@ -2229,7 +2214,10 @@
                 try {
                     const response = await fetch(`${window.SUPABASE_URL}/functions/v1/create-payment`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}`
+                        },
                         body: JSON.stringify({
                             orderId: orderId,
                             payer: { name: name, email: name.replace(/\s+/g, '').toLowerCase() + '@cleanfoods.com' },

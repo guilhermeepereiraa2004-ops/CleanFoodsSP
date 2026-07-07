@@ -39,9 +39,9 @@ serve(async (req) => {
             else if (status === 'rejected' || status === 'cancelled') dbStatus = 'Cancelado'
 
             const { error } = await supabase
-              .from('transactions')
-              .update({ status: dbStatus }) // Assuming you have a status column
-              .eq('id', orderId) // If transaction table doesn't use id like this, map appropriately
+              .from('orders')
+              .update({ status: dbStatus })
+              .eq('id', orderId)
               
             if (error) {
               console.error('Failed to update Supabase:', error)

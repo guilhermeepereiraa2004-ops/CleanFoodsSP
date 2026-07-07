@@ -44,7 +44,7 @@ serve(async (req) => {
       },
       auto_return: 'approved',
       external_reference: orderId, // Store your order ID here so webhook knows
-      notification_url: webhookUrl || 'https://seu-projeto.supabase.co/functions/v1/payment-webhook' // Placeholder for webhook URL
+      notification_url: webhookUrl || `${Deno.env.get('SUPABASE_URL')}/functions/v1/payment-webhook` // Uses your actual Supabase URL
     }
 
     const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
