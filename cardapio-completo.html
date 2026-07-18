@@ -19,6 +19,8 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Mercado Pago SDK -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -433,6 +435,10 @@
                     class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
                     Linha Gourmet
                 </button>
+                <button onclick="filterCategory('Salgados')" id="filter-btn-Salgados"
+                    class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
+                    Salgados Fitness
+                </button>
             </div>
 
             <!-- Grid dynamically filled -->
@@ -804,7 +810,12 @@
                     <div id="coupon-feedback" class="text-xs font-bold mt-2 hidden"></div>
                 </div>
 
-                <div class="flex gap-4 pt-4">
+                </div>
+
+                <!-- Mercado Pago Brick Container -->
+                <div id="paymentBrick_container" class="mt-4 hidden bg-white rounded overflow-hidden p-2"></div>
+
+                <div id="checkout-buttons-container" class="flex gap-4 pt-4">
                     <button type="button" onclick="toggleCheckoutModal()"
                         class="w-1/2 bg-cf-gray text-white font-impact text-lg uppercase tracking-widest py-3 border-2 border-cf-gray hover:bg-white hover:text-cf-black hover:border-white transition-all cursor-hover rounded-sm"
                         style="clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);">
@@ -850,6 +861,16 @@
                         class="text-white">—</span></div>
             </div>
 
+            <div id="pix-payment-info" class="hidden bg-white p-4 rounded mb-6 flex flex-col items-center border-2 border-cf-yellow">
+                <p class="font-bold text-cf-black text-sm mb-2 uppercase flex items-center gap-2"><i class="fa-brands fa-pix text-[#32bcad]"></i> Escaneie para Pagar</p>
+                <img id="pix-qr-code" src="" alt="QR Code Pix" class="w-40 h-40 mb-3 border border-cf-gray p-1 rounded">
+                <p class="text-xs text-gray-500 font-semibold mb-1">Ou utilize o código Copia e Cola:</p>
+                <div class="w-full flex items-center border border-gray-300 rounded overflow-hidden">
+                    <input type="text" id="pix-copia-cola" class="flex-1 text-[10px] p-2 bg-gray-50 text-gray-700 outline-none" readonly>
+                    <button onclick="copyPixCode()" class="bg-cf-yellow text-cf-black px-3 py-2 font-bold text-xs hover:bg-cf-black hover:text-cf-yellow transition-colors"><i class="fa-solid fa-copy"></i> Copiar</button>
+                </div>
+            </div>
+
             <button onclick="closeThankYouModal()"
                 class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
                 Continuar Navegando
@@ -866,7 +887,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <script>
-
+        function copyPixCode() {
+            const copyText = document.getElementById("pix-copia-cola");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            document.execCommand("copy");
+            alert("Código Pix copiado!");
+        }
 
         // Initialize Supabase Client
         let supabaseClient = null;
@@ -903,7 +930,15 @@
             { id: 'price-escondidinho-mandioca-patinho-moido', name: '13. Escondidinho de mandioca com patinho moído', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
             { id: 'price-patinho-legumes', name: '14. Patinho com legumes', category: 'Patinho', priceP: '25,50', priceG: '—' },
             { id: 'price-patinho-desfiado-pure-mandioca-legumes', name: '15. Patinho desfiado com purê de mandioca e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
-            { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' }
+            { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            // SALGADOS FITNESS
+            { id: 'price-coxinha-fit', name: '30. Coxinha Fit', category: 'Salgados', priceP: '8,50', priceG: '—' },
+            { id: 'price-kibes', name: '31. Kibes', category: 'Salgados', priceP: '8,50', priceG: '—' },
+            { id: 'price-nugfit', name: '32. NugFit', category: 'Salgados', priceP: '12,90', priceG: '—' },
+            { id: 'price-pizza-fit', name: '33. Pizza Fit', category: 'Salgados', priceP: '14,90', priceG: '—' },
+            { id: 'price-quiche-fit', name: '34. Quiche', category: 'Salgados', priceP: '9,90', priceG: '—' },
+            { id: 'price-sucos', name: '35. Sucos', category: 'Salgados', priceP: '10,90', priceG: '—' },
+            { id: 'price-tortas-fit', name: '36. Tortas', category: 'Salgados', priceP: '11,90', priceG: '—' }
         ];
 
         const defaultNutrition = {
@@ -923,6 +958,16 @@
         let cart = JSON.parse(localStorage.getItem('cleanfoods_cart')) || {};
         let appliedCoupon = null;
         let activeCategory = 'Todos';
+
+        // Garantir que salgados existam em qualquer fonte de dados
+        function ensureSalgados(dishList) {
+            const hasSalgados = dishList.some(d => d.category === 'Salgados');
+            if (!hasSalgados) {
+                const salgadosItems = defaultDishes.filter(d => d.category === 'Salgados');
+                return [...dishList, ...salgadosItems];
+            }
+            return dishList;
+        }
 
         // Supabase Database helpers
         async function loadDishes() {
@@ -945,6 +990,7 @@
                                 nutrition: d.nutrition || (localD && localD.nutrition) || {...defaultNutrition}
                             };
                         }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
+                        dishes = ensureSalgados(dishes);
                     } else {
                         // Seed database
                         const dbDishes = defaultDishes.map(d => ({
@@ -962,9 +1008,11 @@
                 } catch (err) {
                     console.error("Erro ao carregar pratos do Supabase:", err);
                     dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                    dishes = ensureSalgados(dishes);
                 }
             } else {
                 dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                dishes = ensureSalgados(dishes);
             }
         }
 
@@ -1548,6 +1596,7 @@
                     thankModal.classList.add('hidden');
                 }, 300);
             }
+            document.body.classList.remove('cart-open-overflow');
         }
 
         // Validate checkout modal fields and submit order locally
@@ -1785,87 +1834,156 @@
                 localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
             }
 
-            // If Pix or Credit Card, redirect to Mercado Pago
+            // Success Modal Function
+            const showSuccessModal = (oId, totalVal, paymentMethod, dDate, dTime, paymentResponse = null) => {
+                const orderIdSpan = document.getElementById('thank-order-id');
+                const orderTotalSpan = document.getElementById('thank-order-total');
+                const orderPaymentSpan = document.getElementById('thank-order-payment');
+                const orderDeliverySpan = document.getElementById('thank-order-delivery');
+
+                if (orderIdSpan) orderIdSpan.innerText = '#' + oId;
+                if (orderTotalSpan) orderTotalSpan.innerText = 'R$ ' + totalVal.toFixed(2).replace('.', ',');
+                if (orderPaymentSpan) orderPaymentSpan.innerText = paymentMethod;
+                if (orderDeliverySpan) {
+                    const parts = dDate.split('-');
+                    const formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dDate;
+                    orderDeliverySpan.innerText = `${formattedDate} às ${dTime}`;
+                }
+
+                const pixInfoContainer = document.getElementById('pix-payment-info');
+                if (paymentMethod === 'Pix') {
+                    if (paymentResponse && paymentResponse.point_of_interaction) {
+                        const qrCodeBase64 = paymentResponse.point_of_interaction.transaction_data.qr_code_base64;
+                        const qrCodeString = paymentResponse.point_of_interaction.transaction_data.qr_code;
+                        document.getElementById('pix-qr-code').src = `data:image/jpeg;base64,${qrCodeBase64}`;
+                        document.getElementById('pix-copia-cola').value = qrCodeString;
+                        if(pixInfoContainer) pixInfoContainer.classList.remove('hidden');
+                    } else {
+                        alert("DEBUG PIX MISSING: " + JSON.stringify(paymentResponse));
+                        if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                    }
+                } else {
+                    if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                }
+
+                const thankModal = document.getElementById('thank-you-modal');
+                if (thankModal) {
+                    thankModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        thankModal.classList.remove('opacity-0');
+                    }, 10);
+                }
+
+                const checkoutModal = document.getElementById('checkout-modal');
+                if (checkoutModal) {
+                    checkoutModal.classList.add('opacity-0');
+                    setTimeout(() => {
+                        checkoutModal.classList.add('hidden');
+                    }, 300);
+                }
+
+                cart = {};
+                localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
+                updateCartBadges();
+                renderCart();
+
+                isSubmitting = false;
+            };
+
+            // If Pix or Credit Card, use Mercado Pago Bricks
             if (payment === 'Pix' || payment === 'Cartão de Crédito') {
                 const submitBtn = document.querySelector('#checkout-form button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando Pagamento...';
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Carregando...';
                 
-                try {
-                    const response = await fetch(`${window.SUPABASE_URL}/functions/v1/create-payment`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            orderId: orderId,
-                            payer: { name: name, email: name.replace(/\s+/g, '').toLowerCase() + '@cleanfoods.com' },
-                            items: orderItems.map(item => ({
-                                id: item.name.replace(/\s+/g, '_').substring(0, 50),
-                                title: item.name,
-                                quantity: item.quantity,
-                                unit_price: item.price
-                            }))
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (response.ok && data.init_point) {
-                        // Pre-fill localStorage to trigger thank you modal on return
-                        localStorage.setItem('cleanfoods_pending_order', JSON.stringify({
-                            id: orderId,
-                            total: finalTotal.toFixed(2),
-                            payment: payment,
-                            deliveryDate: deliveryDate,
-                            deliveryTime: deliveryTime
-                        }));
-                        window.location.href = data.init_point;
-                        return; // Prevent clearing cart until return
-                    } else {
-                        console.error(data);
-                        alert("Erro ao gerar link de pagamento. Detalhes: " + (data.error || "Desconhecido"));
-                        submitBtn.innerHTML = originalText;
-                        isSubmitting = false;
-                        return;
-                    }
-                } catch (e) {
-                    console.error(e);
-                    alert("Erro ao conectar com servidor de pagamento.");
+                // Hide checkout buttons
+                const buttonsContainer = document.getElementById('checkout-buttons-container');
+                if (buttonsContainer) buttonsContainer.classList.add('hidden');
+                
+                // Initialize MercadoPago Bricks
+                if (!window.MP_PUBLIC_KEY) {
+                    alert("Chave do Mercado Pago não configurada.");
                     submitBtn.innerHTML = originalText;
+                    if (buttonsContainer) buttonsContainer.classList.remove('hidden');
                     isSubmitting = false;
                     return;
                 }
+
+                const mp = new MercadoPago(window.MP_PUBLIC_KEY, { locale: 'pt-BR' });
+                const bricksBuilder = mp.bricks();
+                
+                const renderPaymentBrick = async (bricksBuilder) => {
+                    const settings = {
+                        initialization: {
+                            amount: finalTotal,
+                            preferenceId: null,
+                            payer: {
+                                email: name.replace(/\s+/g, '').toLowerCase() + '@cleanfoods.com',
+                            },
+                        },
+                        customization: {
+                            paymentMethods: {
+                                ticket: "all",
+                                bankTransfer: "all",
+                                creditCard: "all",
+                                debitCard: "all"
+                            },
+                        },
+                        callbacks: {
+                            onReady: () => {
+                                const brickContainer = document.getElementById('paymentBrick_container');
+                                if (brickContainer) {
+                                    brickContainer.classList.remove('hidden');
+                                }
+                                submitBtn.innerHTML = originalText;
+                            },
+                            onSubmit: ({ selectedPaymentMethod, formData }) => {
+                                formData.description = `Pedido ${orderId} - ${name}`;
+                                formData.external_reference = orderId;
+                                
+                                return new Promise((resolve, reject) => {
+                                    fetch(`${window.SUPABASE_URL}/functions/v1/create-payment`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Authorization": `Bearer ${window.SUPABASE_ANON_KEY}`
+                                        },
+                                        body: JSON.stringify(formData),
+                                    })
+                                    .then(async (response) => {
+                                        const data = await response.json();
+                                        if (!response.ok || data.error || data.status === 'rejected' || data.code) {
+                                            reject();
+                                            alert("Erro no pagamento: " + (data.error || data.message || "Pagamento recusado"));
+                                            return;
+                                        }
+                                        resolve();
+                                        showSuccessModal(orderId, finalTotal, payment, deliveryDate, deliveryTime, data);
+                                    })
+                                    .catch((error) => {
+                                        reject();
+                                        alert("Erro de conexão ao processar pagamento.");
+                                    });
+                                });
+                            },
+                            onError: (error) => {
+                                console.error(error);
+                                alert("Ocorreu um erro ao carregar o pagamento.");
+                            },
+                        },
+                    };
+                    
+                    if (window.paymentBrickController) window.paymentBrickController.unmount();
+                    window.paymentBrickController = await bricksBuilder.create("payment", "paymentBrick_container", settings);
+                };
+                
+                renderPaymentBrick(bricksBuilder);
+                return; // Wait for brick to complete
             }
 
-            const orderIdSpan = document.getElementById('thank-order-id');
-            const orderTotalSpan = document.getElementById('thank-order-total');
-            const orderPaymentSpan = document.getElementById('thank-order-payment');
-            const orderDeliverySpan = document.getElementById('thank-order-delivery');
+            // Normal payment (dinheiro/VR)
+            showSuccessModal(orderId, finalTotal, payment, deliveryDate, deliveryTime);
 
-            if (orderIdSpan) orderIdSpan.innerText = '#' + orderId;
-            if (orderTotalSpan) orderTotalSpan.innerText = 'R$ ' + finalTotal.toFixed(2).replace('.', ',');
-            if (orderPaymentSpan) orderPaymentSpan.innerText = payment;
-            if (orderDeliverySpan) {
-                const parts = deliveryDate.split('-');
-                const formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : deliveryDate;
-                orderDeliverySpan.innerText = `${formattedDate} às ${deliveryTime}`;
-            }
-
-            const thankModal = document.getElementById('thank-you-modal');
-            if (thankModal) {
-                thankModal.classList.remove('hidden');
-                setTimeout(() => {
-                    thankModal.classList.remove('opacity-0');
-                }, 10);
-            }
-
-            toggleCheckoutModal();
-
-            cart = {};
-            localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
-            updateCartBadges();
-            renderCart();
-
-            isSubmitting = false;
         }
 
         function checkoutOrder() {
@@ -1889,7 +2007,7 @@
             activeCategory = category;
 
             // Highlight active button
-            const categories = ['Todos', 'Frango', 'Patinho', 'Gourmet'];
+            const categories = ['Todos', 'Frango', 'Patinho', 'Gourmet', 'Salgados'];
             categories.forEach(cat => {
                 const btn = document.getElementById('filter-btn-' + cat);
                 if (btn) {
@@ -1935,6 +2053,7 @@
 
                 let groupLabel = 'Linha ' + dish.category;
                 if (dish.category === 'Gourmet') groupLabel = 'Linha Gourmet';
+                if (dish.category === 'Salgados') groupLabel = 'Salgados Fitness';
 
                 let priceP_HTML = '';
                 if (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') {

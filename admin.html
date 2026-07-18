@@ -606,6 +606,7 @@
                         <option value="Frango">Linha Frango</option>
                         <option value="Patinho">Linha Patinho</option>
                         <option value="Gourmet">Linha Gourmet</option>
+                        <option value="Salgados">Salgados Fitness</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
@@ -1141,7 +1142,15 @@
             { id: 'price-escondidinho-mandioca-patinho-moido', name: '13. Escondidinho de mandioca com patinho moído', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
             { id: 'price-patinho-legumes', name: '14. Patinho com legumes', category: 'Patinho', priceP: '25,50', priceG: '—' },
             { id: 'price-patinho-desfiado-pure-mandioca-legumes', name: '15. Patinho desfiado com purê de mandioca e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
-            { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' }
+            { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
+            // SALGADOS FITNESS
+            { id: 'price-coxinha-fit', name: '30. Coxinha Fit', category: 'Salgados', priceP: '8,50', priceG: '—' },
+            { id: 'price-kibes', name: '31. Kibes', category: 'Salgados', priceP: '8,50', priceG: '—' },
+            { id: 'price-nugfit', name: '32. NugFit', category: 'Salgados', priceP: '12,90', priceG: '—' },
+            { id: 'price-pizza-fit', name: '33. Pizza Fit', category: 'Salgados', priceP: '14,90', priceG: '—' },
+            { id: 'price-quiche-fit', name: '34. Quiche', category: 'Salgados', priceP: '9,90', priceG: '—' },
+            { id: 'price-sucos', name: '35. Sucos', category: 'Salgados', priceP: '10,90', priceG: '—' },
+            { id: 'price-tortas-fit', name: '36. Tortas', category: 'Salgados', priceP: '11,90', priceG: '—' }
         ];
 
         const defaultNutrition = {
@@ -1156,6 +1165,16 @@
         };
 
         const defaultDishes = defaultDishesRaw.map(d => ({...d, nutrition: {...defaultNutrition}}));
+
+        // Garantir que salgados existam em qualquer fonte de dados
+        function ensureSalgados(dishList) {
+            const hasSalgados = dishList.some(d => d.category === 'Salgados');
+            if (!hasSalgados) {
+                const salgadosItems = defaultDishes.filter(d => d.category === 'Salgados');
+                return [...dishList, ...salgadosItems];
+            }
+            return dishList;
+        }
 
         async function loadDishes() {
             if (supabaseClient) {
@@ -1176,6 +1195,7 @@
                                 image: (localD && localD.image) ? localD.image : (d.image || '')
                             };
                         }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
+                        dishes = ensureSalgados(dishes);
                     } else {
                         // Seed database
                         const dbDishes = defaultDishes.map(d => ({
@@ -1194,9 +1214,11 @@
                 } catch (err) {
                     console.error("Erro ao carregar pratos do Supabase:", err);
                     dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                    dishes = ensureSalgados(dishes);
                 }
             } else {
                 dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                dishes = ensureSalgados(dishes);
             }
             renderDishesEditor();
         }
@@ -1207,7 +1229,7 @@
 
             listContainer.innerHTML = '';
 
-            const categories = ['Frango', 'Patinho', 'Gourmet'];
+            const categories = ['Frango', 'Patinho', 'Gourmet', 'Salgados'];
 
             categories.forEach(cat => {
                 const catDishes = dishes.filter(d => d.category === cat);
@@ -1454,6 +1476,7 @@
 
             let groupLabel = 'Linha ' + cat;
             if (cat === 'Gourmet') groupLabel = 'Linha Gourmet';
+            if (cat === 'Salgados') groupLabel = 'Salgados Fitness';
             document.getElementById('new-dish-preview-cat').innerText = groupLabel;
 
             document.getElementById('new-dish-preview-p').innerText = priceP ? `R$ ${priceP}` : 'R$ —';
@@ -1702,6 +1725,7 @@
 
             let groupLabel = 'Linha ' + dish.category;
             if (dish.category === 'Gourmet') groupLabel = 'Linha Gourmet';
+            if (dish.category === 'Salgados') groupLabel = 'Salgados Fitness';
 
             let priceP = (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') ? `R$ ${dish.priceP}` : 'R$ —';
             let priceG = (dish.priceG && dish.priceG !== '—' && dish.priceG !== '') ? `R$ ${dish.priceG}` : 'R$ —';
@@ -2136,6 +2160,14 @@
 
                 const formattedDeliveryDate = formatDateToBR(order.deliveryDate);
 
+                let orderDateFormatted = '';
+                if (order.date) {
+                    const d = new Date(order.date);
+                    if (!isNaN(d.getTime())) {
+                        orderDateFormatted = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    }
+                }
+
                 card.innerHTML = `
                     <div class="flex justify-between items-start gap-2 mb-2">
                         <span class="font-mono font-bold text-cf-yellow text-xs uppercase">#${order.id}</span>
@@ -2144,6 +2176,7 @@
                         </button>
                     </div>
                     <div class="text-sm font-bold text-white uppercase truncate mb-1" title="${order.clientName}">${order.clientName}</div>
+                    ${orderDateFormatted ? `<div class="text-[10px] text-gray-500 font-semibold mb-2"><i class="fa-regular fa-calendar-plus"></i> Recebido: ${orderDateFormatted}</div>` : ''}
                     <div class="text-[11px] text-gray-400 font-semibold truncate mb-2">${itemsSummary}</div>
                     <div class="flex justify-between items-center text-xs mt-2 border-t border-cf-gray/30 pt-2">
                         <span class="font-impact text-white">R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}</span>
@@ -2494,28 +2527,66 @@
         }
 
         // Login Logic
-        document.addEventListener("DOMContentLoaded", () => {
-            if (sessionStorage.getItem('cleanfoods_admin_logged') === 'true') {
-                document.getElementById('login-overlay').style.display = 'none';
+        // Check for existing Supabase Auth session on page load
+        document.addEventListener("DOMContentLoaded", async () => {
+            if (supabaseClient) {
+                try {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    if (session) {
+                        document.getElementById('login-overlay').style.display = 'none';
+                    }
+                } catch (err) {
+                    console.error("Erro ao verificar sessão:", err);
+                }
+            } else {
+                // Fallback: no Supabase, use sessionStorage (less secure)
+                if (sessionStorage.getItem('cleanfoods_admin_logged') === 'true') {
+                    document.getElementById('login-overlay').style.display = 'none';
+                }
             }
         });
 
-        function handleAdminLogin() {
+        async function handleAdminLogin() {
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-password').value;
             const err = document.getElementById('login-error');
+            const submitBtn = document.querySelector('#login-form button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
             
-            if (email.toLowerCase() === 'cleanfoods@gmail.com'.toLowerCase() && pass === 'naoseinao') {
-                sessionStorage.setItem('cleanfoods_admin_logged', 'true');
-                document.getElementById('login-overlay').style.display = 'none';
-                err.classList.add('hidden');
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Entrando...';
+            submitBtn.disabled = true;
+
+            if (supabaseClient) {
+                try {
+                    const { data, error: authError } = await supabaseClient.auth.signInWithPassword({
+                        email: email,
+                        password: pass,
+                    });
+
+                    if (authError) {
+                        throw authError;
+                    }
+
+                    document.getElementById('login-overlay').style.display = 'none';
+                    err.classList.add('hidden');
+                } catch (authErr) {
+                    console.error("Erro de autenticação:", authErr);
+                    err.classList.remove('hidden');
+                }
             } else {
+                // Fallback if Supabase is not configured
                 err.classList.remove('hidden');
             }
+            
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
         }
 
-        function logoutAdmin() {
+        async function logoutAdmin() {
             if (confirm("Deseja realmente sair do painel administrativo?")) {
+                if (supabaseClient) {
+                    await supabaseClient.auth.signOut();
+                }
                 sessionStorage.removeItem('cleanfoods_admin_logged');
                 window.location.reload();
             }
@@ -2762,6 +2833,12 @@
             renderClients(clientsArray);
         }
 
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
         function renderClients(clients) {
             const list = document.getElementById('cli-list');
             if (!list) return;
@@ -2773,15 +2850,36 @@
             }
 
             clients.forEach(c => {
-                list.innerHTML += `
-                    <tr class="hover:bg-cf-gray/30 transition-colors">
-                        <td class="p-4 font-bold text-white">${c.name}</td>
-                        <td class="p-4">${c.phone}</td>
-                        <td class="p-4 text-xs text-gray-400 max-w-xs truncate" title="${c.address}">${c.address}</td>
-                        <td class="p-4 text-center"><span class="bg-cf-gray px-2 py-1 rounded font-impact text-cf-yellow">${c.totalOrders}</span></td>
-                        <td class="p-4 text-right font-impact text-lg text-green-500">R$ ${c.totalSpent.toFixed(2).replace('.', ',')}</td>
-                    </tr>
-                `;
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-cf-gray/30 transition-colors';
+
+                const tdName = document.createElement('td');
+                tdName.className = 'p-4 font-bold text-white';
+                tdName.textContent = c.name;
+
+                const tdPhone = document.createElement('td');
+                tdPhone.className = 'p-4';
+                tdPhone.textContent = c.phone;
+
+                const tdAddr = document.createElement('td');
+                tdAddr.className = 'p-4 text-xs text-gray-400 max-w-xs truncate';
+                tdAddr.title = c.address;
+                tdAddr.textContent = c.address;
+
+                const tdOrders = document.createElement('td');
+                tdOrders.className = 'p-4 text-center';
+                tdOrders.innerHTML = `<span class="bg-cf-gray px-2 py-1 rounded font-impact text-cf-yellow">${parseInt(c.totalOrders)}</span>`;
+
+                const tdSpent = document.createElement('td');
+                tdSpent.className = 'p-4 text-right font-impact text-lg text-green-500';
+                tdSpent.textContent = 'R$ ' + c.totalSpent.toFixed(2).replace('.', ',');
+
+                tr.appendChild(tdName);
+                tr.appendChild(tdPhone);
+                tr.appendChild(tdAddr);
+                tr.appendChild(tdOrders);
+                tr.appendChild(tdSpent);
+                list.appendChild(tr);
             });
         }
     </script>
