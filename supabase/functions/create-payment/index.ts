@@ -66,6 +66,24 @@ serve(async (req) => {
     }
     // --- END SECURITY ---
 
+    // Clean up payer information for Mercado Pago
+    if (paymentData.payer) {
+      // Remove formatting from CPF/CNPJ
+      if (paymentData.payer.identification?.number) {
+        paymentData.payer.identification.number = paymentData.payer.identification.number.replace(/\D/g, '');
+      }
+      
+      // Some Mercado Pago integrations fail if first_name contains spaces and last_name is empty
+      // But typically Bricks sends this correctly. We will just ensure no weird characters.
+      if (paymentData.payer.first_name && !paymentData.payer.last_name) {
+         const nameParts = paymentData.payer.first_name.trim().split(' ');
+         if (nameParts.length > 1) {
+            paymentData.payer.first_name = nameParts[0];
+            paymentData.payer.last_name = nameParts.slice(1).join(' ');
+         }
+      }
+    }
+
     // Include idempotency key to prevent double charging
     const idempotencyKey = req.headers.get('x-idempotency-key') || crypto.randomUUID();
 

@@ -1916,6 +1916,7 @@
                     preferenceId: null,
                     payer: {
                         email: order.clientName.replace(/\s+/g, '').toLowerCase() + '@cleanfoods.com',
+                        entityType: 'individual'
                     },
                 },
                 customization: {
@@ -2220,7 +2221,7 @@
 
         window.onload = function () {
             // Handle Payment Return
-            const urlParams = new URLSearchParams(window.location.search);
+            let urlParams = new URLSearchParams(window.location.search);
             const status = urlParams.get('status');
             const order_id = urlParams.get('order_id');
             
