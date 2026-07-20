@@ -2305,8 +2305,8 @@
                         total: parseFloat(order.total),
                         status: order.status
                     };
-                    const { error } = await window.supabaseClient.from('orders').upsert([dbOrder]);
-                    if (error) throw error;
+                    const { error } = await window.supabaseClient.from('orders').insert([dbOrder]);
+                    if (error && error.code !== '23505') throw error;
                 } catch (err) {
                     console.error("Erro ao enviar pedido para o Supabase, salvando localmente:", err);
                     let orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
@@ -2446,9 +2446,12 @@
                                         total: parseFloat(order.total),
                                         status: 'Pendente'
                                     };
-                                    await window.supabaseClient.from('orders').upsert([dbOrder]);
+                                    const { error } = await window.supabaseClient.from('orders').insert([dbOrder]);
+                                    if (error && error.code !== '23505') {
+                                        console.error("Erro ao pré-salvar pedido:", error);
+                                    }
                                 } catch (err) {
-                                    console.error("Erro ao pré-salvar pedido:", err);
+                                    console.error("Erro na tentativa de pré-salvar pedido:", err);
                                 }
                             }
 
