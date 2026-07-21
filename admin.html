@@ -1044,7 +1044,19 @@
             window.SUPABASE_ANON_KEY && window.SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
             try {
                 const { createClient } = supabase;
-                supabaseClient = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+                
+                // Pede a chave de admin (Service Role Key) para permitir edição no banco
+                let adminKey = localStorage.getItem('cleanfoods_admin_key');
+                if (!adminKey) {
+                    const userInput = prompt("⚠️ MODO ADMIN (OPCIONAL mas recomendado para editar o cardápio):\n\nPara que suas alterações no cardápio sejam salvas no banco de dados e apareçam para os clientes, você precisa usar a 'Service Role Key' do Supabase.\n\nCole a sua chave aqui (ela ficará salva no seu navegador):");
+                    if (userInput && userInput.trim() !== "") {
+                        adminKey = userInput.trim();
+                        localStorage.setItem('cleanfoods_admin_key', adminKey);
+                    }
+                }
+                
+                const keyToUse = adminKey || window.SUPABASE_ANON_KEY;
+                supabaseClient = createClient(window.SUPABASE_URL, keyToUse);
             } catch (err) {
                 console.error("Erro ao inicializar Supabase:", err);
             }
