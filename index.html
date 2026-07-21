@@ -1339,6 +1339,7 @@
             try {
                 const { createClient } = supabase;
                 supabaseClient = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+                window.supabaseClient = supabaseClient;
             } catch (err) {
                 console.error("Erro ao inicializar Supabase:", err);
             }
