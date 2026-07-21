@@ -45,14 +45,34 @@ serve(async (req) => {
 
     if (supabaseUrl && supabaseServiceKey) {
       const supabase = createClient(supabaseUrl, supabaseServiceKey);
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .select('total')
-        .eq('id', externalRef)
-        .single();
+      
+      let order = null;
+      let orderError = null;
+      let retries = 3;
+      
+      // Retry logic to handle slight database replication delay
+      while (retries > 0) {
+        const result = await supabase
+          .from('orders')
+          .select('total')
+          .eq('id', externalRef)
+          .single();
+          
+        if (result.data && !result.error) {
+          order = result.data;
+          break;
+        }
+        
+        orderError = result.error;
+        retries--;
+        if (retries > 0) {
+          // Wait 500ms before retrying
+          await new Promise(res => setTimeout(res, 500));
+        }
+      }
 
-      if (orderError || !order) {
-        throw new Error(`Pedido ${externalRef} não encontrado no banco de dados.`);
+      if (!order) {
+        throw new Error(`Pedido ${externalRef} não encontrado no banco de dados. (Erro: ${orderError?.message || 'Not found'})`);
       }
 
       const expectedTotal = parseFloat(order.total);
