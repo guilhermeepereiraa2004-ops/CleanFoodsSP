@@ -1599,10 +1599,14 @@
                     const { error } = await supabaseClient.from('dishes').insert([dbDish]);
                     if (error) {
                         delete dbDish.image;
-                        await supabaseClient.from('dishes').insert([dbDish]);
+                        const retry = await supabaseClient.from('dishes').insert([dbDish]);
+                        if (retry.error) {
+                            alert("ERRO AO SALVAR NO SUPABASE: " + retry.error.message + " (Código: " + retry.error.code + ")");
+                        }
                     }
                 } catch (err) {
                     console.error("Erro ao adicionar prato no Supabase:", err);
+                    alert("ERRO DE CONEXÃO COM O BANCO DE DADOS.");
                 }
             }
 
