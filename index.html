@@ -2392,7 +2392,7 @@
 
         let isBrickInitialized = false;
         async function initializePaymentBrick() {
-            if (isBrickInitialized) return;
+            // Always re-initialize to reset Brick state for new orders
             if (!window.MP_PUBLIC_KEY) {
                 console.error("Chave do Mercado Pago não configurada.");
                 return;
