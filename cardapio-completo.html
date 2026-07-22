@@ -829,9 +829,10 @@
 
     <!-- Thank You Modal -->
     <div id="thank-you-modal"
-        class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
-        <div
-            class="bg-cf-darkgray border-4 border-cf-yellow p-5 sm:p-8 max-w-md w-full mx-4 text-center relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)]">
+        class="fixed inset-0 bg-black/90 z-50 hidden opacity-0 transition-opacity duration-300 overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center py-10 px-4 sm:px-6">
+            <div
+                class="bg-cf-darkgray border-4 border-cf-yellow p-5 sm:p-8 max-w-md w-full text-center relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)]">
             <div
                 class="w-20 h-20 bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg border-4 border-white animate-bounce">
                 <i class="fa-solid fa-circle-check"></i>
@@ -871,6 +872,7 @@
                 class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
                 Continuar Navegando
             </button>
+        </div>
         </div>
     </div>
 
