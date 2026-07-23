@@ -1870,6 +1870,35 @@
             const tySubtitle = document.getElementById('thank-you-subtitle');
             const tyMessage = document.getElementById('thank-you-message');
 
+            let pollingInterval = null;
+            async function pollOrderStatus(orderId, paymentMethod) {
+                if (pollingInterval) clearInterval(pollingInterval);
+                pollingInterval = setInterval(async () => {
+                    try {
+                        const response = await fetch(`${window.SUPABASE_URL}/functions/v1/check-order-status`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${window.SUPABASE_ANON_KEY}`
+                            },
+                            body: JSON.stringify({ order_id: orderId }),
+                        });
+                        const data = await response.json();
+                        if (response.ok && data.status) {
+                            if (data.status === 'Preparando') {
+                                clearInterval(pollingInterval);
+                                if (tyTitle) tyTitle.innerText = 'Pedido Recebido!';
+                                if (tySubtitle) tySubtitle.innerText = 'Seu pagamento foi confirmado!';
+                                if (tyMessage) tyMessage.innerText = 'Estamos preparando tudo. Você pode acompanhar no seu Painel (se for o dono) ou apenas aguardar a entrega!';
+                                pixInfoContainer.classList.add('hidden');
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Polling error', e);
+                    }
+                }, 3000);
+            }
+
             if (paymentMethod === 'Pix') {
                 if (tyTitle) tyTitle.innerText = 'Aguardando Pagamento';
                 if (tySubtitle) tySubtitle.innerText = 'Falta pouco!';
@@ -1880,6 +1909,7 @@
                     document.getElementById('pix-qr-code').src = `data:image/jpeg;base64,${qrCodeBase64}`;
                     document.getElementById('pix-copia-cola').value = qrCodeString;
                     if(pixInfoContainer) pixInfoContainer.classList.remove('hidden');
+                    pollOrderStatus(order.id, paymentMethod);
                 } else {
                     if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
                 }

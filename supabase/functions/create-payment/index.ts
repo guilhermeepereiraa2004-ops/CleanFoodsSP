@@ -5,6 +5,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 const ALLOWED_ORIGINS = [
   'https://www.cleanfoodsp.com.br',
   'https://cleanfoodsp.com.br',
+  'https://cleanfoods1.vercel.app',
 ];
 
 function getCorsHeaders(req: Request) {

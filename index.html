@@ -2356,8 +2356,37 @@
             const pixInfoContainer = document.getElementById('pix-payment-info');
             
             const tyTitle = document.getElementById('thank-you-title');
-            const tySubtitle = document.getElementById('thank-you-subtitle');
             const tyMessage = document.getElementById('thank-you-message');
+
+            const tySubtitle = document.getElementById('thank-you-subtitle');
+            let pollingInterval = null;
+            async function pollOrderStatus(orderId, paymentMethod) {
+                if (pollingInterval) clearInterval(pollingInterval);
+                pollingInterval = setInterval(async () => {
+                    try {
+                        const response = await fetch(`${window.SUPABASE_URL}/functions/v1/check-order-status`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${window.SUPABASE_ANON_KEY}`
+                            },
+                            body: JSON.stringify({ order_id: orderId }),
+                        });
+                        const data = await response.json();
+                        if (response.ok && data.status) {
+                            if (data.status === 'Preparando') {
+                                clearInterval(pollingInterval);
+                                if (tyTitle) tyTitle.innerText = 'Pedido Recebido!';
+                                if (tySubtitle) tySubtitle.innerText = 'Seu pagamento foi confirmado!';
+                                if (tyMessage) tyMessage.innerText = 'Estamos preparando tudo. Você pode acompanhar no seu Painel (se for o dono) ou apenas aguardar a entrega!';
+                                pixInfoContainer.classList.add('hidden');
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Polling error', e);
+                    }
+                }, 3000);
+            }
 
             if (paymentMethod === 'Pix') {
                 if (tyTitle) tyTitle.innerText = 'Aguardando Pagamento';
