@@ -108,6 +108,8 @@ serve(async (req) => {
     // Include idempotency key to prevent double charging
     const idempotencyKey = req.headers.get('x-idempotency-key') || crypto.randomUUID();
 
+    paymentData.notification_url = 'https://sbughjstbuhivenmyagc.supabase.co/functions/v1/payment-webhook';
+
     const response = await fetch('https://api.mercadopago.com/v1/payments', {
       method: 'POST',
       headers: {

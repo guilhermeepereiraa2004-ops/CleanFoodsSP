@@ -2398,6 +2398,7 @@
                     document.getElementById('pix-qr-code').src = `data:image/jpeg;base64,${qrCodeBase64}`;
                     document.getElementById('pix-copia-cola').value = qrCodeString;
                     if(pixInfoContainer) pixInfoContainer.classList.remove('hidden');
+                    pollOrderStatus(order.id, paymentMethod);
                 } else {
                     if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
                 }
