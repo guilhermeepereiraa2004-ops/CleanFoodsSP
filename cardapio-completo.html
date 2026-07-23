@@ -1871,11 +1871,36 @@
             const tyMessage = document.getElementById('thank-you-message');
 
             let pollingInterval = null;
-            async function pollOrderStatus(orderId, paymentMethod) {
+            async function pollOrderStatus(orderId, mpPaymentId) {
                 if (pollingInterval) clearInterval(pollingInterval);
+                function onPaymentApproved() {
+                    clearInterval(pollingInterval);
+                    if (tyTitle) tyTitle.innerText = 'Pedido Recebido!';
+                    if (tySubtitle) tySubtitle.innerText = 'Seu pagamento foi confirmado!';
+                    if (tyMessage) tyMessage.innerText = 'Estamos preparando tudo. Em breve seu pedido estará pronto!';
+                    if (pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                }
                 pollingInterval = setInterval(async () => {
                     try {
-                        const response = await fetch(`${window.SUPABASE_URL}/functions/v1/check-order-status`, {
+                        // Consulta o status diretamente no Mercado Pago (mais confiável que webhook)
+                        if (mpPaymentId) {
+                            const mpRes = await fetch(`${window.SUPABASE_URL}/functions/v1/check-payment-status`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${window.SUPABASE_ANON_KEY}`
+                                },
+                                body: JSON.stringify({ mp_payment_id: String(mpPaymentId), order_id: orderId }),
+                            });
+                            const mpData = await mpRes.json();
+                            console.log('[Polling MP] status:', mpData.mp_status);
+                            if (mpRes.ok && mpData.approved) {
+                                onPaymentApproved();
+                                return;
+                            }
+                        }
+                        // Fallback: verifica o banco de dados
+                        const dbRes = await fetch(`${window.SUPABASE_URL}/functions/v1/check-order-status`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -1883,20 +1908,14 @@
                             },
                             body: JSON.stringify({ order_id: orderId }),
                         });
-                        const data = await response.json();
-                        if (response.ok && data.status) {
-                            if (data.status === 'Preparando') {
-                                clearInterval(pollingInterval);
-                                if (tyTitle) tyTitle.innerText = 'Pedido Recebido!';
-                                if (tySubtitle) tySubtitle.innerText = 'Seu pagamento foi confirmado!';
-                                if (tyMessage) tyMessage.innerText = 'Estamos preparando tudo. Você pode acompanhar no seu Painel (se for o dono) ou apenas aguardar a entrega!';
-                                pixInfoContainer.classList.add('hidden');
-                            }
+                        const dbData = await dbRes.json();
+                        if (dbRes.ok && dbData.status === 'Preparando') {
+                            onPaymentApproved();
                         }
                     } catch (e) {
                         console.error('Polling error', e);
                     }
-                }, 3000);
+                }, 4000);
             }
 
             if (paymentMethod === 'Pix') {
@@ -1909,7 +1928,8 @@
                     document.getElementById('pix-qr-code').src = `data:image/jpeg;base64,${qrCodeBase64}`;
                     document.getElementById('pix-copia-cola').value = qrCodeString;
                     if(pixInfoContainer) pixInfoContainer.classList.remove('hidden');
-                    pollOrderStatus(order.id, paymentMethod);
+                    // mpResponse.id é o ID do pagamento no Mercado Pago
+                    pollOrderStatus(order.id, mpResponse.id);
                 } else {
                     if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
                 }
