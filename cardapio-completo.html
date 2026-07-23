@@ -838,10 +838,10 @@
                 <i class="fa-solid fa-circle-check"></i>
             </div>
 
-            <h3 class="font-impact text-4xl text-cf-yellow uppercase mb-2">Pedido Recebido!</h3>
-            <h4 class="font-street text-xl text-white mb-6">Obrigado pela preferência!</h4>
+            <h3 id="thank-you-title" class="font-impact text-4xl text-cf-yellow uppercase mb-2">Pedido Recebido!</h3>
+            <h4 id="thank-you-subtitle" class="font-street text-xl text-white mb-6">Obrigado pela preferência!</h4>
 
-            <p class="font-body text-gray-300 font-semibold mb-6 text-sm">
+            <p id="thank-you-message" class="font-body text-gray-300 font-semibold mb-6 text-sm">
                 Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar
                 conosco a qualquer momento!
             </p>
@@ -1865,7 +1865,15 @@
             }
 
             const pixInfoContainer = document.getElementById('pix-payment-info');
+            
+            const tyTitle = document.getElementById('thank-you-title');
+            const tySubtitle = document.getElementById('thank-you-subtitle');
+            const tyMessage = document.getElementById('thank-you-message');
+
             if (paymentMethod === 'Pix') {
+                if (tyTitle) tyTitle.innerText = 'Aguardando Pagamento';
+                if (tySubtitle) tySubtitle.innerText = 'Falta pouco!';
+                if (tyMessage) tyMessage.innerText = 'Realize o pagamento utilizando o QR Code ou Copia e Cola abaixo. Seu pedido será preparado automaticamente após a confirmação!';
                 if (mpResponse && mpResponse.point_of_interaction) {
                     const qrCodeBase64 = mpResponse.point_of_interaction.transaction_data.qr_code_base64;
                     const qrCodeString = mpResponse.point_of_interaction.transaction_data.qr_code;
@@ -1876,6 +1884,9 @@
                     if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
                 }
             } else {
+                if (tyTitle) tyTitle.innerText = 'Pedido Recebido!';
+                if (tySubtitle) tySubtitle.innerText = 'Obrigado pela preferência!';
+                if (tyMessage) tyMessage.innerText = 'Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar conosco a qualquer momento!';
                 if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
             }
 
