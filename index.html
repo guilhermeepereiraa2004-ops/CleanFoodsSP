@@ -2324,8 +2324,29 @@
                     phoneInput.value = formatPhone(phoneInput.value);
                 }
 
+                phoneInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace') {
+                        const pos = e.target.selectionStart;
+                        const val = e.target.value;
+                        // Se o cursor está logo após um separador, pula o separador
+                        if (pos > 0 && /[\s\-\(\)]/.test(val[pos - 1])) {
+                            e.preventDefault();
+                            const newVal = val.slice(0, pos - 2) + val.slice(pos);
+                            e.target.value = formatPhone(newVal);
+                            // Reposiciona o cursor
+                            const newPos = pos - 2;
+                            e.target.setSelectionRange(newPos < 0 ? 0 : newPos, newPos < 0 ? 0 : newPos);
+                        }
+                    }
+                });
+
                 phoneInput.addEventListener('input', (e) => {
+                    const pos = e.target.selectionStart;
+                    const oldLen = e.target.value.length;
                     e.target.value = formatPhone(e.target.value);
+                    const newLen = e.target.value.length;
+                    const newPos = pos + (newLen - oldLen);
+                    e.target.setSelectionRange(newPos, newPos);
                 });
             }
 
