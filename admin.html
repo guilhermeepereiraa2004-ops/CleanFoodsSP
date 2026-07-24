@@ -52,7 +52,9 @@
             background-color: var(--black);
             color: #ffffff;
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
         }
 
         .noise-bg {
@@ -238,13 +240,21 @@
                     class="sidebar-link-active w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-chart-simple text-sm w-4 text-center"></i> Dashboard
                 </button>
+                <button onclick="switchTab('pedidos')" id="btn-pedidos"
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-box-open text-sm w-4 text-center"></i> Pedidos
+                </button>
                 <button onclick="switchTab('cardapio')" id="btn-cardapio"
                     class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-utensils text-sm w-4 text-center"></i> Cardápio
                 </button>
-                <button onclick="switchTab('pedidos')" id="btn-pedidos"
+                <button onclick="switchTab('clientes')" id="btn-clientes"
                     class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-box-open text-sm w-4 text-center"></i> Pedidos
+                    <i class="fa-solid fa-users text-sm w-4 text-center"></i> Clientes
+                </button>
+                <button onclick="switchTab('financeiro')" id="btn-financeiro"
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-sack-dollar text-sm w-4 text-center"></i> Financeiro
                 </button>
                 <button onclick="switchTab('cupons')" id="btn-cupons"
                     class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
@@ -253,14 +263,6 @@
                 <button onclick="switchTab('config')" id="btn-config"
                     class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-gears text-sm w-4 text-center"></i> Ajustes
-                </button>
-                <button onclick="switchTab('financeiro')" id="btn-financeiro"
-                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-sack-dollar text-sm w-4 text-center"></i> Financeiro
-                </button>
-                <button onclick="switchTab('clientes')" id="btn-clientes"
-                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
-                    <i class="fa-solid fa-users text-sm w-4 text-center"></i> Clientes
                 </button>
             </nav>
         </div>
@@ -279,7 +281,7 @@
     </aside>
 
     <!-- MAIN CONTENT AREA -->
-    <div class="flex-1 h-screen overflow-y-auto flex flex-col">
+    <div class="flex-1 min-h-screen overflow-y-auto flex flex-col">
         <!-- Top Mini-Bar -->
         <header
             class="w-full bg-cf-darkgray border-b border-cf-gray py-4 px-4 md:px-8 flex justify-between items-center z-10 sticky top-0">
@@ -564,7 +566,7 @@
                         </div>
                         <div>
                             <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Valor do Frete (R$)</label>
-                            <input type="number" step="0.01" id="config-frete" value="0.00" placeholder="Ex: 10.00"
+                            <input type="number" step="0.01" id="config-frete" value="15.00" placeholder="Ex: 15.00"
                                 class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
                         </div>
 
@@ -606,7 +608,7 @@
                         <option value="Frango">Linha Frango</option>
                         <option value="Patinho">Linha Patinho</option>
                         <option value="Gourmet">Linha Gourmet</option>
-                        <option value="Salgados">Salgados Fitness</option>
+                        <option value="Salgados">Salgados e Doces Proteicos</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
@@ -671,6 +673,70 @@
                     <button onclick="addDish()"
                         class="btn-street w-1/2 py-2.5 font-bold flex items-center justify-center gap-2 shadow-lg text-sm">
                         <i class="fa-solid fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Editar Prato e Valores -->
+    <div id="edit-dish-modal"
+        class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-md w-full mx-4 relative torn-edge shadow-2xl">
+            <button onclick="closeEditDishModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="font-impact text-2xl text-cf-yellow uppercase mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i> Editar Prato e Valores
+            </h3>
+
+            <input type="hidden" id="edit-dish-id">
+
+            <div class="space-y-4 font-body">
+                <div>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Nome do Prato</label>
+                    <input type="text" id="edit-dish-name" placeholder="Ex: Frango Grelhado C/ Arroz"
+                        class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Categoria</label>
+                    <select id="edit-dish-category"
+                        class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                        <option value="Frango">Linha Frango</option>
+                        <option value="Patinho">Linha Patinho</option>
+                        <option value="Gourmet">Linha Gourmet</option>
+                        <option value="Salgados">Salgados e Doces Proteicos</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço P (R$)</label>
+                        <input type="text" id="edit-dish-price-p" placeholder="Ex: 19,50"
+                            class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço G (R$)</label>
+                        <input type="text" id="edit-dish-price-g" placeholder="Ex: 27,50"
+                            class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center">
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 pt-2">
+                    <label class="relative inline-flex items-center cursor-pointer select-none">
+                        <input type="checkbox" id="edit-dish-available" class="sr-only peer">
+                        <div class="w-9 h-5 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                    <span class="text-xs uppercase font-bold text-white">Disponível no Cardápio</span>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="closeEditDishModal()"
+                        class="w-1/2 py-2.5 bg-cf-gray text-white font-bold uppercase tracking-wider text-sm transition-all hover:bg-white hover:text-cf-black">
+                        Cancelar
+                    </button>
+                    <button onclick="saveEditedDish()"
+                        class="btn-street w-1/2 py-2.5 font-bold flex items-center justify-center gap-2 shadow-lg text-sm">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar
                     </button>
                 </div>
             </div>
@@ -1044,17 +1110,7 @@
             window.SUPABASE_ANON_KEY && window.SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
             try {
                 const { createClient } = supabase;
-                
-                // Pede a chave de admin (Service Role Key) para permitir edição no banco
-                let adminKey = localStorage.getItem('cleanfoods_admin_key');
-                if (!adminKey) {
-                    const userInput = prompt("⚠️ MODO ADMIN (OPCIONAL mas recomendado para editar o cardápio):\n\nPara que suas alterações no cardápio sejam salvas no banco de dados e apareçam para os clientes, você precisa usar a 'Service Role Key' do Supabase.\n\nCole a sua chave aqui (ela ficará salva no seu navegador):");
-                    if (userInput && userInput.trim() !== "") {
-                        adminKey = userInput.trim();
-                        localStorage.setItem('cleanfoods_admin_key', adminKey);
-                    }
-                }
-                
+                const adminKey = localStorage.getItem('cleanfoods_admin_key');
                 const keyToUse = adminKey || window.SUPABASE_ANON_KEY;
                 supabaseClient = createClient(window.SUPABASE_URL, keyToUse);
             } catch (err) {
@@ -1079,8 +1135,37 @@
             }
         }
 
+        // Helper to get active tab from URL hash, localStorage, or fallback
+        function getInitialTab() {
+            const hash = window.location.hash ? window.location.hash.replace('#', '').trim() : '';
+            if (hash && document.getElementById('tab-' + hash)) {
+                return hash;
+            }
+            const storedTab = localStorage.getItem('cleanfoods_admin_active_tab') || sessionStorage.getItem('cleanfoods_admin_active_tab');
+            if (storedTab && document.getElementById('tab-' + storedTab)) {
+                return storedTab;
+            }
+            return 'dashboard';
+        }
+
         // Tab switching logic
         function switchTab(tabId) {
+            if (!tabId) tabId = 'dashboard';
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (!targetTab) tabId = 'dashboard';
+
+            // Store active tab so user stays on current module across updates, F5 refreshes, and reloads
+            localStorage.setItem('cleanfoods_admin_active_tab', tabId);
+            sessionStorage.setItem('cleanfoods_admin_active_tab', tabId);
+
+            try {
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState(null, null, '#' + tabId);
+                } else {
+                    window.location.hash = tabId;
+                }
+            } catch (e) {}
+
             // Hide all tabs
             const tabs = document.querySelectorAll('.tab-content');
             tabs.forEach(tab => tab.classList.add('hidden'));
@@ -1092,10 +1177,11 @@
             });
 
             // Show active tab
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            targetTab.classList.remove('hidden');
 
             // Apply active styles to clicked button
-            document.getElementById('btn-' + tabId).classList.add('sidebar-link-active');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) activeBtn.classList.add('sidebar-link-active');
 
             // Update page title
             const titles = {
@@ -1103,9 +1189,20 @@
                 'cardapio': 'Cardápio',
                 'pedidos': 'Pedidos',
                 'cupons': 'Cupons',
-                'config': 'Ajustes'
+                'config': 'Ajustes',
+                'financeiro': 'Financeiro',
+                'clientes': 'Clientes'
             };
-            document.getElementById('current-tab-title').innerText = titles[tabId];
+            const titleEl = document.getElementById('current-tab-title');
+            if (titleEl && titles[tabId]) titleEl.innerText = titles[tabId];
+
+            // Module specific triggers
+            if (tabId === 'financeiro' && typeof loadTransactions === 'function') {
+                loadTransactions();
+            }
+            if (tabId === 'clientes' && typeof loadClients === 'function') {
+                loadClients();
+            }
 
             // Close sidebar on mobile screen widths once a selection is made
             if (window.innerWidth < 768) {
@@ -1121,12 +1218,56 @@
             }
         }
 
-        // Load initial values
-        window.addEventListener('DOMContentLoaded', async () => {
-            await loadDishes();
-            await loadSettings();
-            await loadCoupons();
-            await loadOrders();
+        window.addEventListener('hashchange', () => {
+            const currentTab = getInitialTab();
+            switchTab(currentTab);
+        });
+
+        // Load initial values (Instant local render + Parallel background Supabase fetch)
+        window.addEventListener('DOMContentLoaded', () => {
+            // 1. Instant local render (< 10ms)
+            try {
+                dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                dishes = ensureSalgados(dishes);
+                renderDishesEditor();
+            } catch (e) {}
+
+            try {
+                orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
+                renderOrders();
+                updateDashboardStats();
+            } catch (e) {}
+
+            try {
+                coupons = JSON.parse(localStorage.getItem('cleanfoods_coupons')) || [];
+                renderCoupons();
+            } catch (e) {}
+
+            try {
+                const savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
+                const savedAddress = localStorage.getItem('cleanfoods_address');
+                const savedFrete = localStorage.getItem('cleanfoods_frete');
+                if (savedWhatsapp) document.getElementById('config-whatsapp').value = savedWhatsapp;
+                if (savedAddress) document.getElementById('config-address').value = savedAddress;
+                if (savedFrete) document.getElementById('config-frete').value = savedFrete;
+            } catch (e) {}
+
+            // Restore active tab (Cardápio, Pedidos, etc.) instantly
+            const initialTab = getInitialTab();
+            switchTab(initialTab);
+
+            // 2. Fetch live data from Supabase in background (parallel promises)
+            Promise.allSettled([
+                loadDishes(),
+                loadSettings(),
+                loadCoupons(),
+                loadOrders(),
+                typeof loadTransactions === 'function' ? loadTransactions() : Promise.resolve(),
+                typeof loadClients === 'function' ? loadClients() : Promise.resolve()
+            ]).then(() => {
+                const activeTab = getInitialTab();
+                switchTab(activeTab);
+            });
         });
 
         // Dishes management logic
@@ -1178,24 +1319,39 @@
 
         const defaultDishes = defaultDishesRaw.map(d => ({...d, nutrition: {...defaultNutrition}}));
 
-        // Garantir que salgados existam em qualquer fonte de dados
-        function ensureSalgados(dishList) {
-            const hasSalgados = dishList.some(d => d.category === 'Salgados');
-            if (!hasSalgados) {
-                const salgadosItems = defaultDishes.filter(d => d.category === 'Salgados');
-                return [...dishList, ...salgadosItems];
+        function getDeletedDishIds() {
+            try {
+                return JSON.parse(localStorage.getItem('cleanfoods_deleted_dishes')) || [];
+            } catch (e) {
+                return [];
             }
+        }
+
+        function ensureSalgados(dishList) {
             return dishList;
         }
 
         async function loadDishes() {
+            let deletedIds = getDeletedDishIds();
+
             if (supabaseClient) {
                 try {
+                    const { data: setSetting } = await supabaseClient.from('settings').select('*').eq('key', 'deleted_dishes').maybeSingle();
+                    if (setSetting && setSetting.value) {
+                        try {
+                            const remoteDeleted = JSON.parse(setSetting.value);
+                            if (Array.isArray(remoteDeleted)) {
+                                deletedIds = Array.from(new Set([...deletedIds, ...remoteDeleted]));
+                                localStorage.setItem('cleanfoods_deleted_dishes', JSON.stringify(deletedIds));
+                            }
+                        } catch (e) {}
+                    }
+
                     const { data, error } = await supabaseClient.from('dishes').select('*');
                     if (error) throw error;
                     if (data && data.length > 0) {
                         const localDishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || [];
-                        dishes = data.map(d => {
+                        dishes = data.filter(d => !deletedIds.includes(d.id)).map(d => {
                             const localD = localDishes.find(ld => ld.id === d.id);
                             return {
                                 id: d.id,
@@ -1210,7 +1366,7 @@
                         dishes = ensureSalgados(dishes);
                     } else {
                         // Seed database
-                        const dbDishes = defaultDishes.map(d => ({
+                        const dbDishes = defaultDishes.filter(d => !deletedIds.includes(d.id)).map(d => ({
                             id: d.id,
                             name: d.name,
                             category: d.category,
@@ -1221,15 +1377,17 @@
                         }));
                         const { error: insertError } = await supabaseClient.from('dishes').insert(dbDishes);
                         if (insertError) throw insertError;
-                        dishes = defaultDishes;
+                        dishes = defaultDishes.filter(d => !deletedIds.includes(d.id));
                     }
                 } catch (err) {
                     console.error("Erro ao carregar pratos do Supabase:", err);
                     dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                    dishes = dishes.filter(d => !deletedIds.includes(d.id));
                     dishes = ensureSalgados(dishes);
                 }
             } else {
                 dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                dishes = dishes.filter(d => !deletedIds.includes(d.id));
                 dishes = ensureSalgados(dishes);
             }
             renderDishesEditor();
@@ -1307,10 +1465,13 @@
                                     <div class="w-9 h-5 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
                                 </label>
                             </div>
-                            <button onclick="openNutritionModal('${dish.id}')" class="text-cf-yellow hover:text-white transition-colors ml-2 text-base" title="Tabela Nutricional">
+                            <button onclick="openEditDishModal('${dish.id}')" class="bg-cf-gray hover:bg-cf-yellow hover:text-cf-black text-white transition-colors px-2 py-1 rounded text-xs font-bold flex items-center gap-1.5 ml-2" title="Editar Valores e Detalhes">
+                                <i class="fa-solid fa-pen-to-square"></i> Editar
+                            </button>
+                            <button onclick="openNutritionModal('${dish.id}')" class="text-cf-yellow hover:text-white transition-colors ml-1 text-base" title="Tabela Nutricional">
                                 <i class="fa-solid fa-leaf"></i>
                             </button>
-                            <button onclick="deleteDish('${dish.id}')" class="text-red-500 hover:text-red-400 transition-colors ml-2 text-base">
+                            <button onclick="deleteDish('${dish.id}')" class="text-red-500 hover:text-red-400 transition-colors ml-1 text-base">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
@@ -1318,6 +1479,87 @@
                     itemsContainer.appendChild(row);
                 });
             });
+        }
+
+        // Edit Dish Modal Functions
+        function openEditDishModal(dishId) {
+            const dish = dishes.find(d => d.id === dishId);
+            if (!dish) return;
+
+            document.getElementById('edit-dish-id').value = dish.id;
+            document.getElementById('edit-dish-name').value = dish.name;
+            document.getElementById('edit-dish-category').value = dish.category;
+            document.getElementById('edit-dish-price-p').value = dish.priceP || '';
+            document.getElementById('edit-dish-price-g').value = dish.priceG || '';
+            document.getElementById('edit-dish-available').checked = dish.available !== false;
+
+            const modal = document.getElementById('edit-dish-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeEditDishModal() {
+            const modal = document.getElementById('edit-dish-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        async function saveEditedDish() {
+            const dishId = document.getElementById('edit-dish-id').value;
+            const dish = dishes.find(d => d.id === dishId);
+            if (!dish) return;
+
+            const newName = document.getElementById('edit-dish-name').value.trim();
+            const newCat = document.getElementById('edit-dish-category').value;
+            const newPriceP = document.getElementById('edit-dish-price-p').value.trim();
+            const newPriceG = document.getElementById('edit-dish-price-g').value.trim();
+            const newAvail = document.getElementById('edit-dish-available').checked;
+
+            if (!newName) {
+                showToast('INFORME O NOME DO PRATO!');
+                return;
+            }
+
+            dish.name = newName;
+            dish.category = newCat;
+            dish.priceP = newPriceP || '—';
+            dish.priceG = newPriceG || '—';
+            dish.available = newAvail;
+
+            localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('dishes').update({
+                        name: dish.name,
+                        category: dish.category,
+                        price_p: dish.priceP,
+                        price_g: dish.priceG,
+                        available: dish.available,
+                        image: dish.image
+                    }).eq('id', dish.id);
+
+                    if (error) {
+                        await supabaseClient.from('dishes').update({
+                            name: dish.name,
+                            category: dish.category,
+                            price_p: dish.priceP,
+                            price_g: dish.priceG,
+                            available: dish.available
+                        }).eq('id', dish.id);
+                    }
+                } catch (err) {
+                    console.error("Erro ao atualizar prato no Supabase:", err);
+                }
+            }
+
+            renderDishesEditor();
+            closeEditDishModal();
+            showToast('PRATO E VALORES SALVOS COM SUCESSO!');
         }
 
         // Modal Triggers
@@ -1488,7 +1730,7 @@
 
             let groupLabel = 'Linha ' + cat;
             if (cat === 'Gourmet') groupLabel = 'Linha Gourmet';
-            if (cat === 'Salgados') groupLabel = 'Salgados Fitness';
+            if (cat === 'Salgados') groupLabel = 'Salgados e Doces Proteicos';
             document.getElementById('new-dish-preview-cat').innerText = groupLabel;
 
             document.getElementById('new-dish-preview-p').innerText = priceP ? `R$ ${priceP}` : 'R$ —';
@@ -1539,8 +1781,8 @@
 
             const name = nameInput.value.trim();
             const category = catSelect.value;
-            const priceP = pricePInput.value.trim() || '0,00';
-            const priceG = priceGInput.value.trim() || '0,00';
+            const priceP = pricePInput.value.trim() || '—';
+            const priceG = priceGInput.value.trim() || '—';
 
             if (!name) {
                 showToast('INFORME O NOME DO PRATO!');
@@ -1686,17 +1928,24 @@
 
             if (confirm(`Deseja realmente remover o prato "${dish.name}" do cardápio?`)) {
                 dishes = dishes.filter(d => d.id !== id);
+
+                let deletedIds = getDeletedDishIds();
+                if (!deletedIds.includes(id)) {
+                    deletedIds.push(id);
+                    localStorage.setItem('cleanfoods_deleted_dishes', JSON.stringify(deletedIds));
+                }
+
+                localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+
                 if (supabaseClient) {
                     try {
-                        const { error } = await supabaseClient.from('dishes').delete().eq('id', id);
-                        if (error) throw error;
+                        await supabaseClient.from('settings').upsert({ key: 'deleted_dishes', value: JSON.stringify(deletedIds) });
+                        await supabaseClient.from('dishes').delete().eq('id', id);
                     } catch (err) {
-                        console.error("Erro ao deletar prato no Supabase:", err);
-                        localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+                        console.error("Erro ao deletar no Supabase:", err);
                     }
-                } else {
-                    localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
                 }
+                
                 renderDishesEditor();
                 showToast('PRATO REMOVIDO COM SUCESSO!');
             }
@@ -1741,7 +1990,7 @@
 
             let groupLabel = 'Linha ' + dish.category;
             if (dish.category === 'Gourmet') groupLabel = 'Linha Gourmet';
-            if (dish.category === 'Salgados') groupLabel = 'Salgados Fitness';
+            if (dish.category === 'Salgados') groupLabel = 'Salgados e Doces Proteicos';
 
             let priceP = (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') ? `R$ ${dish.priceP}` : 'R$ —';
             let priceG = (dish.priceG && dish.priceG !== '—' && dish.priceG !== '') ? `R$ ${dish.priceG}` : 'R$ —';
@@ -1867,32 +2116,29 @@
 
             if (savedWhatsapp) document.getElementById('config-whatsapp').value = savedWhatsapp;
             if (savedAddress) document.getElementById('config-address').value = savedAddress;
-            if (savedFrete) document.getElementById('config-frete').value = savedFrete;
+            const freteVal = savedFrete ? parseFloat(savedFrete) : 15.00;
+            document.getElementById('config-frete').value = freteVal.toFixed(2);
         }
 
         async function saveConfig() {
             const whatsapp = document.getElementById('config-whatsapp').value.trim();
             const address = document.getElementById('config-address').value.trim();
-            const frete = document.getElementById('config-frete').value.trim();
+            const freteInput = document.getElementById('config-frete').value.trim();
+            const freteVal = parseFloat(freteInput.replace(',', '.')) || 15.00;
+            const freteStr = freteVal.toFixed(2);
+
+            localStorage.setItem('cleanfoods_whatsapp', whatsapp);
+            localStorage.setItem('cleanfoods_address', address);
+            localStorage.setItem('cleanfoods_frete', freteStr);
 
             if (supabaseClient) {
                 try {
-                    const { error: waError } = await supabaseClient.from('settings').upsert({ key: 'whatsapp', value: whatsapp });
-                    if (waError) throw waError;
-                    const { error: addrError } = await supabaseClient.from('settings').upsert({ key: 'address', value: address });
-                    if (addrError) throw addrError;
-                    const { error: freteError } = await supabaseClient.from('settings').upsert({ key: 'frete', value: frete });
-                    if (freteError) throw freteError;
+                    await supabaseClient.from('settings').upsert({ key: 'whatsapp', value: whatsapp });
+                    await supabaseClient.from('settings').upsert({ key: 'address', value: address });
+                    await supabaseClient.from('settings').upsert({ key: 'frete', value: freteStr });
                 } catch (err) {
                     console.error("Erro ao salvar configurações no Supabase:", err);
-                    localStorage.setItem('cleanfoods_whatsapp', whatsapp);
-                    localStorage.setItem('cleanfoods_address', address);
-                    localStorage.setItem('cleanfoods_frete', frete);
                 }
-            } else {
-                localStorage.setItem('cleanfoods_whatsapp', whatsapp);
-                localStorage.setItem('cleanfoods_address', address);
-                localStorage.setItem('cleanfoods_frete', frete);
             }
 
             showToast('CONFIGURAÇÕES SALVAS COM SUCESSO!');
@@ -2293,35 +2539,28 @@
                     const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', order.id);
                     if (error) throw error;
                     
-                    // Lógica do Financeiro: Adiciona quando concluído, remove se não for
+                    // Lógica do Financeiro: Garante lançamento automático do pedido no financeiro
                     const transactionId = 'TX-' + order.id;
-                    if (newStatus === 'Concluído') {
-                        const transaction = {
-                            id: transactionId,
-                            type: 'Entrada',
-                            description: `Pedido ${order.id} - ${order.client_name || order.clientName || 'Cliente'}`,
-                            value: parseFloat(order.total),
-                            date: new Date().toISOString().split('T')[0],
-                            category: 'Pedido'
-                        };
-                        
-                        // Tenta deletar antes para evitar duplicação caso clique várias vezes
-                        await supabaseClient.from('transactions').delete().eq('id', transactionId);
-                        const { error: txError } = await supabaseClient.from('transactions').insert([transaction]);
-                        if (txError) console.error("Erro ao inserir transação:", txError);
-                        else loadTransactions();
-                    } else {
-                        // Se o status mudou para algo diferente, remove do financeiro
-                        await supabaseClient.from('transactions').delete().eq('id', transactionId);
-                        loadTransactions();
-                    }
+                    const clientName = order.client_name || order.clientName || 'Cliente';
+                    const transaction = {
+                        id: transactionId,
+                        type: 'Entrada',
+                        description: `Pedido #${order.id} - ${clientName}`,
+                        value: parseFloat(order.total || 0),
+                        date: order.date || order.created_at || new Date().toISOString(),
+                        category: 'Pedido'
+                    };
                     
+                    // Upsert transação para manter sincronizado com financeiro
+                    await supabaseClient.from('transactions').upsert([transaction]);
+                    loadTransactions();
                 } catch (err) {
                     console.error("Erro ao atualizar status do pedido no Supabase:", err);
                     localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
                 }
             } else {
                 localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+                loadTransactions();
             }
 
             // Sync with detail modal if it's open for the updated order
@@ -2615,7 +2854,7 @@
                 try {
                     const { data, error } = await supabaseClient.from('transactions').select('*').order('date', { ascending: false });
                     if (error) throw error;
-                    transactions = data;
+                    transactions = data || [];
                 } catch (err) {
                     console.error('Erro ao carregar transações do Supabase, usando local:', err);
                     transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
@@ -2624,10 +2863,47 @@
                 transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
             }
             
-            // Sort local array descending if fetched from local
-            transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            // Normaliza transações existentes
+            const normalizedTransactions = (transactions || []).map(t => {
+                const val = t.value !== undefined && t.value !== null ? parseFloat(t.value) : (t.amount !== undefined ? parseFloat(t.amount) : 0);
+                return {
+                    id: t.id,
+                    type: t.type || 'Entrada',
+                    description: t.description || t.desc || (t.order_id ? `Pedido #${t.order_id}` : 'Transação'),
+                    value: val,
+                    date: t.date || t.created_at || new Date().toISOString(),
+                    category: t.category || (t.order_id ? 'Pedido' : 'Manual')
+                };
+            });
 
-            renderTransactions(transactions);
+            // Sincronização Automática: Lança automaticamente qualquer pedido no Financeiro
+            orders.forEach(o => {
+                const txId = 'TX-' + o.id;
+                const clientName = o.clientName || o.client_name || 'Cliente';
+                const totalVal = parseFloat(o.total || 0);
+
+                if (totalVal > 0) {
+                    const txIndex = normalizedTransactions.findIndex(t => t.id === txId || t.id === 'TXN-' + o.id || (t.description && t.description.includes(o.id)));
+                    const formattedDesc = `Pedido #${o.id} - ${clientName}`;
+                    
+                    if (txIndex === -1) {
+                        normalizedTransactions.push({
+                            id: txId,
+                            type: 'Entrada',
+                            description: formattedDesc,
+                            value: totalVal,
+                            date: o.date || o.created_at || new Date().toISOString(),
+                            category: 'Pedido'
+                        });
+                    } else {
+                        normalizedTransactions[txIndex].description = formattedDesc;
+                        normalizedTransactions[txIndex].value = totalVal;
+                    }
+                }
+            });
+
+            normalizedTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            renderTransactions(normalizedTransactions);
         }
 
         function renderTransactions(transactions) {
@@ -2775,17 +3051,7 @@
             loadTransactions();
         }
 
-        // Hook into switchTab to load transactions when tab is opened
-        const originalSwitchTab = switchTab;
-        switchTab = function(tabId) {
-            originalSwitchTab(tabId);
-            if (tabId === 'financeiro') {
-                loadTransactions();
-            }
-            if (tabId === 'clientes') {
-                loadClients();
-            }
-        };
+
 
         function toggleMonthlyComparison() {
             const container = document.getElementById('fin-monthly-container');

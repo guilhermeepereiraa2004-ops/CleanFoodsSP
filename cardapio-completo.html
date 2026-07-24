@@ -221,10 +221,15 @@
         .cart-open-overflow {
             overflow: hidden;
         }
-        
+
         @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
         }
     </style>
 </head>
@@ -258,7 +263,8 @@
         <div class="md:hidden"></div>
 
         <a href="index.html" class="cursor-hover flex justify-center md:block mt-1 md:mt-0 z-50 relative">
-            <img src="Logonova.jpeg" alt="Cleanfoods Logo" class="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-full object-contain">
+            <img src="Logonova.jpeg" alt="Cleanfoods Logo"
+                class="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-full object-contain">
         </a>
 
         <div class="flex items-center justify-end md:justify-start gap-3 sm:gap-4 md:gap-6 mt-2 md:mt-4">
@@ -293,22 +299,25 @@
             <!-- Dynamic Coupon Banner -->
             <div id="promo-coupon-banner"
                 class="hidden max-w-2xl mx-auto mb-16 relative bg-cf-yellow text-cf-black p-6 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl select-none z-20 transform rotate-1 border-t-4 border-b-4 border-cf-yellow">
-                
+
                 <!-- Ticket Cutouts -->
                 <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-cf-black rounded-full"></div>
                 <div class="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-cf-black rounded-full"></div>
-                
+
                 <!-- Left side content -->
                 <div class="flex items-center gap-4 w-full md:w-auto">
                     <i class="fa-solid fa-ticket text-4xl animate-pulse"></i>
                     <div>
                         <h4 class="font-impact text-2xl md:text-3xl uppercase leading-none mb-1">CUPOM VIP!</h4>
-                        <p class="font-body text-sm font-bold">Ganhe <span id="coupon-discount-val" class="text-xl">10</span>% de desconto hoje.</p>
+                        <p class="font-body text-sm font-bold">Ganhe <span id="coupon-discount-val"
+                                class="text-xl">10</span>% de desconto hoje.</p>
                     </div>
                 </div>
 
                 <!-- Perforated Line -->
-                <div class="w-full md:w-0 h-0 md:h-20 border-t-4 md:border-t-0 md:border-l-4 border-dashed border-cf-black opacity-30"></div>
+                <div
+                    class="w-full md:w-0 h-0 md:h-20 border-t-4 md:border-t-0 md:border-l-4 border-dashed border-cf-black opacity-30">
+                </div>
 
                 <!-- Right side coupon -->
                 <div class="flex flex-col items-center gap-1 w-full md:w-auto">
@@ -320,25 +329,34 @@
             </div>
 
             <!-- Combo Active Tracker (Outside Cart) -->
-            <div id="combo-tracker-banner" class="fixed bottom-0 left-0 w-full z-[60] bg-[#0a0a0a] border-t border-cf-yellow py-2 px-2 sm:px-4 text-center hidden shadow-[0_-10px_30px_rgba(246,197,0,0.3)]">
+            <div id="combo-tracker-banner"
+                class="fixed bottom-0 left-0 w-full z-[60] bg-[#0a0a0a] border-t border-cf-yellow py-2 px-2 sm:px-4 text-center hidden shadow-[0_-10px_30px_rgba(246,197,0,0.3)]">
                 <!-- Flex container with right padding to avoid floating buttons -->
                 <div class="flex items-center justify-between gap-2 max-w-4xl mx-auto pr-20 md:pr-4">
                     <!-- Icon -->
-                    <div class="bg-cf-yellow text-cf-black w-8 h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs shadow-[0_0_10px_rgba(246,197,0,0.8)] border border-[#0a0a0a] flex-shrink-0 animate-pulse">
+                    <div
+                        class="bg-cf-yellow text-cf-black w-8 h-8 rounded-full flex items-center justify-center text-[10px] sm:text-xs shadow-[0_0_10px_rgba(246,197,0,0.8)] border border-[#0a0a0a] flex-shrink-0 animate-pulse">
                         <i class="fa-solid fa-unlock-keyhole"></i>
                     </div>
-                    
+
                     <!-- Text & Progress -->
-                    <div class="flex-grow flex flex-col md:flex-row items-start md:items-center justify-between gap-1 md:gap-4 overflow-hidden">
-                        <p id="combo-tracker-text" class="text-white font-impact tracking-wider text-[10px] sm:text-xs md:text-sm uppercase leading-tight m-0 text-left truncate w-full md:w-auto">
+                    <div
+                        class="flex-grow flex flex-col md:flex-row items-start md:items-center justify-between gap-1 md:gap-4 overflow-hidden">
+                        <p id="combo-tracker-text"
+                            class="text-white font-impact tracking-wider text-[10px] sm:text-xs md:text-sm uppercase leading-tight m-0 text-left truncate w-full md:w-auto">
                             <!-- Text injected by JS -->
                         </p>
 
                         <!-- Progress Bar -->
-                        <div class="w-full md:w-1/3 bg-[#111] h-2 sm:h-3 rounded-full border border-cf-darkgray p-[1px] relative shadow-inner flex-shrink-0 mt-1 md:mt-0">
-                            <div id="combo-tracker-bar" class="bg-cf-yellow h-full rounded-full transition-all duration-700 ease-out relative overflow-hidden shadow-[0_0_10px_rgba(246,197,0,0.6)]" style="width: 0%">
+                        <div
+                            class="w-full md:w-1/3 bg-[#111] h-2 sm:h-3 rounded-full border border-cf-darkgray p-[1px] relative shadow-inner flex-shrink-0 mt-1 md:mt-0">
+                            <div id="combo-tracker-bar"
+                                class="bg-cf-yellow h-full rounded-full transition-all duration-700 ease-out relative overflow-hidden shadow-[0_0_10px_rgba(246,197,0,0.6)]"
+                                style="width: 0%">
                                 <!-- Stripes inside the bar -->
-                                <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, #000 0, #000 5px, transparent 5px, transparent 10px);"></div>
+                                <div class="absolute inset-0 opacity-20"
+                                    style="background-image: repeating-linear-gradient(45deg, #000 0, #000 5px, transparent 5px, transparent 10px);">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -346,68 +364,99 @@
             </div>
 
             <!-- Promo Tickets -->
-            <div class="grid grid-cols-3 justify-center gap-2 sm:gap-4 md:gap-6 mb-4 font-impact max-w-4xl mx-auto reveal-up px-2 md:px-0">
+            <div
+                class="grid grid-cols-3 justify-center gap-2 sm:gap-4 md:gap-6 mb-4 font-impact max-w-4xl mx-auto reveal-up px-2 md:px-0">
                 <!-- Ticket 1 -->
-                <button onclick="selectComboGoal(10)" id="promo-ticket-10" class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-all duration-300 cursor-hover group text-center flex flex-col justify-between">
+                <button onclick="selectComboGoal(10)" id="promo-ticket-10"
+                    class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-all duration-300 cursor-hover group text-center flex flex-col justify-between">
                     <!-- Cutouts -->
-                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
-                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
-                    
+                    <div
+                        class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10">
+                    </div>
+                    <div
+                        class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10">
+                    </div>
+
                     <div>
-                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                        <div
+                            class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
                             <span class="md:hidden">VIP</span><span class="hidden md:inline">TICKET VIP</span>
                         </div>
-                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                        <span
+                            class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
                             10<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
                         </span>
                         <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact">5% OFF</span>
                     </div>
-                    <div id="promo-ticket-action-10" class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                    <div id="promo-ticket-action-10"
+                        class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
                         <i class="fa-solid fa-ticket hidden md:inline-block"></i>
                         <span>Selecionar</span>
                     </div>
                 </button>
 
                 <!-- Ticket 2 -->
-                <button onclick="selectComboGoal(20)" id="promo-ticket-20" class="relative bg-cf-yellow border-2 border-white p-2 sm:p-4 transition-all duration-300 cursor-hover group text-center flex flex-col justify-between md:scale-105 shadow-[0_0_20px_rgba(246,197,0,0.4)] z-10">
-                    
+                <button onclick="selectComboGoal(20)" id="promo-ticket-20"
+                    class="relative bg-cf-yellow border-2 border-white p-2 sm:p-4 transition-all duration-300 cursor-hover group text-center flex flex-col justify-between md:scale-105 shadow-[0_0_20px_rgba(246,197,0,0.4)] z-10">
+
                     <!-- Cutouts -->
-                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-white transition-colors z-10"></div>
-                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-white transition-colors z-10"></div>
-                    
+                    <div
+                        class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-white transition-colors z-10">
+                    </div>
+                    <div
+                        class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-white transition-colors z-10">
+                    </div>
+
                     <div>
-                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                        <div
+                            class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
                             <span class="md:hidden">PREMIUM</span><span class="hidden md:inline">TICKET PREMIUM</span>
                         </div>
-                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                        <span
+                            class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
                             20<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
                         </span>
-                        <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">10% OFF</span>
-                        <span class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+1 SALGADO</span>
+                        <span
+                            class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">10%
+                            OFF</span>
+                        <span class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+1
+                            SALGADO</span>
                     </div>
-                    <div id="promo-ticket-action-20" class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                    <div id="promo-ticket-action-20"
+                        class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
                         <i class="fa-solid fa-ticket hidden md:inline-block"></i>
                         <span>Selecionar</span>
                     </div>
                 </button>
 
                 <!-- Ticket 3 -->
-                <button onclick="selectComboGoal(30)" id="promo-ticket-30" class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-all duration-300 cursor-hover group text-center flex flex-col justify-between">
+                <button onclick="selectComboGoal(30)" id="promo-ticket-30"
+                    class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-all duration-300 cursor-hover group text-center flex flex-col justify-between">
                     <!-- Cutouts -->
-                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
-                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
-                    
+                    <div
+                        class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10">
+                    </div>
+                    <div
+                        class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10">
+                    </div>
+
                     <div>
-                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                        <div
+                            class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
                             <span class="md:hidden">MONSTRO</span><span class="hidden md:inline">TICKET MONSTRO</span>
                         </div>
-                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                        <span
+                            class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
                             30<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
                         </span>
-                        <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">20% OFF</span>
-                        <span class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+ FRETE GRÁTIS</span>
+                        <span
+                            class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">20%
+                            OFF</span>
+                        <span class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+
+                            FRETE GRÁTIS</span>
                     </div>
-                    <div id="promo-ticket-action-30" class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                    <div id="promo-ticket-action-30"
+                        class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
                         <i class="fa-solid fa-ticket hidden md:inline-block"></i>
                         <span>Selecionar</span>
                     </div>
@@ -437,7 +486,7 @@
                 </button>
                 <button onclick="filterCategory('Salgados')" id="filter-btn-Salgados"
                     class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
-                    Salgados Fitness
+                    Salgados e Doces Proteicos
                 </button>
             </div>
 
@@ -522,10 +571,13 @@
         <!-- Drawer Content (Scrollable) -->
         <div class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
             <!-- Combo Progress Banner -->
-            <div id="combo-progress-container" class="bg-cf-black border-2 border-cf-gray rounded p-4 text-center hidden">
-                <p id="combo-progress-text" class="text-white text-xs font-bold mb-2">Adicione 10 marmitas para ganhar 5% OFF!</p>
+            <div id="combo-progress-container"
+                class="bg-cf-black border-2 border-cf-gray rounded p-4 text-center hidden">
+                <p id="combo-progress-text" class="text-white text-xs font-bold mb-2">Adicione 10 marmitas para ganhar
+                    5% OFF!</p>
                 <div class="w-full bg-cf-darkgray h-2 rounded-full overflow-hidden">
-                    <div id="combo-progress-bar" class="bg-cf-yellow h-full transition-all duration-300" style="width: 0%"></div>
+                    <div id="combo-progress-bar" class="bg-cf-yellow h-full transition-all duration-300"
+                        style="width: 0%"></div>
                 </div>
             </div>
 
@@ -588,90 +640,124 @@
                     <img id="dish-detail-img" src="" class="w-full h-full object-cover">
                 </div>
                 <div class="p-5 flex flex-col flex-1">
-                <div id="dish-detail-category" class="text-cf-yellow font-bold text-xs uppercase mb-1 tracking-widest">
-                </div>
-                <h3 id="dish-detail-name" class="font-impact text-2xl text-white uppercase mb-4 leading-tight"></h3>
-                <p class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1">
-                    Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o seu
-                    melhor desempenho.
-                </p>
-                <div class="bg-cf-black p-3 border border-gray-700 flex flex-col gap-3 rounded">
-                    <div id="dish-detail-p" class="flex justify-between items-center w-full"></div>
-                    <div id="dish-detail-g"
-                        class="flex justify-between items-center w-full pt-3 border-t border-gray-800"></div>
-                </div>
-
-                <!-- Nutrition Table -->
-                <div class="mt-4 border border-cf-gray rounded overflow-hidden flex-shrink-0">
-                    <div class="w-full bg-cf-darkgray text-white font-impact text-sm tracking-wider uppercase p-3 flex justify-between items-center">
-                        <span><i class="fa-solid fa-leaf text-cf-yellow mr-2"></i> Tabela Nutricional</span>
+                    <div id="dish-detail-category"
+                        class="text-cf-yellow font-bold text-xs uppercase mb-1 tracking-widest">
                     </div>
-                    <div id="nutrition-content" class="bg-cf-black text-gray-300 font-body text-xs">
-                        <div class="grid grid-cols-2 gap-px bg-cf-gray">
-                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Valor Energético</span> <strong id="det-energy" class="text-white"></strong></div>
-                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Carboidratos</span> <strong id="det-carbs" class="text-white"></strong></div>
-                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Proteínas</span> <strong id="det-proteins" class="text-white"></strong></div>
-                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Totais</span> <strong id="det-total-fat" class="text-white"></strong></div>
-                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Saturadas</span> <strong id="det-sat-fat" class="text-white"></strong></div>
-                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Gorduras Trans</span> <strong id="det-trans-fat" class="text-white"></strong></div>
-                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Fibra Alimentar</span> <strong id="det-fiber" class="text-white"></strong></div>
-                            <div class="bg-cf-black p-2 flex justify-between items-center"><span class="text-[10px] text-gray-400">Sódio</span> <strong id="det-sodium" class="text-white"></strong></div>
+                    <h3 id="dish-detail-name" class="font-impact text-2xl text-white uppercase mb-4 leading-tight"></h3>
+                    <p class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1">
+                        Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o
+                        seu
+                        melhor desempenho.
+                    </p>
+                    <div class="bg-cf-black p-3 border border-gray-700 flex flex-col gap-3 rounded">
+                        <div id="dish-detail-p" class="flex justify-between items-center w-full"></div>
+                        <div id="dish-detail-g"
+                            class="flex justify-between items-center w-full pt-3 border-t border-gray-800"></div>
+                    </div>
+
+                    <!-- Nutrition Table -->
+                    <div class="mt-4 border border-cf-gray rounded overflow-hidden flex-shrink-0">
+                        <div
+                            class="w-full bg-cf-darkgray text-white font-impact text-sm tracking-wider uppercase p-3 flex justify-between items-center">
+                            <span><i class="fa-solid fa-leaf text-cf-yellow mr-2"></i> Tabela Nutricional</span>
+                        </div>
+                        <div id="nutrition-content" class="bg-cf-black text-gray-300 font-body text-xs">
+                            <div class="grid grid-cols-2 gap-px bg-cf-gray">
+                                <div class="bg-cf-black p-2 flex justify-between items-center"><span
+                                        class="text-[10px] text-gray-400">Valor Energético</span> <strong
+                                        id="det-energy" class="text-white"></strong></div>
+                                <div class="bg-cf-black p-2 flex justify-between items-center"><span
+                                        class="text-[10px] text-gray-400">Carboidratos</span> <strong id="det-carbs"
+                                        class="text-white"></strong></div>
+                                <div class="bg-cf-black p-2 flex justify-between items-center"><span
+                                        class="text-[10px] text-gray-400">Proteínas</span> <strong id="det-proteins"
+                                        class="text-white"></strong></div>
+                                <div class="bg-cf-black p-2 flex justify-between items-center"><span
+                                        class="text-[10px] text-gray-400">Gorduras Totais</span> <strong
+                                        id="det-total-fat" class="text-white"></strong></div>
+                                <div class="bg-cf-black p-2 flex justify-between items-center"><span
+                                        class="text-[10px] text-gray-400">Gorduras Saturadas</span> <strong
+                                        id="det-sat-fat" class="text-white"></strong></div>
+                                <div class="bg-cf-black p-2 flex justify-between items-center"><span
+                                        class="text-[10px] text-gray-400">Gorduras Trans</span> <strong
+                                        id="det-trans-fat" class="text-white"></strong></div>
+                                <div class="bg-cf-black p-2 flex justify-between items-center"><span
+                                        class="text-[10px] text-gray-400">Fibra Alimentar</span> <strong id="det-fiber"
+                                        class="text-white"></strong></div>
+                                <div class="bg-cf-black p-2 flex justify-between items-center"><span
+                                        class="text-[10px] text-gray-400">Sódio</span> <strong id="det-sodium"
+                                        class="text-white"></strong></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- Combo Promo Modal -->
-    <div id="combo-promo-modal" onclick="closeComboModal()" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm p-4">
-        <div onclick="event.stopPropagation()" class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-lg w-full relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)] text-center max-h-[90vh] overflow-y-auto">
-            <button onclick="closeComboModal()" class="absolute top-4 right-4 text-gray-400 hover:text-cf-yellow hover:scale-110 transition-all text-2xl p-1 cursor-hover">
+    <div id="combo-promo-modal" onclick="closeComboModal()"
+        class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm p-4">
+        <div onclick="event.stopPropagation()"
+            class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-lg w-full relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)] text-center max-h-[90vh] overflow-y-auto">
+            <button onclick="closeComboModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-cf-yellow hover:scale-110 transition-all text-2xl p-1 cursor-hover">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="w-16 h-16 mx-auto bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-white animate-pulse">
+            <div
+                class="w-16 h-16 mx-auto bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-white animate-pulse">
                 <i class="fa-solid fa-bolt"></i>
             </div>
-            <h3 class="font-impact text-3xl text-white uppercase mb-2">ESCOLHA SEU <span class="text-cf-yellow">COMBO MONSTRO!</span></h3>
-            <p class="font-body text-gray-300 mb-6 font-semibold">Qual é o seu objetivo para a semana? Selecione um combo abaixo e nós te ajudaremos a alcançá-lo!</p>
-            
+            <h3 class="font-impact text-3xl text-white uppercase mb-2">ESCOLHA SEU <span class="text-cf-yellow">COMBO
+                    MONSTRO!</span></h3>
+            <p class="font-body text-gray-300 mb-6 font-semibold">Qual é o seu objetivo para a semana? Selecione um
+                combo abaixo e nós te ajudaremos a alcançá-lo!</p>
+
             <div class="flex flex-col gap-4 mb-6">
-                <button onclick="selectComboGoal(10)" class="bg-cf-black border-2 border-cf-gray hover:border-cf-yellow p-4 rounded text-left flex justify-between items-center transition-colors group cursor-hover">
+                <button onclick="selectComboGoal(10)"
+                    class="bg-cf-black border-2 border-cf-gray hover:border-cf-yellow p-4 rounded text-left flex justify-between items-center transition-colors group cursor-hover">
                     <div>
                         <span class="text-cf-yellow font-bold text-xl block mb-1">COMBO 10 MARMITAS</span>
                         <span class="text-gray-400 text-xs font-semibold">Desconto automático no carrinho</span>
                     </div>
                     <div class="text-right">
-                        <span class="text-white font-impact text-2xl group-hover:text-cf-yellow transition-colors">5% OFF</span>
+                        <span class="text-white font-impact text-2xl group-hover:text-cf-yellow transition-colors">5%
+                            OFF</span>
                     </div>
                 </button>
 
-                <button onclick="selectComboGoal(20)" class="bg-cf-black border-2 border-cf-gray hover:border-cf-yellow p-4 rounded text-left flex justify-between items-center transition-colors group cursor-hover">
+                <button onclick="selectComboGoal(20)"
+                    class="bg-cf-black border-2 border-cf-gray hover:border-cf-yellow p-4 rounded text-left flex justify-between items-center transition-colors group cursor-hover">
                     <div>
                         <span class="text-cf-yellow font-bold text-xl block mb-1">COMBO 20 MARMITAS</span>
                         <span class="text-gray-400 text-xs font-semibold">Desconto + Brinde Surpresa</span>
                     </div>
                     <div class="text-right flex flex-col items-end">
-                        <span class="text-white font-impact text-2xl group-hover:text-cf-yellow transition-colors">10% OFF</span>
+                        <span class="text-white font-impact text-2xl group-hover:text-cf-yellow transition-colors">10%
+                            OFF</span>
                         <span class="text-cf-yellow font-bold text-xs">+ 1 SALGADO</span>
                     </div>
                 </button>
 
-                <button onclick="selectComboGoal(30)" class="bg-cf-black border-2 border-cf-gray hover:border-cf-yellow p-4 rounded text-left flex justify-between items-center transition-colors group cursor-hover relative overflow-hidden">
-                    <div class="absolute -right-6 top-2 bg-cf-yellow text-cf-black font-impact text-[10px] px-8 py-1 rotate-45">MAX</div>
+                <button onclick="selectComboGoal(30)"
+                    class="bg-cf-black border-2 border-cf-gray hover:border-cf-yellow p-4 rounded text-left flex justify-between items-center transition-colors group cursor-hover relative overflow-hidden">
+                    <div
+                        class="absolute -right-6 top-2 bg-cf-yellow text-cf-black font-impact text-[10px] px-8 py-1 rotate-45">
+                        MAX</div>
                     <div>
                         <span class="text-cf-yellow font-bold text-xl block mb-1">COMBO 30 MARMITAS</span>
                         <span class="text-gray-400 text-xs font-semibold">Desconto Máximo + Entrega</span>
                     </div>
                     <div class="text-right flex flex-col items-end mr-6">
-                        <span class="text-white font-impact text-2xl group-hover:text-cf-yellow transition-colors">20% OFF</span>
+                        <span class="text-white font-impact text-2xl group-hover:text-cf-yellow transition-colors">20%
+                            OFF</span>
                         <span class="text-cf-yellow font-bold text-xs">+ FRETE GRÁTIS</span>
                     </div>
                 </button>
             </div>
-            
-            <button onclick="closeComboModal()" class="w-full text-gray-500 font-bold text-sm hover:text-white transition-colors underline cursor-hover mt-2">
+
+            <button onclick="closeComboModal()"
+                class="w-full text-gray-500 font-bold text-sm hover:text-white transition-colors underline cursor-hover mt-2">
                 Decidir depois
             </button>
         </div>
@@ -697,48 +783,67 @@
 
             <form id="checkout-form" novalidate onsubmit="event.preventDefault(); submitCheckoutForm();"
                 class="space-y-5 font-body text-sm font-semibold">
+                <!-- Name & Phone Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Nome
-                            Completo *</label>
+                        <label
+                            class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-user text-cf-yellow"></i> Nome Completo *
+                        </label>
                         <input type="text" id="client-name" required placeholder="Ex: João Silva"
                             class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
                     </div>
+
                     <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Telefone
-                            com DDD *</label>
-                        <input type="tel" id="client-phone" required placeholder="Ex: (11) 98888-7777"
+                        <label
+                            class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-phone text-cf-yellow"></i> Telefone / WhatsApp *
+                        </label>
+                        <input type="tel" id="client-phone" required placeholder="(11) 99999-9999" maxlength="15"
                             class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
                     </div>
                 </div>
 
+                <!-- Delivery Address -->
                 <div>
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Endereço de
-                        Entrega *</label>
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-cf-yellow"></i> Endereço de Entrega Completo *
+                    </label>
                     <textarea id="client-address" required rows="2"
                         placeholder="Ex: Av. Paulista, 1000 - Apto 51 - Bela Vista, São Paulo - SP"
                         class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
                 </div>
 
-                <!-- Delivery Date & Time Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Data da
-                            Entrega *</label>
-                        <input type="date" id="delivery-date" required
-                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
+                <!-- Delivery Date Selection (Pills / Cards) -->
+                <div>
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-2 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-calendar-day text-cf-yellow"></i> Dia da Entrega *
+                    </label>
+                    <input type="hidden" id="delivery-date" required value="">
+                    <div id="date-chips-container" class="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+                        <!-- Date chips populated dynamically -->
                     </div>
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Horário da
-                            Entrega (11h às 19h) *</label>
-                        <input type="time" id="delivery-time" required
-                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
+                </div>
+
+                <!-- Delivery Time Selection (Pills / Grid) -->
+                <div>
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-2 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock text-cf-yellow"></i> Horário da Entrega (11h às 19h) *
+                    </label>
+                    <input type="hidden" id="delivery-time" required value="">
+                    <div id="time-chips-container" class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                        <!-- Time chips populated dynamically -->
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Observações
-                        (Opcional)</label>
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-comment-pen text-cf-yellow"></i> Observações do Pedido (Opcional)
+                    </label>
                     <textarea id="client-notes" rows="2"
                         placeholder="Ex: Retirar cebola do strogonoff, troco para R$ 50..."
                         class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
@@ -791,7 +896,7 @@
                     <div id="coupon-feedback" class="text-xs font-bold mt-2 hidden"></div>
                 </div>
 
-                
+
                 <!-- Action Buttons -->
                 <div id="checkout-buttons-container" class="flex gap-4 pt-2">
                     <button type="button" onclick="toggleCheckoutModal()"
@@ -812,8 +917,10 @@
                 <h3 class="font-impact text-2xl text-white uppercase tracking-widest text-center mb-6">Pagamento</h3>
 
                 <!-- MP Brick handles Pix and Cartão -->
-                <div class="bg-cf-black p-0 sm:p-4 rounded border-0 sm:border-2 border-cf-gray mb-4 w-full overflow-hidden">
-                    <div id="paymentBrick_container" class="bg-white rounded overflow-hidden p-0 sm:p-2 min-h-[300px] w-full"></div>
+                <div
+                    class="bg-cf-black p-0 sm:p-4 rounded border-0 sm:border-2 border-cf-gray mb-4 w-full overflow-hidden">
+                    <div id="paymentBrick_container"
+                        class="bg-white rounded overflow-hidden p-0 sm:p-2 min-h-[300px] w-full"></div>
                 </div>
 
                 <div class="mt-2">
@@ -833,46 +940,53 @@
         <div class="flex min-h-full items-center justify-center py-10 px-4 sm:px-6">
             <div
                 class="bg-cf-darkgray border-4 border-cf-yellow p-5 sm:p-8 max-w-md w-full text-center relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)]">
-            <div
-                class="w-20 h-20 bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg border-4 border-white animate-bounce">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
-
-            <h3 id="thank-you-title" class="font-impact text-4xl text-cf-yellow uppercase mb-2">Pedido Recebido!</h3>
-            <h4 id="thank-you-subtitle" class="font-street text-xl text-white mb-6">Obrigado pela preferência!</h4>
-
-            <p id="thank-you-message" class="font-body text-gray-300 font-semibold mb-6 text-sm">
-                Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar
-                conosco a qualquer momento!
-            </p>
-
-            <div
-                class="bg-cf-black p-4 border border-cf-gray rounded mb-6 text-left space-y-2 font-mono text-xs text-gray-400">
-                <div><span class="text-white font-bold">CÓDIGO:</span> <span id="thank-order-id"
-                        class="text-cf-yellow font-bold">#CF-1001</span></div>
-                <div><span class="text-white font-bold">VALOR TOTAL:</span> <span id="thank-order-total"
-                        class="text-cf-yellow font-bold">R$ 0,00</span></div>
-                <div><span class="text-white font-bold">PAGAMENTO:</span> <span id="thank-order-payment"
-                        class="text-white">Pix</span></div>
-                <div><span class="text-white font-bold">ENTREGA:</span> <span id="thank-order-delivery"
-                        class="text-white">—</span></div>
-            </div>
-
-            <div id="pix-payment-info" class="hidden bg-white p-4 rounded mb-6 flex flex-col items-center border-2 border-cf-yellow">
-                <p class="font-bold text-cf-black text-sm mb-2 uppercase flex items-center gap-2"><i class="fa-brands fa-pix text-[#32bcad]"></i> Escaneie para Pagar</p>
-                <img id="pix-qr-code" src="" alt="QR Code Pix" class="w-40 h-40 mb-3 border border-cf-gray p-1 rounded">
-                <p class="text-xs text-gray-500 font-semibold mb-1">Ou utilize o código Copia e Cola:</p>
-                <div class="w-full flex items-center border border-gray-300 rounded overflow-hidden">
-                    <input type="text" id="pix-copia-cola" class="flex-1 text-[10px] p-2 bg-gray-50 text-gray-700 outline-none" readonly>
-                    <button onclick="copyPixCode()" class="bg-cf-yellow text-cf-black px-3 py-2 font-bold text-xs hover:bg-cf-black hover:text-cf-yellow transition-colors"><i class="fa-solid fa-copy"></i> Copiar</button>
+                <div
+                    class="w-20 h-20 bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg border-4 border-white animate-bounce">
+                    <i class="fa-solid fa-circle-check"></i>
                 </div>
-            </div>
 
-            <button onclick="closeThankYouModal()"
-                class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
-                Continuar Navegando
-            </button>
-        </div>
+                <h3 id="thank-you-title" class="font-impact text-4xl text-cf-yellow uppercase mb-2">Pedido Recebido!
+                </h3>
+                <h4 id="thank-you-subtitle" class="font-street text-xl text-white mb-6">Obrigado pela preferência!</h4>
+
+                <p id="thank-you-message" class="font-body text-gray-300 font-semibold mb-6 text-sm">
+                    Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar
+                    conosco a qualquer momento!
+                </p>
+
+                <div
+                    class="bg-cf-black p-4 border border-cf-gray rounded mb-6 text-left space-y-2 font-mono text-xs text-gray-400">
+                    <div><span class="text-white font-bold">CÓDIGO:</span> <span id="thank-order-id"
+                            class="text-cf-yellow font-bold">#CF-1001</span></div>
+                    <div><span class="text-white font-bold">VALOR TOTAL:</span> <span id="thank-order-total"
+                            class="text-cf-yellow font-bold">R$ 0,00</span></div>
+                    <div><span class="text-white font-bold">PAGAMENTO:</span> <span id="thank-order-payment"
+                            class="text-white">Pix</span></div>
+                    <div><span class="text-white font-bold">ENTREGA:</span> <span id="thank-order-delivery"
+                            class="text-white">—</span></div>
+                </div>
+
+                <div id="pix-payment-info"
+                    class="hidden bg-white p-4 rounded mb-6 flex flex-col items-center border-2 border-cf-yellow">
+                    <p class="font-bold text-cf-black text-sm mb-2 uppercase flex items-center gap-2"><i
+                            class="fa-brands fa-pix text-[#32bcad]"></i> Escaneie para Pagar</p>
+                    <img id="pix-qr-code" src="" alt="QR Code Pix"
+                        class="w-40 h-40 mb-3 border border-cf-gray p-1 rounded">
+                    <p class="text-xs text-gray-500 font-semibold mb-1">Ou utilize o código Copia e Cola:</p>
+                    <div class="w-full flex items-center border border-gray-300 rounded overflow-hidden">
+                        <input type="text" id="pix-copia-cola"
+                            class="flex-1 text-[10px] p-2 bg-gray-50 text-gray-700 outline-none" readonly>
+                        <button onclick="copyPixCode()"
+                            class="bg-cf-yellow text-cf-black px-3 py-2 font-bold text-xs hover:bg-cf-black hover:text-cf-yellow transition-colors"><i
+                                class="fa-solid fa-copy"></i> Copiar</button>
+                    </div>
+                </div>
+
+                <button onclick="closeThankYouModal()"
+                    class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
+                    Continuar Navegando
+                </button>
+            </div>
         </div>
     </div>
 
@@ -888,7 +1002,7 @@
         function copyPixCode() {
             const copyText = document.getElementById("pix-copia-cola");
             copyText.select();
-            copyText.setSelectionRange(0, 99999); 
+            copyText.setSelectionRange(0, 99999);
             document.execCommand("copy");
             alert("Código Pix copiado!");
         }
@@ -930,7 +1044,7 @@
             { id: 'price-patinho-legumes', name: '14. Patinho com legumes', category: 'Patinho', priceP: '25,50', priceG: '—' },
             { id: 'price-patinho-desfiado-pure-mandioca-legumes', name: '15. Patinho desfiado com purê de mandioca e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
             { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
-            // SALGADOS FITNESS
+            // SALGADOS E DOCES PROTEICOS
             { id: 'price-coxinha-fit', name: '30. Coxinha Fit', category: 'Salgados', priceP: '8,50', priceG: '—' },
             { id: 'price-kibes', name: '31. Kibes', category: 'Salgados', priceP: '8,50', priceG: '—' },
             { id: 'price-nugfit', name: '32. NugFit', category: 'Salgados', priceP: '12,90', priceG: '—' },
@@ -951,32 +1065,48 @@
             sodium: '200mg'
         };
 
-        const defaultDishes = defaultDishesRaw.map(d => ({...d, nutrition: {...defaultNutrition}}));
+        const defaultDishes = defaultDishesRaw.map(d => ({ ...d, nutrition: { ...defaultNutrition } }));
 
-        let dishes = [];
+        function getDeletedDishIds() {
+            try {
+                return JSON.parse(localStorage.getItem('cleanfoods_deleted_dishes')) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        let rawDishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+        let dishes = rawDishes.filter(d => !getDeletedDishIds().includes(d.id));
         let cart = JSON.parse(localStorage.getItem('cleanfoods_cart')) || {};
         let appliedCoupon = null;
         let activeCategory = 'Todos';
 
-        // Garantir que salgados existam em qualquer fonte de dados
         function ensureSalgados(dishList) {
-            const hasSalgados = dishList.some(d => d.category === 'Salgados');
-            if (!hasSalgados) {
-                const salgadosItems = defaultDishes.filter(d => d.category === 'Salgados');
-                return [...dishList, ...salgadosItems];
-            }
             return dishList;
         }
 
         // Supabase Database helpers
         async function loadDishes() {
+            let deletedIds = getDeletedDishIds();
+
             if (supabaseClient) {
                 try {
+                    const { data: setSetting } = await supabaseClient.from('settings').select('*').eq('key', 'deleted_dishes').maybeSingle();
+                    if (setSetting && setSetting.value) {
+                        try {
+                            const remoteDeleted = JSON.parse(setSetting.value);
+                            if (Array.isArray(remoteDeleted)) {
+                                deletedIds = Array.from(new Set([...deletedIds, ...remoteDeleted]));
+                                localStorage.setItem('cleanfoods_deleted_dishes', JSON.stringify(deletedIds));
+                            }
+                        } catch (e) {}
+                    }
+
                     const { data, error } = await supabaseClient.from('dishes').select('*');
                     if (error) throw error;
                     if (data && data.length > 0) {
                         const localDishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || [];
-                        dishes = data.map(d => {
+                        dishes = data.filter(d => !deletedIds.includes(d.id)).map(d => {
                             const localD = localDishes.find(ld => ld.id === d.id);
                             return {
                                 id: d.id,
@@ -986,13 +1116,13 @@
                                 priceG: d.price_g || d.priceG || '0,00',
                                 available: d.available !== false,
                                 image: (localD && localD.image) ? localD.image : (d.image || ''),
-                                nutrition: d.nutrition || (localD && localD.nutrition) || {...defaultNutrition}
+                                nutrition: d.nutrition || (localD && localD.nutrition) || { ...defaultNutrition }
                             };
                         }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
                         dishes = ensureSalgados(dishes);
                     } else {
                         // Seed database
-                        const dbDishes = defaultDishes.map(d => ({
+                        const dbDishes = defaultDishes.filter(d => !deletedIds.includes(d.id)).map(d => ({
                             id: d.id,
                             name: d.name,
                             category: d.category,
@@ -1002,17 +1132,33 @@
                         }));
                         const { error: insertError } = await supabaseClient.from('dishes').insert(dbDishes);
                         if (insertError) throw insertError;
-                        dishes = defaultDishes;
+                        dishes = defaultDishes.filter(d => !deletedIds.includes(d.id));
                     }
                 } catch (err) {
                     console.error("Erro ao carregar pratos do Supabase:", err);
                     dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                    dishes = dishes.filter(d => !deletedIds.includes(d.id));
                     dishes = ensureSalgados(dishes);
                 }
             } else {
                 dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                dishes = dishes.filter(d => !deletedIds.includes(d.id));
                 dishes = ensureSalgados(dishes);
             }
+        }
+
+        const DEFAULT_SHIPPING_FEE = 15.00;
+
+        function getEffectiveShippingFee() {
+            if (typeof window.systemShippingFee === 'number' && !isNaN(window.systemShippingFee) && window.systemShippingFee > 0) {
+                return window.systemShippingFee;
+            }
+            const savedFrete = localStorage.getItem('cleanfoods_frete');
+            if (savedFrete !== null && savedFrete !== undefined && savedFrete !== '') {
+                const parsed = parseFloat(savedFrete.replace(',', '.'));
+                if (!isNaN(parsed) && parsed > 0) return parsed;
+            }
+            return DEFAULT_SHIPPING_FEE;
         }
 
         async function loadSettings() {
@@ -1037,8 +1183,13 @@
                 }
             }
 
-            if (savedFrete) window.systemShippingFee = parseFloat(savedFrete);
-            else window.systemShippingFee = 0;
+            if (savedFrete !== null && savedFrete !== undefined && savedFrete !== '') {
+                const parsed = parseFloat(savedFrete.replace(',', '.'));
+                window.systemShippingFee = !isNaN(parsed) && parsed > 0 ? parsed : DEFAULT_SHIPPING_FEE;
+            } else {
+                window.systemShippingFee = DEFAULT_SHIPPING_FEE;
+            }
+            localStorage.setItem('cleanfoods_frete', window.systemShippingFee.toFixed(2));
 
             if (savedWhatsapp) {
                 const waFloatingBtn = document.getElementById('wa-floating-btn');
@@ -1136,8 +1287,14 @@
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             if (drawer) {
-                drawer.classList.toggle('open');
-                document.body.classList.toggle('cart-open-overflow');
+                const isOpen = drawer.classList.toggle('open');
+                if (isOpen) {
+                    document.body.classList.add('cart-open-overflow');
+                    sessionStorage.setItem('cleanfoods_ui_cart_open', 'true');
+                } else {
+                    document.body.classList.remove('cart-open-overflow');
+                    sessionStorage.setItem('cleanfoods_ui_cart_open', 'false');
+                }
             }
         }
 
@@ -1391,16 +1548,16 @@
             const progressContainer = document.getElementById('combo-progress-container');
             const progressText = document.getElementById('combo-progress-text');
             const progressBar = document.getElementById('combo-progress-bar');
-            
+
             const trackerBanner = document.getElementById('combo-tracker-banner');
             const trackerText = document.getElementById('combo-tracker-text');
             const trackerBar = document.getElementById('combo-tracker-bar');
-            
+
             let comboDiscountPercent = 0;
             let progress = 0;
 
             let chosenGoal = parseInt(localStorage.getItem('cleanfoods_combo_goal')) || 10;
-            
+
             // Still calculate the real discount based on total items
             if (totalMarmitas >= 30) {
                 comboDiscountPercent = 20;
@@ -1425,7 +1582,7 @@
                 htmlText = `Faltam só <span class="text-cf-yellow text-sm md:text-lg mx-1 drop-shadow-[0_0_10px_rgba(246,197,0,0.6)]">${chosenGoal - totalMarmitas}</span> marmitas para liberar <span class="text-cf-yellow border-b border-cf-yellow pb-[1px]">${nextBenefit}</span>!`;
                 progress = (totalMarmitas / chosenGoal) * 100;
             }
-            
+
             if (progressText) progressText.innerHTML = htmlText;
             if (trackerText) trackerText.innerHTML = htmlText;
 
@@ -1440,7 +1597,7 @@
                     progressContainer.classList.add('hidden');
                 }
             }
-            
+
             if (trackerBanner) {
                 if (localStorage.getItem('cleanfoods_combo_goal') && isPromoActive) {
                     trackerBanner.classList.remove('hidden');
@@ -1453,7 +1610,7 @@
             let discountAmount = 0;
             let discountLabelText = '';
             let couponDiscountPercent = appliedCoupon ? appliedCoupon.discount : 0;
-            
+
             if (comboDiscountPercent > 0 || couponDiscountPercent > 0) {
                 if (comboDiscountPercent >= couponDiscountPercent) {
                     discountAmount = subtotal * (comboDiscountPercent / 100);
@@ -1462,7 +1619,7 @@
                     discountAmount = subtotal * (couponDiscountPercent / 100);
                     discountLabelText = `Cupom (${couponDiscountPercent}%)`;
                 }
-                
+
                 if (discountRow) discountRow.classList.remove('hidden');
                 if (discountLabel) discountLabel.innerText = discountLabelText;
                 if (discountSpan) discountSpan.innerText = `-R$ ${discountAmount.toFixed(2).replace('.', ',')}`;
@@ -1470,17 +1627,17 @@
                 if (discountRow) discountRow.classList.add('hidden');
             }
 
-            let shippingFee = window.systemShippingFee || 0;
+            let shippingFee = getEffectiveShippingFee();
             if (totalMarmitas >= 30) shippingFee = 0; // Combo monstro gives frete grátis
 
             const shippingRow = document.getElementById('cart-shipping-row');
             const shippingSpan = document.getElementById('cart-shipping-val');
             if (shippingRow && shippingSpan) {
+                shippingRow.classList.remove('hidden');
                 if (shippingFee > 0) {
-                    shippingRow.classList.remove('hidden');
                     shippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
                 } else {
-                    shippingRow.classList.add('hidden');
+                    shippingSpan.innerText = `GRÁTIS (Combo 30)`;
                 }
             }
 
@@ -1522,11 +1679,11 @@
             }
 
             if (chkShippingRow && chkShippingSpan) {
+                chkShippingRow.classList.remove('hidden');
                 if (shippingFee > 0) {
-                    chkShippingRow.classList.remove('hidden');
                     chkShippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
                 } else {
-                    chkShippingRow.classList.add('hidden');
+                    chkShippingSpan.innerText = `GRÁTIS (Combo 30)`;
                 }
             }
 
@@ -1544,49 +1701,211 @@
                 const savedName = localStorage.getItem('cleanfoods_client_name') || '';
                 const savedPhone = localStorage.getItem('cleanfoods_client_phone') || '';
                 const savedAddress = localStorage.getItem('cleanfoods_client_address') || '';
+                const savedNotes = localStorage.getItem('cleanfoods_client_notes') || '';
+                const savedDate = localStorage.getItem('cleanfoods_client_delivery_date') || '';
+                const savedTime = localStorage.getItem('cleanfoods_client_delivery_time') || '';
 
                 const nameInput = document.getElementById('client-name');
                 const phoneInput = document.getElementById('client-phone');
                 const addressTextarea = document.getElementById('client-address');
-
-                if (nameInput) nameInput.value = savedName;
-                if (phoneInput) phoneInput.value = savedPhone;
-                if (addressTextarea) addressTextarea.value = savedAddress;
-
-                // Dynamically set delivery date bounds
+                const notesTextarea = document.getElementById('client-notes');
                 const dateInput = document.getElementById('delivery-date');
-                if (dateInput) {
-                    const getLocalDateString = (date) => {
-                        const year = date.getFullYear();
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const day = String(date.getDate()).padStart(2, '0');
-                        return `${year}-${month}-${day}`;
-                    };
-                    const today = new Date();
-                    const minDate = getLocalDateString(today);
-                    const nextWeek = new Date();
-                    nextWeek.setDate(today.getDate() + 7);
-                    const maxDate = getLocalDateString(nextWeek);
-                    dateInput.min = minDate;
-                    dateInput.max = maxDate;
-                    dateInput.value = minDate; // default to today
-                }
+                const timeInput = document.getElementById('delivery-time');
+
+                if (nameInput && savedName) nameInput.value = savedName;
+                if (phoneInput && savedPhone) phoneInput.value = savedPhone;
+                if (addressTextarea && savedAddress) addressTextarea.value = savedAddress;
+                if (notesTextarea && savedNotes) notesTextarea.value = savedNotes;
+
+                if (timeInput && savedTime) timeInput.value = savedTime;
+
+                renderDateChips();
+                renderTimeChips();
+
+                sessionStorage.setItem('cleanfoods_ui_checkout_open', 'true');
 
                 document.getElementById('checkout-form').classList.remove('hidden');
                 const paymentStep = document.getElementById('payment-step-container');
                 if (paymentStep) paymentStep.classList.add('hidden');
-                
+
                 modal.classList.remove('hidden');
                 document.body.classList.add('cart-open-overflow');
                 setTimeout(() => {
                     modal.classList.remove('opacity-0');
                 }, 10);
             } else {
+                sessionStorage.setItem('cleanfoods_ui_checkout_open', 'false');
                 modal.classList.add('opacity-0');
                 document.body.classList.remove('cart-open-overflow');
                 setTimeout(() => {
                     modal.classList.add('hidden');
                 }, 300);
+            }
+        }
+
+        const AVAILABLE_DELIVERY_TIME_SLOTS = [
+            '11:00', '11:30', '12:00', '12:30', '13:00', '13:30',
+            '14:00', '14:30', '15:00', '15:30', '16:00', '16:30',
+            '17:00', '17:30', '18:00', '18:30', '19:00'
+        ];
+
+        function renderDateChips() {
+            const container = document.getElementById('date-chips-container');
+            const hiddenInput = document.getElementById('delivery-date');
+            if (!container || !hiddenInput) return;
+
+            container.innerHTML = '';
+            const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            const savedDate = localStorage.getItem('cleanfoods_client_delivery_date');
+            const today = new Date();
+
+            let selectedIsoDate = savedDate || '';
+
+            for (let i = 0; i <= 7; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
+
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const isoDate = `${year}-${month}-${day}`;
+
+                if (i === 0 && !selectedIsoDate) {
+                    selectedIsoDate = isoDate;
+                }
+
+                const dayLabel = i === 0 ? 'Hoje' : (i === 1 ? 'Amanhã' : daysOfWeek[d.getDay()]);
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `px-3.5 py-2.5 rounded border text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex flex-col items-center justify-center min-w-[75px] select-none ${selectedIsoDate === isoDate
+                        ? 'bg-cf-yellow text-cf-black border-cf-yellow shadow-[0_0_12px_rgba(246,197,0,0.4)] scale-105 font-impact text-sm'
+                        : 'bg-cf-black text-gray-300 border-cf-gray hover:border-cf-yellow hover:text-white'
+                    }`;
+                btn.innerHTML = `
+                    <span class="uppercase tracking-wider text-[10px] opacity-80">${dayLabel}</span>
+                    <span class="font-impact text-sm">${day}/${month}</span>
+                `;
+
+                btn.onclick = () => {
+                    hiddenInput.value = isoDate;
+                    localStorage.setItem('cleanfoods_client_delivery_date', isoDate);
+                    renderDateChips();
+                };
+
+                container.appendChild(btn);
+            }
+
+            hiddenInput.value = selectedIsoDate;
+            localStorage.setItem('cleanfoods_client_delivery_date', selectedIsoDate);
+        }
+
+        function renderTimeChips() {
+            const container = document.getElementById('time-chips-container');
+            const hiddenInput = document.getElementById('delivery-time');
+            if (!container || !hiddenInput) return;
+
+            container.innerHTML = '';
+            const savedTime = localStorage.getItem('cleanfoods_client_delivery_time') || '';
+            let selectedTime = savedTime;
+
+            AVAILABLE_DELIVERY_TIME_SLOTS.forEach((slot) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `py-2 px-2 rounded border text-xs font-impact tracking-wider transition-all cursor-pointer text-center select-none ${selectedTime === slot
+                        ? 'bg-cf-yellow text-cf-black border-cf-yellow shadow-[0_0_10px_rgba(246,197,0,0.4)] scale-105'
+                        : 'bg-cf-black text-white border-cf-gray hover:border-cf-yellow hover:text-cf-yellow'
+                    }`;
+                btn.innerText = slot;
+
+                btn.onclick = () => {
+                    hiddenInput.value = slot;
+                    localStorage.setItem('cleanfoods_client_delivery_time', slot);
+                    renderTimeChips();
+                };
+
+                container.appendChild(btn);
+            });
+
+            hiddenInput.value = selectedTime;
+        }
+
+        // Setup live auto-saving and restoration for client checkout form fields & modals
+        function initCheckoutFormStatePersistence() {
+            renderDateChips();
+            renderTimeChips();
+
+            // Máscara de Telefone Automática (11) 99999-9999
+            const phoneInput = document.getElementById('client-phone');
+            if (phoneInput) {
+                const formatPhone = (val) => {
+                    let v = val.replace(/\D/g, '');
+                    if (v.length > 11) v = v.slice(0, 11);
+                    if (v.length > 6) return `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+                    if (v.length > 2) return `(${v.slice(0, 2)}) ${v.slice(2)}`;
+                    if (v.length > 0) return `(${v}`;
+                    return '';
+                };
+
+                if (phoneInput.value) {
+                    phoneInput.value = formatPhone(phoneInput.value);
+                }
+
+                phoneInput.addEventListener('input', (e) => {
+                    e.target.value = formatPhone(e.target.value);
+                });
+            }
+
+            const fields = [
+                { id: 'client-name', key: 'cleanfoods_client_name' },
+                { id: 'client-phone', key: 'cleanfoods_client_phone' },
+                { id: 'client-address', key: 'cleanfoods_client_address' },
+                { id: 'client-notes', key: 'cleanfoods_client_notes' },
+                { id: 'delivery-date', key: 'cleanfoods_client_delivery_date' },
+                { id: 'delivery-time', key: 'cleanfoods_client_delivery_time' }
+            ];
+
+            fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el) {
+                    const savedVal = localStorage.getItem(f.key);
+                    if (savedVal && !el.value) {
+                        el.value = savedVal;
+                    }
+                    el.addEventListener('input', () => localStorage.setItem(f.key, el.value));
+                    el.addEventListener('change', () => localStorage.setItem(f.key, el.value));
+                }
+            });
+
+            // Save and restore scroll position
+            let scrollTimer;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                    sessionStorage.setItem('cleanfoods_client_scroll_y', window.scrollY.toString());
+                }, 100);
+            });
+
+            const savedScroll = sessionStorage.getItem('cleanfoods_client_scroll_y');
+            if (savedScroll && parseFloat(savedScroll) > 0) {
+                window.scrollTo({ top: parseFloat(savedScroll), behavior: 'instant' });
+            }
+
+            // Restore Checkout Modal or Cart Drawer if open prior to refresh
+            const isCheckoutOpen = sessionStorage.getItem('cleanfoods_ui_checkout_open');
+            if (isCheckoutOpen === 'true') {
+                const modal = document.getElementById('checkout-modal');
+                if (modal && modal.classList.contains('hidden')) {
+                    toggleCheckoutModal();
+                }
+            } else {
+                const isCartOpen = sessionStorage.getItem('cleanfoods_ui_cart_open');
+                if (isCartOpen === 'true') {
+                    const cartDrawer = document.getElementById('cart-drawer');
+                    if (cartDrawer && !cartDrawer.classList.contains('open')) {
+                        toggleCart();
+                    }
+                }
             }
         }
 
@@ -1609,7 +1928,7 @@
             const nameInput = document.getElementById('client-name');
             const phoneInput = document.getElementById('client-phone');
             const addressInput = document.getElementById('client-address');
-            
+
             const notesInput = document.getElementById('client-notes');
             const dateInput = document.getElementById('delivery-date');
             const timeInput = document.getElementById('delivery-time');
@@ -1736,14 +2055,14 @@
 
             let couponDiscountPercent = appliedCoupon ? appliedCoupon.discount : 0;
             let discountAmount = 0;
-            
+
             if (comboDiscountPercent >= couponDiscountPercent) {
                 discountAmount = subtotal * (comboDiscountPercent / 100);
             } else {
                 discountAmount = subtotal * (couponDiscountPercent / 100);
             }
-            
-            let shippingFee = window.systemShippingFee || 0;
+
+            let shippingFee = getEffectiveShippingFee();
             if (totalMarmitas >= 30) {
                 shippingFee = 0;
             }
@@ -1752,7 +2071,7 @@
 
             if (shippingFee > 0) {
                 orderItems.push({
-                    name: `🚚 Frete`,
+                    name: `🚚 Taxa de Entrega (Frete)`,
                     size: 'Único',
                     price: shippingFee,
                     quantity: 1
@@ -1780,15 +2099,15 @@
 
             // ------------------ NEW FLOW ------------------
             window.currentOrderData = order;
-            
+
             // Esconde form e mostra o Mercado Pago
             document.getElementById('checkout-form').classList.add('hidden');
             const paymentStep = document.getElementById('payment-step-container');
-            if(paymentStep) paymentStep.classList.remove('hidden');
-            
+            if (paymentStep) paymentStep.classList.remove('hidden');
+
             // Inicializa Mercado Pago
             initializePaymentBrick();
-            
+
             isSubmitting = false;
         }
 
@@ -1800,7 +2119,7 @@
         async function finalizeAndSaveOrder(paymentMethod, mpResponse) {
             const order = window.currentOrderData;
             order.payment = paymentMethod;
-            
+
             // Save Order to Supabase or fallback
             if (window.supabaseClient) {
                 try {
@@ -1833,20 +2152,30 @@
                 localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
             }
 
-            // Save Transaction
+            // Save Transaction automatically for Financeiro
+            const transactionObj = {
+                id: 'TX-' + order.id,
+                type: 'Entrada',
+                description: `Pedido #${order.id} - ${order.clientName}`,
+                value: parseFloat(order.total),
+                date: new Date().toISOString(),
+                category: 'Pedido'
+            };
+
             if (window.supabaseClient) {
                 try {
-                    const { error } = await window.supabaseClient.from('transactions').insert([{
-                        id: 'TXN-' + Date.now().toString(36).toUpperCase(),
-                        order_id: order.id,
-                        amount: parseFloat(order.total),
-                        payment_method: order.payment,
-                        status: paymentMethod === 'Pix' || paymentMethod === 'Cartão de Crédito' ? 'Pendente' : 'Confirmado'
-                    }]);
-                    if (error) throw error;
+                    const { error } = await window.supabaseClient.from('transactions').insert([transactionObj]);
+                    if (error && error.code !== '23505') console.error("Erro ao salvar transação no Supabase:", error);
                 } catch (err) {
                     console.error("Erro ao salvar transação:", err);
+                    let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                    transactions.push(transactionObj);
+                    localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
                 }
+            } else {
+                let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                transactions.push(transactionObj);
+                localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
             }
 
             // Show success
@@ -1865,7 +2194,7 @@
             }
 
             const pixInfoContainer = document.getElementById('pix-payment-info');
-            
+
             const tyTitle = document.getElementById('thank-you-title');
             const tySubtitle = document.getElementById('thank-you-subtitle');
             const tyMessage = document.getElementById('thank-you-message');
@@ -1927,17 +2256,17 @@
                     const qrCodeString = mpResponse.point_of_interaction.transaction_data.qr_code;
                     document.getElementById('pix-qr-code').src = `data:image/jpeg;base64,${qrCodeBase64}`;
                     document.getElementById('pix-copia-cola').value = qrCodeString;
-                    if(pixInfoContainer) pixInfoContainer.classList.remove('hidden');
+                    if (pixInfoContainer) pixInfoContainer.classList.remove('hidden');
                     // mpResponse.id é o ID do pagamento no Mercado Pago
                     pollOrderStatus(order.id, mpResponse.id);
                 } else {
-                    if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                    if (pixInfoContainer) pixInfoContainer.classList.add('hidden');
                 }
             } else {
                 if (tyTitle) tyTitle.innerText = 'Pedido Recebido!';
                 if (tySubtitle) tySubtitle.innerText = 'Obrigado pela preferência!';
                 if (tyMessage) tyMessage.innerText = 'Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar conosco a qualquer momento!';
-                if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                if (pixInfoContainer) pixInfoContainer.classList.add('hidden');
             }
 
             const thankModal = document.getElementById('thank-you-modal');
@@ -1958,8 +2287,8 @@
 
             cart = {};
             localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
-            if(typeof updateCartBadges === 'function') updateCartBadges();
-            if(typeof renderCart === 'function') renderCart();
+            if (typeof updateCartBadges === 'function') updateCartBadges();
+            if (typeof renderCart === 'function') renderCart();
         }
 
         let isBrickInitialized = false;
@@ -1973,13 +2302,22 @@
             const order = window.currentOrderData;
             const mp = new MercadoPago(window.MP_PUBLIC_KEY, { locale: 'pt-BR' });
             const bricksBuilder = mp.bricks();
-            
+
+            // Formata email limpo (sem acentos ou caracteres especiais) para o Mercado Pago aceitar automaticamente
+            const cleanPhone = (order.clientPhone || '').replace(/\D/g, '');
+            const cleanName = (order.clientName || 'cliente')
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            const validEmail = cleanPhone.length >= 10
+                ? `cliente_${cleanPhone}@cleanfoodsp.com.br`
+                : `${cleanName || 'cliente'}@cleanfoodsp.com.br`;
+
             const settings = {
                 initialization: {
                     amount: parseFloat(order.total),
                     preferenceId: null,
                     payer: {
-                        email: order.clientName.replace(/\s+/g, '').toLowerCase() + '@cleanfoods.com',
+                        email: validEmail,
                         entityType: 'individual'
                     },
                 },
@@ -1990,6 +2328,18 @@
                         creditCard: "all",
                         debitCard: "all"
                     },
+                    visual: {
+                        hidePaymentButton: false,
+                        hideFormTitle: false,
+                        style: {
+                            theme: 'default'
+                        }
+                    },
+                    fields: {
+                        cardholderEmail: {
+                            mode: "hidden"
+                        }
+                    }
                 },
                 callbacks: {
                     onReady: () => {
@@ -2001,7 +2351,7 @@
                     onSubmit: ({ selectedPaymentMethod, formData }) => {
                         formData.description = `Pedido ${order.id} - ${order.clientName}`;
                         formData.external_reference = order.id;
-                        
+
                         return new Promise(async (resolve, reject) => {
                             // Pré-salva o pedido no banco para passar na validação de segurança do backend
                             const pMethod = formData.payment_method_id === 'pix' ? 'Pix' : 'Cartão de Crédito';
@@ -2039,22 +2389,22 @@
                                 },
                                 body: JSON.stringify(formData),
                             })
-                            .then(async (response) => {
-                                const data = await response.json();
-                                if (!response.ok || data.error || data.status === 'rejected' || data.code) {
+                                .then(async (response) => {
+                                    const data = await response.json();
+                                    if (!response.ok || data.error || data.status === 'rejected' || data.code) {
+                                        reject();
+                                        alert("Erro no pagamento: " + (data.error || data.message || "Pagamento recusado"));
+                                        return;
+                                    }
+                                    resolve();
+
+                                    const pMethod = formData.payment_method_id === 'pix' ? 'Pix' : 'Cartão de Crédito';
+                                    finalizeAndSaveOrder(pMethod, data);
+                                })
+                                .catch((error) => {
                                     reject();
-                                    alert("Erro no pagamento: " + (data.error || data.message || "Pagamento recusado"));
-                                    return;
-                                }
-                                resolve();
-                                
-                                const pMethod = formData.payment_method_id === 'pix' ? 'Pix' : 'Cartão de Crédito';
-                                finalizeAndSaveOrder(pMethod, data);
-                            })
-                            .catch((error) => {
-                                reject();
-                                alert("Erro de conexão ao processar pagamento.");
-                            });
+                                    alert("Erro de conexão ao processar pagamento.");
+                                });
                         });
                     },
                     onError: (error) => {
@@ -2063,7 +2413,7 @@
                     },
                 },
             };
-            
+
             if (window.paymentBrickController) window.paymentBrickController.unmount();
             window.paymentBrickController = await bricksBuilder.create("payment", "paymentBrick_container", settings);
             isBrickInitialized = true;
@@ -2106,6 +2456,43 @@
             renderDishesGrid();
         }
 
+        function isValidPrice(v) {
+            if (!v) return false;
+            const s = String(v).trim();
+            if (s === '' || s === '—' || s === '-') return false;
+            const n = parseFloat(s.replace(',', '.'));
+            return !isNaN(n) && n > 0;
+        }
+
+        function renderDishPriceOptionsFull(dish) {
+            const hasP = isValidPrice(dish.priceP);
+            const hasG = isValidPrice(dish.priceG);
+
+            if (hasP && hasG) {
+                return `
+                    <div class="flex justify-between items-center text-sm font-semibold w-full">
+                        <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2.5 py-1 rounded-sm ml-1.5 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ ${dish.priceP} <i class="fa-solid fa-plus text-[10px]"></i></span></span>
+                        <span class="text-cf-yellow ml-2">G <span class="bg-cf-yellow text-cf-black px-2.5 py-1 rounded-sm ml-1.5 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ ${dish.priceG} <i class="fa-solid fa-plus text-[10px]"></i></span></span>
+                    </div>
+                `;
+            }
+
+            const singlePrice = hasP ? dish.priceP : (hasG ? dish.priceG : '');
+            const singleSize = hasP ? 'P' : 'G';
+
+            if (singlePrice) {
+                return `
+                    <div class="flex justify-center items-center text-sm font-semibold w-full">
+                        <span class="bg-cf-yellow text-cf-black px-4 py-1.5 rounded-sm font-bold text-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1.5" onclick="addToCart('${dish.id}', '${singleSize}')">
+                            R$ ${singlePrice} <i class="fa-solid fa-plus text-xs"></i>
+                        </span>
+                    </div>
+                `;
+            }
+
+            return `<div class="flex justify-center items-center text-sm font-semibold w-full"><span class="text-gray-500 font-bold">—</span></div>`;
+        }
+
         // Render Dishes in Grid
         function renderDishesGrid() {
             const grid = document.getElementById('dishes-grid');
@@ -2117,7 +2504,7 @@
                 ? dishes
                 : dishes.filter(d => d.category === activeCategory);
 
-            filteredDishes = filteredDishes.filter(d => d.available !== false);
+            filteredDishes = filteredDishes.filter(d => d.available !== false && !getDeletedDishIds().includes(d.id));
 
             if (filteredDishes.length === 0) {
                 grid.innerHTML = `
@@ -2137,21 +2524,9 @@
 
                 let groupLabel = 'Linha ' + dish.category;
                 if (dish.category === 'Gourmet') groupLabel = 'Linha Gourmet';
-                if (dish.category === 'Salgados') groupLabel = 'Salgados Fitness';
+                if (dish.category === 'Salgados') groupLabel = 'Salgados e Doces Proteicos';
 
-                let priceP_HTML = '';
-                if (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') {
-                    priceP_HTML = `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2.5 py-1 rounded-sm ml-1.5 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ ${dish.priceP} <i class="fa-solid fa-plus text-[10px]"></i></span></span>`;
-                } else {
-                    priceP_HTML = `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2.5 py-1 rounded-sm ml-1.5 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-                }
-
-                let priceG_HTML = '';
-                if (dish.priceG && dish.priceG !== '—' && dish.priceG !== '') {
-                    priceG_HTML = `<span class="text-cf-yellow ml-2">G <span class="bg-cf-yellow text-cf-black px-2.5 py-1 rounded-sm ml-1.5 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ ${dish.priceG} <i class="fa-solid fa-plus text-[10px]"></i></span></span>`;
-                } else {
-                    priceG_HTML = `<span class="text-gray-500 ml-2">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2.5 py-1 rounded-sm ml-1.5 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-                }
+                const priceHTML = renderDishPriceOptionsFull(dish);
 
                 card.innerHTML = `
                     <div class="h-48 bg-cf-black overflow-hidden relative border-b-4 border-cf-yellow cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
@@ -2163,9 +2538,8 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <h4 class="font-impact text-2xl text-white uppercase mb-4">${dish.name}</h4>
-                        <div class="flex justify-between items-center text-sm font-semibold pt-4 border-t border-gray-800 mt-auto">
-                            ${priceP_HTML}
-                            ${priceG_HTML}
+                        <div class="pt-4 border-t border-gray-800 mt-auto">
+                            ${priceHTML}
                         </div>
                     </div>
                 `;
@@ -2186,22 +2560,28 @@
             document.getElementById('dish-detail-name').innerText = dish.name;
 
             const pContainer = document.getElementById('dish-detail-p');
-            if (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') {
+            const gContainer = document.getElementById('dish-detail-g');
+
+            const hasP = isValidPrice(dish.priceP);
+            const hasG = isValidPrice(dish.priceG);
+
+            if (hasP && hasG) {
+                pContainer.style.display = 'flex';
                 pContainer.innerHTML = `<span class="text-gray-400 font-bold">P (225g)</span>
                     <button onclick="addToCart('${dish.id}', 'P'); closeDishDetail();" class="text-white bg-cf-gray px-4 py-2 rounded-sm cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
-            } else {
-                pContainer.innerHTML = `<span class="text-gray-500 font-bold">P (225g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
-            }
-
-            const gContainer = document.getElementById('dish-detail-g');
-            if (dish.priceG && dish.priceG !== '—' && dish.priceG !== '') {
+                gContainer.style.display = 'flex';
                 gContainer.innerHTML = `<span class="text-cf-yellow font-bold">G (450g)</span>
                     <button onclick="addToCart('${dish.id}', 'G'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceG} <i class="fa-solid fa-cart-plus"></i></button>`;
             } else {
-                gContainer.innerHTML = `<span class="text-gray-500 font-bold">G (450g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+                const singlePrice = hasP ? dish.priceP : (hasG ? dish.priceG : '');
+                const singleSize = hasP ? 'P' : 'G';
+                pContainer.style.display = 'flex';
+                pContainer.innerHTML = `<span class="text-gray-300 font-bold">Tamanho Único</span>
+                    <button onclick="addToCart('${dish.id}', '${singleSize}'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${singlePrice} <i class="fa-solid fa-cart-plus"></i></button>`;
+                gContainer.style.display = 'none';
             }
 
-            const n = dish.nutrition || {...defaultNutrition};
+            const n = dish.nutrition || { ...defaultNutrition };
             document.getElementById('det-energy').innerText = n.energy || '-';
             document.getElementById('det-carbs').innerText = n.carbs || '-';
             document.getElementById('det-proteins').innerText = n.proteins || '-';
@@ -2214,8 +2594,8 @@
             // Ensure accordion is closed when opening new dish
             const nutriContent = document.getElementById('nutrition-content');
             const nutriIcon = document.getElementById('nutrition-icon');
-            if(nutriContent) nutriContent.classList.add('hidden');
-            if(nutriIcon) nutriIcon.classList.remove('rotate-180');
+            if (nutriContent) nutriContent.classList.add('hidden');
+            if (nutriIcon) nutriIcon.classList.remove('rotate-180');
 
             const modal = document.getElementById('dish-detail-modal');
             modal.classList.remove('hidden');
@@ -2316,7 +2696,7 @@
             let urlParams = new URLSearchParams(window.location.search);
             const status = urlParams.get('status');
             const order_id = urlParams.get('order_id');
-            
+
             if (status === 'success' || status === 'pending') {
                 const pendingOrder = JSON.parse(localStorage.getItem('cleanfoods_pending_order'));
                 if (pendingOrder && pendingOrder.id === order_id) {
@@ -2341,12 +2721,12 @@
                             thankModal.classList.remove('opacity-0');
                         }, 10);
                     }
-                    
+
                     // Clear the cart
                     cart = {};
                     localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
                     localStorage.removeItem('cleanfoods_pending_order');
-                    
+
                     // Remove url params
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
@@ -2378,13 +2758,14 @@
             loadSettings();
             loadCoupons();
             updateCartBadges();
-            
+
             const storedGoal = localStorage.getItem('cleanfoods_combo_goal');
             if (storedGoal) {
                 updateTicketHighlight(storedGoal);
             }
-            
+
             renderCart();
+            initCheckoutFormStatePersistence();
 
             // Check URL for Promo Code
             urlParams = new URLSearchParams(window.location.search);

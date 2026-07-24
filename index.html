@@ -587,7 +587,8 @@
             </div>
 
             <!-- Hero Image Collage -->
-            <div class="relative w-full flex justify-center items-center reveal-right mt-16 lg:mt-12 animate-float z-10">
+            <div
+                class="relative w-full flex justify-center items-center reveal-right mt-16 lg:mt-12 animate-float z-10">
                 <!-- Inner Aspect Ratio Box -->
                 <div id="hero-image-container"
                     class="relative w-full max-w-[460px] sm:max-w-[650px] lg:max-w-[850px] xl:max-w-[1000px] aspect-[4/3] flex items-center justify-center">
@@ -643,22 +644,25 @@
             <!-- Promo Coupon Banner -->
             <div id="promo-coupon-banner"
                 class="hidden max-w-2xl mx-auto mb-16 relative bg-cf-yellow text-cf-black p-6 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl select-none z-20 transform rotate-1 border-t-4 border-b-4 border-cf-yellow">
-                
+
                 <!-- Ticket Cutouts -->
                 <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-cf-black rounded-full"></div>
                 <div class="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-cf-black rounded-full"></div>
-                
+
                 <!-- Left side content -->
                 <div class="flex items-center gap-4 w-full md:w-auto">
                     <i class="fa-solid fa-ticket text-4xl animate-pulse"></i>
                     <div>
                         <h4 class="font-impact text-2xl md:text-3xl uppercase leading-none mb-1">CUPOM VIP!</h4>
-                        <p class="font-body text-sm font-bold">Ganhe <span id="coupon-discount-val" class="text-xl">10</span>% de desconto hoje.</p>
+                        <p class="font-body text-sm font-bold">Ganhe <span id="coupon-discount-val"
+                                class="text-xl">10</span>% de desconto hoje.</p>
                     </div>
                 </div>
 
                 <!-- Perforated Line -->
-                <div class="w-full md:w-0 h-0 md:h-20 border-t-4 md:border-t-0 md:border-l-4 border-dashed border-cf-black opacity-30"></div>
+                <div
+                    class="w-full md:w-0 h-0 md:h-20 border-t-4 md:border-t-0 md:border-l-4 border-dashed border-cf-black opacity-30">
+                </div>
 
                 <!-- Right side coupon -->
                 <div class="flex flex-col items-center gap-1 w-full md:w-auto">
@@ -680,76 +684,114 @@
                     <span class="bg-cf-darkgray px-4 py-2 border-l-4 border-white">P: 225g</span>
                     <span class="bg-cf-yellow text-cf-black px-4 py-2 transform rotate-2">G: 450g</span>
                 </div>
-                
-            <div class="grid grid-cols-3 justify-center gap-2 sm:gap-4 md:gap-6 mt-12 font-impact max-w-4xl mx-auto reveal-up px-2 md:px-0">
-                
-                <!-- Ticket 1 -->
-                <button onclick="selectCombo(10)" class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between">
-                    <!-- Cutouts -->
-                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
-                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
-                    
-                    <div>
-                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
-                            <span class="md:hidden">VIP</span><span class="hidden md:inline">TICKET VIP</span>
-                        </div>
-                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
-                            10<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
-                        </span>
-                        <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact">5% OFF</span>
-                    </div>
-                    <div class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
-                        <i class="fa-solid fa-ticket hidden md:inline-block"></i>
-                        <span>Selecionar</span>
-                    </div>
-                </button>
 
-                <!-- Ticket 2 -->
-                <button onclick="window.location.href='cardapio-completo.html?promo=combo'" class="relative bg-cf-yellow border-2 border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between md:scale-105 shadow-[0_0_20px_rgba(246,197,0,0.4)] z-10">
-                    
-                    <!-- Cutouts -->
-                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-white transition-colors z-10"></div>
-                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-white transition-colors z-10"></div>
-                    
-                    <div>
-                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
-                            <span class="md:hidden">PREMIUM</span><span class="hidden md:inline">TICKET PREMIUM</span>
-                        </div>
-                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
-                            20<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
-                        </span>
-                        <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">10% OFF</span>
-                        <span class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+1 SALGADO</span>
-                    </div>
-                    <div class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
-                        <i class="fa-solid fa-ticket hidden md:inline-block"></i>
-                        <span>Selecionar</span>
-                    </div>
-                </button>
+                <div
+                    class="grid grid-cols-3 justify-center gap-2 sm:gap-4 md:gap-6 mt-12 font-impact max-w-4xl mx-auto reveal-up px-2 md:px-0">
 
-                <!-- Ticket 3 -->
-                <button onclick="selectCombo(30)" class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between">
-                    <!-- Cutouts -->
-                    <div class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
-                    <div class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10"></div>
-                    
-                    <div>
-                        <div class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
-                            <span class="md:hidden">MONSTRO</span><span class="hidden md:inline">TICKET MONSTRO</span>
+                    <!-- Ticket 1 -->
+                    <button onclick="selectCombo(10)"
+                        class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between">
+                        <!-- Cutouts -->
+                        <div
+                            class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10">
                         </div>
-                        <span class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
-                            30<span class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
-                        </span>
-                        <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">20% OFF</span>
-                        <span class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+ FRETE GRÁTIS</span>
-                    </div>
-                    <div class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
-                        <i class="fa-solid fa-ticket hidden md:inline-block"></i>
-                        <span>Selecionar</span>
-                    </div>
-                </button>
+                        <div
+                            class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10">
+                        </div>
 
-            </div>
+                        <div>
+                            <div
+                                class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                                <span class="md:hidden">VIP</span><span class="hidden md:inline">TICKET VIP</span>
+                            </div>
+                            <span
+                                class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                                10<span
+                                    class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
+                            </span>
+                            <span class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact">5% OFF</span>
+                        </div>
+                        <div
+                            class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                            <i class="fa-solid fa-ticket hidden md:inline-block"></i>
+                            <span>Selecionar</span>
+                        </div>
+                    </button>
+
+                    <!-- Ticket 2 -->
+                    <button onclick="window.location.href='cardapio-completo.html?promo=combo'"
+                        class="relative bg-cf-yellow border-2 border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between md:scale-105 shadow-[0_0_20px_rgba(246,197,0,0.4)] z-10">
+
+                        <!-- Cutouts -->
+                        <div
+                            class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-white transition-colors z-10">
+                        </div>
+                        <div
+                            class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-white transition-colors z-10">
+                        </div>
+
+                        <div>
+                            <div
+                                class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                                <span class="md:hidden">PREMIUM</span><span class="hidden md:inline">TICKET
+                                    PREMIUM</span>
+                            </div>
+                            <span
+                                class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                                20<span
+                                    class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
+                            </span>
+                            <span
+                                class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">10%
+                                OFF</span>
+                            <span
+                                class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+1
+                                SALGADO</span>
+                        </div>
+                        <div
+                            class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                            <i class="fa-solid fa-ticket hidden md:inline-block"></i>
+                            <span>Selecionar</span>
+                        </div>
+                    </button>
+
+                    <!-- Ticket 3 -->
+                    <button onclick="selectCombo(30)"
+                        class="relative bg-cf-yellow border-2 border-cf-yellow hover:border-white p-2 sm:p-4 transition-colors cursor-hover group text-center flex flex-col justify-between">
+                        <!-- Cutouts -->
+                        <div
+                            class="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-r-2 border-cf-yellow group-hover:border-white transition-colors z-10">
+                        </div>
+                        <div
+                            class="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 w-4 h-4 md:w-8 md:h-8 bg-cf-black rounded-full border-l-2 border-cf-yellow group-hover:border-white transition-colors z-10">
+                        </div>
+
+                        <div>
+                            <div
+                                class="text-[8px] sm:text-xs text-cf-black font-bold uppercase tracking-tight md:tracking-widest mb-1 md:mb-2 font-body border-b border-dashed border-cf-black pb-1 md:pb-2 opacity-70 whitespace-nowrap overflow-hidden">
+                                <span class="md:hidden">MONSTRO</span><span class="hidden md:inline">TICKET
+                                    MONSTRO</span>
+                            </div>
+                            <span
+                                class="text-cf-black text-xl sm:text-3xl md:text-4xl font-impact block leading-none mb-1 md:mb-2 group-hover:scale-110 transition-transform">
+                                30<span
+                                    class="block text-[9px] sm:text-sm md:text-xl lg:text-2xl mt-0.5">MARMITAS</span>
+                            </span>
+                            <span
+                                class="text-cf-black text-[10px] sm:text-xl md:text-2xl font-impact block leading-none">20%
+                                OFF</span>
+                            <span
+                                class="text-cf-black text-[7px] sm:text-xs font-bold font-body leading-none mt-1 block">+
+                                FRETE GRÁTIS</span>
+                        </div>
+                        <div
+                            class="mt-2 md:mt-4 pt-1.5 md:pt-3 border-t border-dashed border-cf-black opacity-70 text-[8px] sm:text-sm font-body text-cf-black uppercase font-bold tracking-tight md:tracking-widest flex items-center justify-center gap-1 md:gap-2 transition-colors">
+                            <i class="fa-solid fa-ticket hidden md:inline-block"></i>
+                            <span>Selecionar</span>
+                        </div>
+                    </button>
+
+                </div>
                 <div class="text-xs sm:text-sm text-center font-body text-gray-400 font-bold mt-6">
                     * Escolha o ticket acima para ativar sua meta de descontos.
                 </div>
@@ -818,18 +860,21 @@
                 </div>
             </div>
 
-            <!-- Destaque SALGADOS FITNESS -->
+            <!-- Destaque SALGADOS E DOCES PROTEICOS -->
             <div class="mt-32 relative reveal-up">
                 <div class="absolute inset-0 bg-white transform skew-y-3 z-0 scale-105 opacity-90"></div>
                 <div
                     class="relative z-10 bg-cf-black border-4 border-white p-5 sm:p-8 md:p-12 flex flex-col gap-6 items-center">
 
                     <div class="w-full text-center">
-                        <h4 class="font-street text-2xl text-cf-yellow mb-2 transform rotate-2">Comer bem é um estilo de vida</h4>
+                        <h4 class="font-street text-2xl text-cf-yellow mb-2 transform rotate-2">Comer bem é um estilo de
+                            vida</h4>
                         <h3 class="font-impact text-5xl md:text-6xl text-white uppercase mb-4">
-                            Salgados <span class="text-cf-yellow border-b-8 border-cf-yellow">Fitness</span></h3>
-                        <p class="font-body text-gray-300 font-semibold mb-2">Qualidade real em cada mordida. Sem culpa, sem exagero — só sabor com propósito.</p>
-                        <p class="font-body text-gray-500 text-sm italic mb-8">"Quem cuida do corpo por dentro, brilha por fora."</p>
+                            Salgados <span class="text-cf-yellow">e Doces Proteicos</span></h3>
+                        <p class="font-body text-gray-300 font-semibold mb-2">Qualidade real em cada mordida. Sem culpa,
+                            sem exagero — só sabor com propósito.</p>
+                        <p class="font-body text-gray-500 text-sm italic mb-8">"Quem cuida do corpo por dentro, brilha
+                            por fora."</p>
 
                         <div id="menu-salgados-list"
                             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 font-body w-full text-left">
@@ -1124,48 +1169,64 @@
                 <!-- Name & Phone Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Nome
-                            Completo *</label>
+                        <label
+                            class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-user text-cf-yellow"></i> Nome Completo *
+                        </label>
                         <input type="text" id="client-name" required placeholder="Ex: João Silva"
                             class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
                     </div>
 
                     <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Telefone
-                            com DDD *</label>
-                        <input type="tel" id="client-phone" required placeholder="Ex: (11) 98888-7777"
+                        <label
+                            class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-phone text-cf-yellow"></i> Telefone / WhatsApp *
+                        </label>
+                        <input type="tel" id="client-phone" required placeholder="(11) 99999-9999" maxlength="15"
                             class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
                     </div>
                 </div>
 
                 <!-- Delivery Address -->
                 <div>
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Endereço de
-                        Entrega *</label>
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-cf-yellow"></i> Endereço de Entrega Completo *
+                    </label>
                     <textarea id="client-address" required rows="2"
                         placeholder="Ex: Av. Paulista, 1000 - Apto 51 - Bela Vista, São Paulo - SP"
                         class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Data da
-                            Entrega *</label>
-                        <input type="date" id="delivery-date" required
-                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Horário da
-                            Entrega (11h às 19h) *</label>
-                        <input type="time" id="delivery-time" required
-                            class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all">
+                <!-- Delivery Date Selection (Pills / Cards) -->
+                <div>
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-2 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-calendar-day text-cf-yellow"></i> Dia da Entrega *
+                    </label>
+                    <input type="hidden" id="delivery-date" required value="">
+                    <div id="date-chips-container" class="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+                        <!-- Date chips populated dynamically -->
                     </div>
                 </div>
 
-                <!-- Observations -->
+                <!-- Delivery Time Selection (Pills / Grid) -->
                 <div>
-                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider">Observações
-                        (Opcional)</label>
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-2 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock text-cf-yellow"></i> Horário da Entrega (11h às 19h) *
+                    </label>
+                    <input type="hidden" id="delivery-time" required value="">
+                    <div id="time-chips-container" class="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                        <!-- Time chips populated dynamically -->
+                    </div>
+                </div>
+
+                <div>
+                    <label
+                        class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-comment-pen text-cf-yellow"></i> Observações do Pedido (Opcional)
+                    </label>
                     <textarea id="client-notes" rows="2"
                         placeholder="Ex: Retirar cebola do strogonoff, troco para R$ 50..."
                         class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
@@ -1222,17 +1283,9 @@
                     <div id="coupon-feedback" class="text-xs font-bold mt-2 hidden"></div>
                 </div>
 
-                <!-- Test Mode Warning -->
-                <div class="bg-red-900/40 border-2 border-red-500 p-3 mb-4 rounded-sm shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-                    <p class="text-xs font-impact text-red-500 uppercase tracking-widest flex items-center gap-2">
-                        <i class="fa-solid fa-triangle-exclamation"></i> Sistema em Testes
-                    </p>
-                    <p class="text-xs text-gray-300 mt-1.5 font-semibold leading-relaxed">
-                        No momento estamos realizando testes na plataforma. <strong>Não faça pagamentos reais e não insira dados do seu cartão de crédito!</strong>
-                    </p>
-                </div>
 
-                
+
+
                 <!-- Action Buttons -->
                 <div id="checkout-buttons-container" class="flex gap-4 pt-2">
                     <button type="button" onclick="toggleCheckoutModal()"
@@ -1253,8 +1306,10 @@
                 <h3 class="font-impact text-2xl text-white uppercase tracking-widest text-center mb-6">Pagamento</h3>
 
                 <!-- MP Brick handles Pix and Cartão -->
-                <div class="bg-cf-black p-0 sm:p-4 rounded border-0 sm:border-2 border-cf-gray mb-4 w-full overflow-hidden">
-                    <div id="paymentBrick_container" class="bg-white rounded overflow-hidden p-0 sm:p-2 min-h-[300px] w-full"></div>
+                <div
+                    class="bg-cf-black p-0 sm:p-4 rounded border-0 sm:border-2 border-cf-gray mb-4 w-full overflow-hidden">
+                    <div id="paymentBrick_container"
+                        class="bg-white rounded overflow-hidden p-0 sm:p-2 min-h-[300px] w-full"></div>
                 </div>
 
                 <div class="mt-2">
@@ -1274,46 +1329,53 @@
         <div class="flex min-h-full items-center justify-center py-10 px-4 sm:px-6">
             <div
                 class="bg-cf-darkgray border-4 border-cf-yellow p-5 sm:p-8 max-w-md w-full text-center relative torn-edge shadow-[0_0_50px_rgba(246,197,0,0.3)]">
-            <div
-                class="w-20 h-20 bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg border-4 border-white animate-bounce">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
-
-            <h3 id="thank-you-title" class="font-impact text-4xl text-cf-yellow uppercase mb-2">Pedido Recebido!</h3>
-            <h4 id="thank-you-subtitle" class="font-street text-xl text-white mb-6">Obrigado pela preferência!</h4>
-
-            <p id="thank-you-message" class="font-body text-gray-300 font-semibold mb-6 text-sm">
-                Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar
-                conosco a qualquer momento!
-            </p>
-
-            <div
-                class="bg-cf-black p-4 border border-cf-gray rounded mb-6 text-left space-y-2 font-mono text-xs text-gray-400">
-                <div><span class="text-white font-bold">CÓDIGO:</span> <span id="thank-order-id"
-                        class="text-cf-yellow font-bold">#CF-1001</span></div>
-                <div><span class="text-white font-bold">VALOR TOTAL:</span> <span id="thank-order-total"
-                        class="text-cf-yellow font-bold">R$ 0,00</span></div>
-                <div><span class="text-white font-bold">PAGAMENTO:</span> <span id="thank-order-payment"
-                        class="text-white">Pix</span></div>
-                <div><span class="text-white font-bold">ENTREGA:</span> <span id="thank-order-delivery"
-                        class="text-white">—</span></div>
-            </div>
-
-            <div id="pix-payment-info" class="hidden bg-white p-4 rounded mb-6 flex flex-col items-center border-2 border-cf-yellow">
-                <p class="font-bold text-cf-black text-sm mb-2 uppercase flex items-center gap-2"><i class="fa-brands fa-pix text-[#32bcad]"></i> Escaneie para Pagar</p>
-                <img id="pix-qr-code" src="" alt="QR Code Pix" class="w-40 h-40 mb-3 border border-cf-gray p-1 rounded">
-                <p class="text-xs text-gray-500 font-semibold mb-1">Ou utilize o código Copia e Cola:</p>
-                <div class="w-full flex items-center border border-gray-300 rounded overflow-hidden">
-                    <input type="text" id="pix-copia-cola" class="flex-1 text-[10px] p-2 bg-gray-50 text-gray-700 outline-none" readonly>
-                    <button onclick="copyPixCode()" class="bg-cf-yellow text-cf-black px-3 py-2 font-bold text-xs hover:bg-cf-black hover:text-cf-yellow transition-colors"><i class="fa-solid fa-copy"></i> Copiar</button>
+                <div
+                    class="w-20 h-20 bg-cf-yellow text-cf-black rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg border-4 border-white animate-bounce">
+                    <i class="fa-solid fa-circle-check"></i>
                 </div>
-            </div>
 
-            <button onclick="closeThankYouModal()"
-                class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
-                Continuar Navegando
-            </button>
-        </div>
+                <h3 id="thank-you-title" class="font-impact text-4xl text-cf-yellow uppercase mb-2">Pedido Recebido!
+                </h3>
+                <h4 id="thank-you-subtitle" class="font-street text-xl text-white mb-6">Obrigado pela preferência!</h4>
+
+                <p id="thank-you-message" class="font-body text-gray-300 font-semibold mb-6 text-sm">
+                    Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar
+                    conosco a qualquer momento!
+                </p>
+
+                <div
+                    class="bg-cf-black p-4 border border-cf-gray rounded mb-6 text-left space-y-2 font-mono text-xs text-gray-400">
+                    <div><span class="text-white font-bold">CÓDIGO:</span> <span id="thank-order-id"
+                            class="text-cf-yellow font-bold">#CF-1001</span></div>
+                    <div><span class="text-white font-bold">VALOR TOTAL:</span> <span id="thank-order-total"
+                            class="text-cf-yellow font-bold">R$ 0,00</span></div>
+                    <div><span class="text-white font-bold">PAGAMENTO:</span> <span id="thank-order-payment"
+                            class="text-white">Pix</span></div>
+                    <div><span class="text-white font-bold">ENTREGA:</span> <span id="thank-order-delivery"
+                            class="text-white">—</span></div>
+                </div>
+
+                <div id="pix-payment-info"
+                    class="hidden bg-white p-4 rounded mb-6 flex flex-col items-center border-2 border-cf-yellow">
+                    <p class="font-bold text-cf-black text-sm mb-2 uppercase flex items-center gap-2"><i
+                            class="fa-brands fa-pix text-[#32bcad]"></i> Escaneie para Pagar</p>
+                    <img id="pix-qr-code" src="" alt="QR Code Pix"
+                        class="w-40 h-40 mb-3 border border-cf-gray p-1 rounded">
+                    <p class="text-xs text-gray-500 font-semibold mb-1">Ou utilize o código Copia e Cola:</p>
+                    <div class="w-full flex items-center border border-gray-300 rounded overflow-hidden">
+                        <input type="text" id="pix-copia-cola"
+                            class="flex-1 text-[10px] p-2 bg-gray-50 text-gray-700 outline-none" readonly>
+                        <button onclick="copyPixCode()"
+                            class="bg-cf-yellow text-cf-black px-3 py-2 font-bold text-xs hover:bg-cf-black hover:text-cf-yellow transition-colors"><i
+                                class="fa-solid fa-copy"></i> Copiar</button>
+                    </div>
+                </div>
+
+                <button onclick="closeThankYouModal()"
+                    class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-wider py-3 border-2 border-cf-yellow hover:bg-transparent hover:text-cf-yellow transition-all rounded-sm cursor-hover">
+                    Continuar Navegando
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1329,7 +1391,7 @@
         function copyPixCode() {
             const copyText = document.getElementById("pix-copia-cola");
             copyText.select();
-            copyText.setSelectionRange(0, 99999); 
+            copyText.setSelectionRange(0, 99999);
             document.execCommand("copy");
             alert("Código Pix copiado!");
         }
@@ -1371,7 +1433,7 @@
             { id: 'price-patinho-legumes', name: '14. Patinho com legumes', category: 'Patinho', priceP: '25,50', priceG: '—' },
             { id: 'price-patinho-desfiado-pure-mandioca-legumes', name: '15. Patinho desfiado com purê de mandioca e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
             { id: 'price-patinho-moido-arroz-branco-legumes', name: '16. Patinho moído com arroz branco e legumes', category: 'Patinho', priceP: '25,50', priceG: '33,50' },
-            // SALGADOS FITNESS
+            // SALGADOS E DOCES PROTEICOS
             { id: 'price-coxinha-fit', name: '30. Coxinha Fit', category: 'Salgados', priceP: '8,50', priceG: '—' },
             { id: 'price-kibes', name: '31. Kibes', category: 'Salgados', priceP: '8,50', priceG: '—' },
             { id: 'price-nugfit', name: '32. NugFit', category: 'Salgados', priceP: '12,90', priceG: '—' },
@@ -1381,21 +1443,65 @@
             { id: 'price-tortas-fit', name: '36. Tortas', category: 'Salgados', priceP: '11,90', priceG: '—' }
         ];
 
-        let dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+        function getDeletedDishIds() {
+            try {
+                return JSON.parse(localStorage.getItem('cleanfoods_deleted_dishes')) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        let rawDishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+        let dishes = rawDishes.filter(d => !getDeletedDishIds().includes(d.id));
         let cart = JSON.parse(localStorage.getItem('cleanfoods_cart')) || {};
         let appliedCoupon = null;
 
-        // Garantir que salgados existam em qualquer fonte de dados
         function ensureSalgados(dishList) {
-            const hasSalgados = dishList.some(d => d.category === 'Salgados');
-            if (!hasSalgados) {
-                const salgadosItems = defaultDishes.filter(d => d.category === 'Salgados');
-                return [...dishList, ...salgadosItems];
-            }
             return dishList;
         }
         dishes = ensureSalgados(dishes);
         localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+
+        function isValidPrice(v) {
+            if (!v) return false;
+            const s = String(v).trim();
+            if (s === '' || s === '—' || s === '-') return false;
+            const n = parseFloat(s.replace(',', '.'));
+            return !isNaN(n) && n > 0;
+        }
+
+        function renderDishPriceOptions(dish) {
+            const hasP = isValidPrice(dish.priceP);
+            const hasG = isValidPrice(dish.priceG);
+
+            if (hasP && hasG) {
+                return `
+                    <div class="flex justify-between items-center text-xs font-semibold w-full">
+                        <span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
+                        <span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>
+                    </div>
+                `;
+            }
+
+            const singlePrice = hasP ? dish.priceP : (hasG ? dish.priceG : '');
+            const singleSize = hasP ? 'P' : 'G';
+
+            if (singlePrice) {
+                return `
+                    <div class="flex justify-center items-center text-xs font-semibold w-full">
+                        <span class="bg-cf-yellow text-cf-black px-3.5 py-1.5 rounded cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1.5 font-bold text-xs sm:text-sm" onclick="addToCart('${dish.id}', '${singleSize}')">
+                            R$ <span id="val-${dish.id}-single">${singlePrice}</span> <i class="fa-solid fa-plus text-[10px]"></i>
+                        </span>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="flex justify-center items-center text-xs font-semibold w-full">
+                    <span class="text-gray-500 bg-cf-darkgray border border-gray-800 px-2.5 py-1 rounded cursor-not-allowed">—</span>
+                </div>
+            `;
+        }
 
         function renderMenu() {
             const frangoList = document.getElementById('menu-frango-list');
@@ -1413,24 +1519,17 @@
             let countGourmet = 0;
             let countSalgados = 0;
 
-            const activeDishes = dishes.filter(d => d.available !== false);
+            const activeDishes = dishes.filter(d => d.available !== false && !getDeletedDishIds().includes(d.id));
 
             activeDishes.forEach(dish => {
                 const placeholderImg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
                 const imgSrc = dish.image || placeholderImg;
+                const priceOptionsHTML = renderDishPriceOptions(dish);
 
                 if (dish.category === 'Frango' && frangoList && countFrango < 4) {
                     countFrango++;
                     const card = document.createElement('div');
                     card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-white transition-colors cursor-hover';
-
-                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
-                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-
-                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
-                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
 
                     card.innerHTML = `
                         <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
@@ -1441,9 +1540,8 @@
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
-                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
-                                ${pHTML}
-                                ${gHTML}
+                            <div class="mt-auto">
+                                ${priceOptionsHTML}
                             </div>
                         </div>
                     `;
@@ -1453,14 +1551,6 @@
                     const card = document.createElement('div');
                     card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-cf-yellow transition-colors cursor-hover';
 
-                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
-                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-
-                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
-                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-
                     card.innerHTML = `
                         <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
                             <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
@@ -1470,9 +1560,8 @@
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
-                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
-                                ${pHTML}
-                                ${gHTML}
+                            <div class="mt-auto">
+                                ${priceOptionsHTML}
                             </div>
                         </div>
                     `;
@@ -1482,14 +1571,6 @@
                     const card = document.createElement('div');
                     card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-cf-yellow transition-colors cursor-hover';
 
-                    let pHTML = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
-                        ? `<span class="text-gray-400">P <span class="text-white bg-cf-gray px-2 py-1 rounded ml-1 cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">P <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-
-                    let gHTML = dish.priceG && dish.priceG !== '—' && dish.priceG !== ''
-                        ? `<span class="text-cf-yellow">G <span class="bg-cf-yellow text-cf-black px-2 py-1 rounded ml-1 cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1" onclick="addToCart('${dish.id}', 'G')">R$ <span id="val-${dish.id}-g">${dish.priceG}</span> <i class="fa-solid fa-plus text-[10px]"></i></span></span>`
-                        : `<span class="text-gray-500">G <span class="text-gray-600 bg-cf-darkgray border border-gray-800 px-2 py-1 rounded ml-1 cursor-not-allowed inline-flex items-center gap-1">—</span></span>`;
-
                     card.innerHTML = `
                         <div class="h-32 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
                             <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
@@ -1499,9 +1580,8 @@
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
-                            <div class="flex justify-between items-center text-xs font-semibold mt-auto">
-                                ${pHTML}
-                                ${gHTML}
+                            <div class="mt-auto">
+                                ${priceOptionsHTML}
                             </div>
                         </div>
                     `;
@@ -1510,10 +1590,6 @@
                     countSalgados++;
                     const card = document.createElement('div');
                     card.className = 'bg-cf-darkgray border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-white transition-colors cursor-hover';
-
-                    const unitPrice = dish.priceP && dish.priceP !== '—' && dish.priceP !== ''
-                        ? `<span class="bg-white text-cf-black px-3 py-1.5 rounded cursor-pointer hover:bg-cf-yellow transition-all inline-flex items-center gap-1.5 font-bold text-sm" onclick="addToCart('${dish.id}', 'P')">R$ <span id="val-${dish.id}-p">${dish.priceP}</span> <i class="fa-solid fa-plus text-[10px]"></i></span>`
-                        : '';
 
                     card.innerHTML = `
                         <div class="h-32 bg-cf-black overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
@@ -1525,7 +1601,7 @@
                         <div class="p-4 flex-1 flex flex-col justify-between">
                             <div class="text-sm font-bold text-white uppercase mb-3 line-clamp-2">${dish.name}</div>
                             <div class="flex justify-center items-center text-xs font-semibold mt-auto">
-                                ${unitPrice}
+                                ${priceOptionsHTML}
                             </div>
                         </div>
                     `;
@@ -1536,12 +1612,25 @@
 
         // Supabase Database helpers
         async function loadDishes() {
+            let deletedIds = getDeletedDishIds();
+
             if (supabaseClient) {
                 try {
+                    const { data: setSetting } = await supabaseClient.from('settings').select('*').eq('key', 'deleted_dishes').maybeSingle();
+                    if (setSetting && setSetting.value) {
+                        try {
+                            const remoteDeleted = JSON.parse(setSetting.value);
+                            if (Array.isArray(remoteDeleted)) {
+                                deletedIds = Array.from(new Set([...deletedIds, ...remoteDeleted]));
+                                localStorage.setItem('cleanfoods_deleted_dishes', JSON.stringify(deletedIds));
+                            }
+                        } catch (e) {}
+                    }
+
                     const { data, error } = await supabaseClient.from('dishes').select('*');
                     if (error) throw error;
                     if (data && data.length > 0) {
-                        dishes = data.map(d => ({
+                        dishes = data.filter(d => !deletedIds.includes(d.id)).map(d => ({
                             id: d.id,
                             name: d.name,
                             category: d.category,
@@ -1554,7 +1643,7 @@
                         dishes = ensureSalgados(dishes);
                     } else {
                         // Seed database
-                        const dbDishes = defaultDishes.map(d => ({
+                        const dbDishes = defaultDishes.filter(d => !deletedIds.includes(d.id)).map(d => ({
                             id: d.id,
                             name: d.name,
                             category: d.category,
@@ -1563,15 +1652,17 @@
                         }));
                         const { error: insertError } = await supabaseClient.from('dishes').insert(dbDishes);
                         if (insertError) throw insertError;
-                        dishes = defaultDishes;
+                        dishes = defaultDishes.filter(d => !deletedIds.includes(d.id));
                     }
                 } catch (err) {
                     console.error("Erro ao carregar pratos do Supabase:", err);
                     dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                    dishes = dishes.filter(d => !deletedIds.includes(d.id));
                     dishes = ensureSalgados(dishes);
                 }
             } else {
                 dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
+                dishes = dishes.filter(d => !deletedIds.includes(d.id));
                 dishes = ensureSalgados(dishes);
             }
             if (typeof renderMenu === 'function') renderMenu();
@@ -1697,8 +1788,14 @@
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             if (drawer) {
-                drawer.classList.toggle('open');
-                document.body.classList.toggle('cart-open-overflow');
+                const isOpen = drawer.classList.toggle('open');
+                if (isOpen) {
+                    document.body.classList.add('cart-open-overflow');
+                    sessionStorage.setItem('cleanfoods_ui_cart_open', 'true');
+                } else {
+                    document.body.classList.remove('cart-open-overflow');
+                    sessionStorage.setItem('cleanfoods_ui_cart_open', 'false');
+                }
             }
         }
 
@@ -1718,7 +1815,6 @@
             }, 3000);
         }
 
-        // Add to Cart
         function addToCart(dishId, size) {
             const dish = dishes.find(d => d.id === dishId);
             if (!dish) {
@@ -1726,9 +1822,13 @@
                 return;
             }
 
-            const priceStr = size === 'P' ? dish.priceP : dish.priceG;
+            let priceStr = '';
+            if (size === 'P') priceStr = dish.priceP;
+            else if (size === 'G') priceStr = dish.priceG;
+            else priceStr = (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') ? dish.priceP : dish.priceG;
+
             if (!priceStr || priceStr === '—' || priceStr === '') {
-                showToast("ESTE TAMANHO NÃO ESTÁ DISPONÍVEL!");
+                showToast("ESTE PRODUTO NÃO ESTÁ DISPONÍVEL!");
                 return;
             }
             const price = parseFloat(priceStr.replace(',', '.'));
@@ -1956,7 +2056,7 @@
                 if (discountRow) discountRow.classList.add('hidden');
             }
 
-            let shippingFee = window.systemShippingFee || 0;
+            let shippingFee = getEffectiveShippingFee();
             let totalMarmitas = 0;
             for (const key in cart) totalMarmitas += cart[key].quantity;
             if (totalMarmitas >= 30) shippingFee = 0; // Combo monstro gives frete grátis
@@ -1964,11 +2064,11 @@
             const shippingRow = document.getElementById('cart-shipping-row');
             const shippingSpan = document.getElementById('cart-shipping-val');
             if (shippingRow && shippingSpan) {
+                shippingRow.classList.remove('hidden');
                 if (shippingFee > 0) {
-                    shippingRow.classList.remove('hidden');
                     shippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
                 } else {
-                    shippingRow.classList.add('hidden');
+                    shippingSpan.innerText = `GRÁTIS (Combo 30)`;
                 }
             }
 
@@ -2010,16 +2110,62 @@
             }
 
             if (chkShippingRow && chkShippingSpan) {
+                chkShippingRow.classList.remove('hidden');
                 if (shippingFee > 0) {
-                    chkShippingRow.classList.remove('hidden');
                     chkShippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
                 } else {
-                    chkShippingRow.classList.add('hidden');
+                    chkShippingSpan.innerText = `GRÁTIS (Combo 30)`;
                 }
             }
 
             if (chkSubtotalSpan) chkSubtotalSpan.innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
             if (chkTotalSpan) chkTotalSpan.innerText = `R$ ${finalTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        const DEFAULT_SHIPPING_FEE = 15.00;
+
+        function getEffectiveShippingFee() {
+            if (typeof window.systemShippingFee === 'number' && !isNaN(window.systemShippingFee) && window.systemShippingFee > 0) {
+                return window.systemShippingFee;
+            }
+            const savedFrete = localStorage.getItem('cleanfoods_frete');
+            if (savedFrete !== null && savedFrete !== undefined && savedFrete !== '') {
+                const parsed = parseFloat(savedFrete.replace(',', '.'));
+                if (!isNaN(parsed) && parsed > 0) return parsed;
+            }
+            return DEFAULT_SHIPPING_FEE;
+        }
+
+        async function loadSettings() {
+            let savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
+            let savedAddress = localStorage.getItem('cleanfoods_address');
+            let savedFrete = localStorage.getItem('cleanfoods_frete');
+
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('settings').select('*');
+                    if (error) throw error;
+                    if (data) {
+                        const waSetting = data.find(s => s.key === 'whatsapp');
+                        if (waSetting) savedWhatsapp = waSetting.value;
+                        const addrSetting = data.find(s => s.key === 'address');
+                        if (addrSetting) savedAddress = addrSetting.value;
+                        const freteSetting = data.find(s => s.key === 'frete');
+                        if (freteSetting) savedFrete = freteSetting.value;
+                    }
+                } catch (err) {
+                    console.error("Erro ao carregar configurações do Supabase:", err);
+                }
+            }
+
+            if (savedFrete !== null && savedFrete !== undefined && savedFrete !== '') {
+                const parsed = parseFloat(savedFrete.replace(',', '.'));
+                window.systemShippingFee = !isNaN(parsed) && parsed > 0 ? parsed : DEFAULT_SHIPPING_FEE;
+            } else {
+                window.systemShippingFee = DEFAULT_SHIPPING_FEE;
+            }
+            localStorage.setItem('cleanfoods_frete', window.systemShippingFee.toFixed(2));
+            renderCart();
         }
 
         // Toggle Checkout Modal
@@ -2032,33 +2178,28 @@
                 const savedName = localStorage.getItem('cleanfoods_client_name') || '';
                 const savedPhone = localStorage.getItem('cleanfoods_client_phone') || '';
                 const savedAddress = localStorage.getItem('cleanfoods_client_address') || '';
+                const savedNotes = localStorage.getItem('cleanfoods_client_notes') || '';
+                const savedDate = localStorage.getItem('cleanfoods_client_delivery_date') || '';
+                const savedTime = localStorage.getItem('cleanfoods_client_delivery_time') || '';
 
                 const nameInput = document.getElementById('client-name');
                 const phoneInput = document.getElementById('client-phone');
                 const addressTextarea = document.getElementById('client-address');
-
-                if (nameInput) nameInput.value = savedName;
-                if (phoneInput) phoneInput.value = savedPhone;
-                if (addressTextarea) addressTextarea.value = savedAddress;
-
-                // Dynamically set delivery date bounds
+                const notesTextarea = document.getElementById('client-notes');
                 const dateInput = document.getElementById('delivery-date');
-                if (dateInput) {
-                    const getLocalDateString = (date) => {
-                        const year = date.getFullYear();
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const day = String(date.getDate()).padStart(2, '0');
-                        return `${year}-${month}-${day}`;
-                    };
-                    const today = new Date();
-                    const minDate = getLocalDateString(today);
-                    const nextWeek = new Date();
-                    nextWeek.setDate(today.getDate() + 7);
-                    const maxDate = getLocalDateString(nextWeek);
-                    dateInput.min = minDate;
-                    dateInput.max = maxDate;
-                    dateInput.value = minDate; // default to today
-                }
+                const timeInput = document.getElementById('delivery-time');
+
+                if (nameInput && savedName) nameInput.value = savedName;
+                if (phoneInput && savedPhone) phoneInput.value = savedPhone;
+                if (addressTextarea && savedAddress) addressTextarea.value = savedAddress;
+                if (notesTextarea && savedNotes) notesTextarea.value = savedNotes;
+
+                if (timeInput && savedTime) timeInput.value = savedTime;
+
+                renderDateChips();
+                renderTimeChips();
+
+                sessionStorage.setItem('cleanfoods_ui_checkout_open', 'true');
 
                 modal.classList.remove('hidden');
                 document.body.classList.add('cart-open-overflow');
@@ -2066,11 +2207,178 @@
                     modal.classList.remove('opacity-0');
                 }, 10);
             } else {
+                sessionStorage.setItem('cleanfoods_ui_checkout_open', 'false');
                 modal.classList.add('opacity-0');
                 document.body.classList.remove('cart-open-overflow');
                 setTimeout(() => {
                     modal.classList.add('hidden');
                 }, 300);
+            }
+        }
+
+        const AVAILABLE_DELIVERY_TIME_SLOTS = [
+            '11:00', '11:30', '12:00', '12:30', '13:00', '13:30',
+            '14:00', '14:30', '15:00', '15:30', '16:00', '16:30',
+            '17:00', '17:30', '18:00', '18:30', '19:00'
+        ];
+
+        function renderDateChips() {
+            const container = document.getElementById('date-chips-container');
+            const hiddenInput = document.getElementById('delivery-date');
+            if (!container || !hiddenInput) return;
+
+            container.innerHTML = '';
+            const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            const savedDate = localStorage.getItem('cleanfoods_client_delivery_date');
+            const today = new Date();
+
+            let selectedIsoDate = savedDate || '';
+
+            for (let i = 0; i <= 7; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
+
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const isoDate = `${year}-${month}-${day}`;
+
+                if (i === 0 && !selectedIsoDate) {
+                    selectedIsoDate = isoDate;
+                }
+
+                const dayLabel = i === 0 ? 'Hoje' : (i === 1 ? 'Amanhã' : daysOfWeek[d.getDay()]);
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `px-3.5 py-2.5 rounded border text-xs font-bold transition-all whitespace-nowrap cursor-pointer flex flex-col items-center justify-center min-w-[75px] select-none ${selectedIsoDate === isoDate
+                        ? 'bg-cf-yellow text-cf-black border-cf-yellow shadow-[0_0_12px_rgba(246,197,0,0.4)] scale-105 font-impact text-sm'
+                        : 'bg-cf-black text-gray-300 border-cf-gray hover:border-cf-yellow hover:text-white'
+                    }`;
+                btn.innerHTML = `
+                    <span class="uppercase tracking-wider text-[10px] opacity-80">${dayLabel}</span>
+                    <span class="font-impact text-sm">${day}/${month}</span>
+                `;
+
+                btn.onclick = () => {
+                    hiddenInput.value = isoDate;
+                    localStorage.setItem('cleanfoods_client_delivery_date', isoDate);
+                    renderDateChips();
+                };
+
+                container.appendChild(btn);
+            }
+
+            hiddenInput.value = selectedIsoDate;
+            localStorage.setItem('cleanfoods_client_delivery_date', selectedIsoDate);
+        }
+
+        function renderTimeChips() {
+            const container = document.getElementById('time-chips-container');
+            const hiddenInput = document.getElementById('delivery-time');
+            if (!container || !hiddenInput) return;
+
+            container.innerHTML = '';
+            const savedTime = localStorage.getItem('cleanfoods_client_delivery_time') || '';
+            let selectedTime = savedTime;
+
+            AVAILABLE_DELIVERY_TIME_SLOTS.forEach((slot) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `py-2 px-2 rounded border text-xs font-impact tracking-wider transition-all cursor-pointer text-center select-none ${selectedTime === slot
+                        ? 'bg-cf-yellow text-cf-black border-cf-yellow shadow-[0_0_10px_rgba(246,197,0,0.4)] scale-105'
+                        : 'bg-cf-black text-white border-cf-gray hover:border-cf-yellow hover:text-cf-yellow'
+                    }`;
+                btn.innerText = slot;
+
+                btn.onclick = () => {
+                    hiddenInput.value = slot;
+                    localStorage.setItem('cleanfoods_client_delivery_time', slot);
+                    renderTimeChips();
+                };
+
+                container.appendChild(btn);
+            });
+
+            hiddenInput.value = selectedTime;
+        }
+
+        // Setup live auto-saving and restoration for client checkout form fields & modals
+        function initCheckoutFormStatePersistence() {
+            renderDateChips();
+            renderTimeChips();
+
+            // Máscara de Telefone Automática (11) 99999-9999
+            const phoneInput = document.getElementById('client-phone');
+            if (phoneInput) {
+                const formatPhone = (val) => {
+                    let v = val.replace(/\D/g, '');
+                    if (v.length > 11) v = v.slice(0, 11);
+                    if (v.length > 6) return `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+                    if (v.length > 2) return `(${v.slice(0, 2)}) ${v.slice(2)}`;
+                    if (v.length > 0) return `(${v}`;
+                    return '';
+                };
+
+                if (phoneInput.value) {
+                    phoneInput.value = formatPhone(phoneInput.value);
+                }
+
+                phoneInput.addEventListener('input', (e) => {
+                    e.target.value = formatPhone(e.target.value);
+                });
+            }
+
+            const fields = [
+                { id: 'client-name', key: 'cleanfoods_client_name' },
+                { id: 'client-phone', key: 'cleanfoods_client_phone' },
+                { id: 'client-address', key: 'cleanfoods_client_address' },
+                { id: 'client-notes', key: 'cleanfoods_client_notes' },
+                { id: 'delivery-date', key: 'cleanfoods_client_delivery_date' },
+                { id: 'delivery-time', key: 'cleanfoods_client_delivery_time' }
+            ];
+
+            fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el) {
+                    const savedVal = localStorage.getItem(f.key);
+                    if (savedVal && !el.value) {
+                        el.value = savedVal;
+                    }
+                    el.addEventListener('input', () => localStorage.setItem(f.key, el.value));
+                    el.addEventListener('change', () => localStorage.setItem(f.key, el.value));
+                }
+            });
+
+            // Save and restore scroll position
+            let scrollTimer;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                    sessionStorage.setItem('cleanfoods_client_scroll_y', window.scrollY.toString());
+                }, 100);
+            });
+
+            const savedScroll = sessionStorage.getItem('cleanfoods_client_scroll_y');
+            if (savedScroll && parseFloat(savedScroll) > 0) {
+                window.scrollTo({ top: parseFloat(savedScroll), behavior: 'instant' });
+            }
+
+            // Restore Checkout Modal or Cart Drawer if open prior to refresh
+            const isCheckoutOpen = sessionStorage.getItem('cleanfoods_ui_checkout_open');
+            if (isCheckoutOpen === 'true') {
+                const modal = document.getElementById('checkout-modal');
+                if (modal && modal.classList.contains('hidden')) {
+                    toggleCheckoutModal();
+                }
+            } else {
+                const isCartOpen = sessionStorage.getItem('cleanfoods_ui_cart_open');
+                if (isCartOpen === 'true') {
+                    const cartDrawer = document.getElementById('cart-drawer');
+                    if (cartDrawer && !cartDrawer.classList.contains('open')) {
+                        toggleCart();
+                    }
+                }
             }
         }
 
@@ -2093,7 +2401,7 @@
             const nameInput = document.getElementById('client-name');
             const phoneInput = document.getElementById('client-phone');
             const addressInput = document.getElementById('client-address');
-            
+
             const notesInput = document.getElementById('client-notes');
             const dateInput = document.getElementById('delivery-date');
             const timeInput = document.getElementById('delivery-time');
@@ -2229,8 +2537,8 @@
             } else {
                 discountAmount = subtotal * (couponDiscountPercent / 100);
             }
-            
-            let shippingFee = window.systemShippingFee || 0;
+
+            let shippingFee = getEffectiveShippingFee();
             if (totalMarmitas >= 30) {
                 shippingFee = 0;
             }
@@ -2239,7 +2547,7 @@
 
             if (shippingFee > 0) {
                 orderItems.push({
-                    name: `🚚 Frete`,
+                    name: `🚚 Taxa de Entrega (Frete)`,
                     size: 'Único',
                     price: shippingFee,
                     quantity: 1
@@ -2269,15 +2577,15 @@
 
             // ------------------ NEW FLOW ------------------
             window.currentOrderData = order;
-            
+
             // Esconde form e mostra o Mercado Pago
             document.getElementById('checkout-form').classList.add('hidden');
             const paymentStep = document.getElementById('payment-step-container');
-            if(paymentStep) paymentStep.classList.remove('hidden');
-            
+            if (paymentStep) paymentStep.classList.remove('hidden');
+
             // Inicializa Mercado Pago
             initializePaymentBrick();
-            
+
             isSubmitting = false;
         }
 
@@ -2289,7 +2597,7 @@
         async function finalizeAndSaveOrder(paymentMethod, mpResponse) {
             const order = window.currentOrderData;
             order.payment = paymentMethod;
-            
+
             // Save Order to Supabase or fallback
             if (window.supabaseClient) {
                 try {
@@ -2322,20 +2630,30 @@
                 localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
             }
 
-            // Save Transaction
+            // Save Transaction automatically for Financeiro
+            const transactionObj = {
+                id: 'TX-' + order.id,
+                type: 'Entrada',
+                description: `Pedido #${order.id} - ${order.clientName}`,
+                value: parseFloat(order.total),
+                date: new Date().toISOString(),
+                category: 'Pedido'
+            };
+
             if (window.supabaseClient) {
                 try {
-                    const { error } = await window.supabaseClient.from('transactions').insert([{
-                        id: 'TXN-' + Date.now().toString(36).toUpperCase(),
-                        order_id: order.id,
-                        amount: parseFloat(order.total),
-                        payment_method: order.payment,
-                        status: paymentMethod === 'Pix' || paymentMethod === 'Cartão de Crédito' ? 'Pendente' : 'Confirmado'
-                    }]);
-                    if (error) throw error;
+                    const { error } = await window.supabaseClient.from('transactions').insert([transactionObj]);
+                    if (error && error.code !== '23505') console.error("Erro ao salvar transação no Supabase:", error);
                 } catch (err) {
                     console.error("Erro ao salvar transação:", err);
+                    let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                    transactions.push(transactionObj);
+                    localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
                 }
+            } else {
+                let transactions = JSON.parse(localStorage.getItem('cleanfoods_transactions')) || [];
+                transactions.push(transactionObj);
+                localStorage.setItem('cleanfoods_transactions', JSON.stringify(transactions));
             }
 
             // Show success
@@ -2354,7 +2672,7 @@
             }
 
             const pixInfoContainer = document.getElementById('pix-payment-info');
-            
+
             const tyTitle = document.getElementById('thank-you-title');
             const tyMessage = document.getElementById('thank-you-message');
 
@@ -2416,16 +2734,16 @@
                     const qrCodeString = mpResponse.point_of_interaction.transaction_data.qr_code;
                     document.getElementById('pix-qr-code').src = `data:image/jpeg;base64,${qrCodeBase64}`;
                     document.getElementById('pix-copia-cola').value = qrCodeString;
-                    if(pixInfoContainer) pixInfoContainer.classList.remove('hidden');
+                    if (pixInfoContainer) pixInfoContainer.classList.remove('hidden');
                     pollOrderStatus(order.id, mpResponse.id);
                 } else {
-                    if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                    if (pixInfoContainer) pixInfoContainer.classList.add('hidden');
                 }
             } else {
                 if (tyTitle) tyTitle.innerText = 'Pedido Recebido!';
                 if (tySubtitle) tySubtitle.innerText = 'Obrigado pela preferência!';
                 if (tyMessage) tyMessage.innerText = 'Seu combustível já está sendo preparado pela nossa equipe. Você pode acompanhar o status ou falar conosco a qualquer momento!';
-                if(pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                if (pixInfoContainer) pixInfoContainer.classList.add('hidden');
             }
 
             const thankModal = document.getElementById('thank-you-modal');
@@ -2446,8 +2764,8 @@
 
             cart = {};
             localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
-            if(typeof updateCartBadges === 'function') updateCartBadges();
-            if(typeof renderCart === 'function') renderCart();
+            if (typeof updateCartBadges === 'function') updateCartBadges();
+            if (typeof renderCart === 'function') renderCart();
         }
 
         let isBrickInitialized = false;
@@ -2461,13 +2779,22 @@
             const order = window.currentOrderData;
             const mp = new MercadoPago(window.MP_PUBLIC_KEY, { locale: 'pt-BR' });
             const bricksBuilder = mp.bricks();
-            
+
+            // Formata email limpo (sem acentos ou caracteres especiais) para o Mercado Pago aceitar automaticamente
+            const cleanPhone = (order.clientPhone || '').replace(/\D/g, '');
+            const cleanName = (order.clientName || 'cliente')
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            const validEmail = cleanPhone.length >= 10
+                ? `cliente_${cleanPhone}@cleanfoodsp.com.br`
+                : `${cleanName || 'cliente'}@cleanfoodsp.com.br`;
+
             const settings = {
                 initialization: {
                     amount: parseFloat(order.total),
                     preferenceId: null,
                     payer: {
-                        email: order.clientName.replace(/\s+/g, '').toLowerCase() + '@cleanfoods.com',
+                        email: validEmail,
                     },
                 },
                 customization: {
@@ -2477,6 +2804,18 @@
                         creditCard: "all",
                         debitCard: "all"
                     },
+                    visual: {
+                        hidePaymentButton: false,
+                        hideFormTitle: false,
+                        style: {
+                            theme: 'default'
+                        }
+                    },
+                    fields: {
+                        cardholderEmail: {
+                            mode: "hidden"
+                        }
+                    }
                 },
                 callbacks: {
                     onReady: () => {
@@ -2488,7 +2827,7 @@
                     onSubmit: ({ selectedPaymentMethod, formData }) => {
                         formData.description = `Pedido ${order.id} - ${order.clientName}`;
                         formData.external_reference = order.id;
-                        
+
                         return new Promise(async (resolve, reject) => {
                             // Pré-salva o pedido no banco para passar na validação de segurança do backend
                             const pMethod = formData.payment_method_id === 'pix' ? 'Pix' : 'Cartão de Crédito';
@@ -2526,22 +2865,22 @@
                                 },
                                 body: JSON.stringify(formData),
                             })
-                            .then(async (response) => {
-                                const data = await response.json();
-                                if (!response.ok || data.error || data.status === 'rejected' || data.code) {
+                                .then(async (response) => {
+                                    const data = await response.json();
+                                    if (!response.ok || data.error || data.status === 'rejected' || data.code) {
+                                        reject();
+                                        alert("Erro no pagamento: " + (data.error || data.message || "Pagamento recusado"));
+                                        return;
+                                    }
+                                    resolve();
+
+                                    const pMethod = formData.payment_method_id === 'pix' ? 'Pix' : 'Cartão de Crédito';
+                                    finalizeAndSaveOrder(pMethod, data);
+                                })
+                                .catch((error) => {
                                     reject();
-                                    alert("Erro no pagamento: " + (data.error || data.message || "Pagamento recusado"));
-                                    return;
-                                }
-                                resolve();
-                                
-                                const pMethod = formData.payment_method_id === 'pix' ? 'Pix' : 'Cartão de Crédito';
-                                finalizeAndSaveOrder(pMethod, data);
-                            })
-                            .catch((error) => {
-                                reject();
-                                alert("Erro de conexão ao processar pagamento.");
-                            });
+                                    alert("Erro de conexão ao processar pagamento.");
+                                });
                         });
                     },
                     onError: (error) => {
@@ -2550,7 +2889,7 @@
                     },
                 },
             };
-            
+
             if (window.paymentBrickController) window.paymentBrickController.unmount();
             window.paymentBrickController = await bricksBuilder.create("payment", "paymentBrick_container", settings);
             isBrickInitialized = true;
@@ -2648,7 +2987,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const status = urlParams.get('status');
             const order_id = urlParams.get('order_id');
-            
+
             if (status === 'success' || status === 'pending') {
                 const pendingOrder = JSON.parse(localStorage.getItem('cleanfoods_pending_order'));
                 if (pendingOrder && pendingOrder.id === order_id) {
@@ -2673,12 +3012,12 @@
                             thankModal.classList.remove('opacity-0');
                         }, 10);
                     }
-                    
+
                     // Clear the cart
                     cart = {};
                     localStorage.setItem('cleanfoods_cart', JSON.stringify(cart));
                     localStorage.removeItem('cleanfoods_pending_order');
-                    
+
                     // Remove url params
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
@@ -2699,19 +3038,24 @@
                     "-=0.5"
                 );
 
-            // Render menu instantly with cached or default dishes
+            // Render menu cards immediately
             renderMenu();
 
-            // Load dishes in background to fetch latest prices/availability
-            loadDishes();
+            // Load latest dishes from Supabase in background
+            if (typeof loadDishes === 'function') {
+                loadDishes().then(() => renderMenu()).catch(e => console.warn(e));
+            }
 
-            // Load configurations and coupons asynchronously from Supabase / localStorage
-            await loadSettings();
-            await loadCoupons();
+            try {
+                if (typeof loadCoupons === 'function') loadCoupons();
+            } catch (err) {
+                console.warn("Erro ao carregar cupons:", err);
+            }
 
             // Update badges and render cart state on load
             updateCartBadges();
             renderCart();
+            initCheckoutFormStatePersistence();
 
             // ScrollTrigger Animations for Menu and other sections
             const revealElements = document.querySelectorAll('.reveal-up:not(#hero .reveal-up), .reveal-right:not(#hero .reveal-right)');
@@ -2807,7 +3151,7 @@
 
             window.addEventListener('scroll', checkFloatBtn, { passive: true });
         })();
-        
+
         function selectCombo(goal) {
             localStorage.setItem('cleanfoods_combo_goal', goal);
             window.location.href = 'cardapio-completo.html?promo=active';
