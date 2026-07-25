@@ -916,11 +916,45 @@
             <div id="payment-step-container" class="hidden mt-4 pt-4 border-t-2 border-dashed border-cf-gray">
                 <h3 class="font-impact text-2xl text-white uppercase tracking-widest text-center mb-6">Pagamento</h3>
 
-                <!-- MP Brick handles Pix and Cartão -->
-                <div
-                    class="bg-cf-black p-0 sm:p-4 rounded border-0 sm:border-2 border-cf-gray mb-4 w-full overflow-hidden">
-                    <div id="paymentBrick_container"
-                        class="bg-white rounded overflow-hidden p-0 sm:p-2 min-h-[300px] w-full"></div>
+                <!-- Payment Method Selector -->
+                <div class="flex gap-3 mb-6">
+                    <button type="button" id="pmt-select-pix" onclick="selectPaymentMethod('pix')"
+                        class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-yellow bg-cf-yellow text-cf-black font-impact text-base uppercase tracking-wider transition-all cursor-pointer">
+                        <i class="fa-brands fa-pix text-lg"></i> Pix
+                    </button>
+                    <button type="button" id="pmt-select-card" onclick="selectPaymentMethod('card')"
+                        class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-gray bg-cf-black text-white font-impact text-base uppercase tracking-wider transition-all cursor-pointer hover:border-cf-yellow">
+                        <i class="fa-solid fa-credit-card text-lg"></i> Cartão
+                    </button>
+                </div>
+
+                <!-- Pix Direct Payment (sem Brick, sem email) -->
+                <div id="pix-direct-container" class="bg-cf-black p-4 sm:p-6 rounded border-2 border-cf-gray mb-4 w-full">
+                    <div class="text-center">
+                        <i class="fa-brands fa-pix text-4xl text-green-400 mb-3"></i>
+                        <p class="text-white font-bold text-base mb-1">Pagamento via Pix</p>
+                        <p class="text-gray-400 text-xs mb-4">Ao confirmar, um QR Code será gerado para você finalizar o pagamento.</p>
+                        <div class="bg-cf-darkgray p-4 rounded border border-cf-gray mb-4">
+                            <div class="text-gray-400 text-xs uppercase font-bold tracking-wider mb-1">Total a pagar</div>
+                            <div class="text-cf-yellow font-impact text-3xl" id="pix-direct-total">R$ 0,00</div>
+                        </div>
+                        <button type="button" id="pix-direct-pay-btn" onclick="handleDirectPixPayment()"
+                            class="w-full bg-green-500 text-white font-impact text-lg uppercase tracking-widest py-3.5 rounded hover:bg-green-400 transition-all cursor-pointer flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-lock text-sm"></i> Pagar com Pix
+                        </button>
+                        <div id="pix-direct-loading" class="hidden text-center py-6">
+                            <i class="fa-solid fa-spinner fa-spin text-cf-yellow text-3xl mb-3 block"></i>
+                            <span class="text-gray-400 text-sm font-bold">Gerando QR Code...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MP Brick only for Card payments -->
+                <div id="card-brick-wrapper" class="hidden">
+                    <div class="bg-cf-black p-0 sm:p-4 rounded border-0 sm:border-2 border-cf-gray mb-4 w-full overflow-hidden">
+                        <div id="paymentBrick_container"
+                            class="bg-white rounded overflow-hidden p-0 sm:p-2 min-h-[300px] w-full"></div>
+                    </div>
                 </div>
 
                 <div class="mt-2">
@@ -1791,6 +1825,7 @@
                     hiddenInput.value = isoDate;
                     localStorage.setItem('cleanfoods_client_delivery_date', isoDate);
                     renderDateChips();
+                    renderTimeChips();
                 };
 
                 container.appendChild(btn);
@@ -1809,7 +1844,49 @@
             const savedTime = localStorage.getItem('cleanfoods_client_delivery_time') || '';
             let selectedTime = savedTime;
 
-            AVAILABLE_DELIVERY_TIME_SLOTS.forEach((slot) => {
+            const selectedDate = localStorage.getItem('cleanfoods_client_delivery_date') || '';
+            
+            // Horário de Brasília
+            const bsbTime = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+            const currentHour = bsbTime.getHours();
+            const currentMinute = bsbTime.getMinutes();
+            
+            const bsbYear = bsbTime.getFullYear();
+            const bsbMonth = String(bsbTime.getMonth() + 1).padStart(2, '0');
+            const bsbDay = String(bsbTime.getDate()).padStart(2, '0');
+            const bsbDateStr = `${bsbYear}-${bsbMonth}-${bsbDay}`;
+            
+            const isToday = (selectedDate === bsbDateStr) || (selectedDate === '');
+
+            let availableSlots = AVAILABLE_DELIVERY_TIME_SLOTS;
+
+            if (isToday) {
+                availableSlots = AVAILABLE_DELIVERY_TIME_SLOTS.filter(slot => {
+                    const [slotHourStr, slotMinuteStr] = slot.split(':');
+                    const slotHour = parseInt(slotHourStr, 10);
+                    const slotMinute = parseInt(slotMinuteStr, 10);
+                    if (slotHour > currentHour) return true;
+                    if (slotHour === currentHour && slotMinute > currentMinute) return true;
+                    return false;
+                });
+            }
+
+            if (availableSlots.length === 0) {
+                container.innerHTML = '<span class="text-xs text-gray-500 font-bold block w-full text-center py-2">Nenhum horário disponível para hoje.</span>';
+                if (selectedTime !== '') {
+                    hiddenInput.value = '';
+                    localStorage.removeItem('cleanfoods_client_delivery_time');
+                }
+                return;
+            }
+
+            if (selectedTime && !availableSlots.includes(selectedTime)) {
+                selectedTime = '';
+                hiddenInput.value = '';
+                localStorage.removeItem('cleanfoods_client_delivery_time');
+            }
+
+            availableSlots.forEach((slot) => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = `py-2 px-2 rounded border text-xs font-impact tracking-wider transition-all cursor-pointer text-center select-none ${selectedTime === slot
@@ -2126,15 +2203,131 @@
             const paymentStep = document.getElementById('payment-step-container');
             if (paymentStep) paymentStep.classList.remove('hidden');
 
-            // Inicializa Mercado Pago
-            initializePaymentBrick();
+            // Set Pix total display
+            const pixTotal = document.getElementById('pix-direct-total');
+            if (pixTotal) pixTotal.innerText = `R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}`;
+
+            // Default to Pix selected
+            selectPaymentMethod('pix');
 
             isSubmitting = false;
+        }
+
+        function selectPaymentMethod(method) {
+            const pixContainer = document.getElementById('pix-direct-container');
+            const cardWrapper = document.getElementById('card-brick-wrapper');
+            const btnPix = document.getElementById('pmt-select-pix');
+            const btnCard = document.getElementById('pmt-select-card');
+
+            if (method === 'pix') {
+                pixContainer.classList.remove('hidden');
+                cardWrapper.classList.add('hidden');
+                btnPix.className = 'flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-yellow bg-cf-yellow text-cf-black font-impact text-base uppercase tracking-wider transition-all cursor-pointer';
+                btnCard.className = 'flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-gray bg-cf-black text-white font-impact text-base uppercase tracking-wider transition-all cursor-pointer hover:border-cf-yellow';
+            } else {
+                pixContainer.classList.add('hidden');
+                cardWrapper.classList.remove('hidden');
+                btnCard.className = 'flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-yellow bg-cf-yellow text-cf-black font-impact text-base uppercase tracking-wider transition-all cursor-pointer';
+                btnPix.className = 'flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-gray bg-cf-black text-white font-impact text-base uppercase tracking-wider transition-all cursor-pointer hover:border-cf-yellow';
+                // Initialize brick only when card is selected
+                initializePaymentBrick();
+            }
+        }
+
+        async function handleDirectPixPayment() {
+            const order = window.currentOrderData;
+            if (!order) return;
+
+            const payBtn = document.getElementById('pix-direct-pay-btn');
+            const loadingDiv = document.getElementById('pix-direct-loading');
+            payBtn.classList.add('hidden');
+            loadingDiv.classList.remove('hidden');
+
+            // Pré-salva o pedido no banco para passar na validação de segurança do backend
+            if (window.supabaseClient) {
+                try {
+                    const dbOrder = {
+                        id: order.id,
+                        client_name: order.clientName,
+                        client_phone: order.clientPhone,
+                        address: order.address,
+                        payment: 'Pix',
+                        notes: order.notes,
+                        delivery_date: order.deliveryDate,
+                        delivery_time: order.deliveryTime,
+                        items: order.items,
+                        subtotal: parseFloat(order.subtotal),
+                        discount: parseFloat(order.discount),
+                        total: parseFloat(order.total),
+                        status: 'Pendente'
+                    };
+                    const { error } = await window.supabaseClient.from('orders').insert([dbOrder]);
+                    if (error && error.code !== '23505') {
+                        console.error("Erro ao pré-salvar pedido:", error);
+                    }
+                } catch (err) {
+                    console.error("Erro na tentativa de pré-salvar pedido:", err);
+                }
+            }
+
+            // Gera email limpo para o Mercado Pago (API backend)
+            const cleanPhone = (order.clientPhone || '').replace(/\D/g, '');
+            const cleanName = (order.clientName || 'cliente')
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+            const validEmail = cleanPhone.length >= 10
+                ? `cliente_${cleanPhone}@cleanfoodsp.com.br`
+                : `${cleanName || 'cliente'}@cleanfoodsp.com.br`;
+
+            const paymentData = {
+                transaction_amount: parseFloat(order.total),
+                payment_method_id: 'pix',
+                description: `Pedido ${order.id} - ${order.clientName}`,
+                external_reference: order.id,
+                payer: {
+                    email: validEmail,
+                    first_name: order.clientName.split(' ')[0] || 'Cliente',
+                    last_name: order.clientName.split(' ').slice(1).join(' ') || 'CleanFoods'
+                }
+            };
+
+            try {
+                const response = await fetch(`${window.SUPABASE_URL}/functions/v1/create-payment`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${window.SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify(paymentData),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || data.error || data.status === 'rejected' || data.code) {
+                    payBtn.classList.remove('hidden');
+                    loadingDiv.classList.add('hidden');
+                    alert("Erro no pagamento: " + (data.error || data.message || "Pagamento recusado"));
+                    return;
+                }
+
+                // Sucesso - finaliza e mostra QR Code
+                finalizeAndSaveOrder('Pix', data);
+            } catch (error) {
+                payBtn.classList.remove('hidden');
+                loadingDiv.classList.add('hidden');
+                alert("Erro de conexão ao processar pagamento.");
+                console.error(error);
+            }
         }
 
         function goBackToCheckoutForm() {
             document.getElementById('payment-step-container').classList.add('hidden');
             document.getElementById('checkout-form').classList.remove('hidden');
+            // Reset Pix button state
+            const payBtn = document.getElementById('pix-direct-pay-btn');
+            const loadingDiv = document.getElementById('pix-direct-loading');
+            if (payBtn) payBtn.classList.remove('hidden');
+            if (loadingDiv) loadingDiv.classList.add('hidden');
         }
 
         async function finalizeAndSaveOrder(paymentMethod, mpResponse) {
@@ -2344,21 +2537,14 @@
                 },
                 customization: {
                     paymentMethods: {
-                        ticket: "all",
-                        bankTransfer: "all",
                         creditCard: "all",
                         debitCard: "all"
                     },
                     visual: {
                         hidePaymentButton: false,
-                        hideFormTitle: false,
+                        hideFormTitle: true,
                         style: {
                             theme: 'default'
-                        }
-                    },
-                    fields: {
-                        cardholderEmail: {
-                            mode: "hidden"
                         }
                     }
                 },
