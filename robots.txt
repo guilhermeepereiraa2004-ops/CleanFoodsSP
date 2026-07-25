@@ -1,0 +1,10 @@
+# robots.txt — CleanFoods SP
+# https://www.cleanfoodsp.com.br/
+
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin
+
+# Sitemap
+Sitemap: https://www.cleanfoodsp.com.br/sitemap.xml
