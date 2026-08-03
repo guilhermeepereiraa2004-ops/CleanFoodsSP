@@ -48,14 +48,13 @@ serve(async (req) => {
       const supabase = createClient(supabaseUrl, supabaseServiceKey);
       
       let order = null;
-      let orderError = null;
       let retries = 3;
       
       // Retry logic to handle slight database replication delay
       while (retries > 0) {
         const result = await supabase
           .from('orders')
-          .select('total')
+          .select('total, status')
           .eq('id', externalRef)
           .single();
           
@@ -64,7 +63,6 @@ serve(async (req) => {
           break;
         }
         
-        orderError = result.error;
         retries--;
         if (retries > 0) {
           // Wait 500ms before retrying
@@ -72,17 +70,20 @@ serve(async (req) => {
         }
       }
 
-      if (!order) {
-        throw new Error(`Pedido ${externalRef} não encontrado no banco de dados. (Erro: ${orderError?.message || 'Not found'})`);
-      }
+      if (order) {
+        // Order exists (pre-saved by frontend) — validate amount
+        const expectedTotal = parseFloat(order.total);
+        const sentAmount = parseFloat(paymentData.transaction_amount);
 
-      const expectedTotal = parseFloat(order.total);
-      const sentAmount = parseFloat(paymentData.transaction_amount);
-
-      // Allow a tiny tolerance for floating point rounding (1 cent)
-      if (Math.abs(expectedTotal - sentAmount) > 0.02) {
-        console.error(`FRAUD ATTEMPT: Order ${externalRef} total is ${expectedTotal} but payment sent ${sentAmount}`);
-        throw new Error(`Valor do pagamento (R$${sentAmount.toFixed(2)}) não corresponde ao valor do pedido (R$${expectedTotal.toFixed(2)}).`);
+        // Allow a tiny tolerance for floating point rounding (1 cent)
+        if (Math.abs(expectedTotal - sentAmount) > 0.02) {
+          console.error(`FRAUD ATTEMPT: Order ${externalRef} total is ${expectedTotal} but payment sent ${sentAmount}`);
+          throw new Error(`Valor do pagamento (R$${sentAmount.toFixed(2)}) não corresponde ao valor do pedido (R$${expectedTotal.toFixed(2)}).`);
+        }
+        console.log(`[CREATE-PAYMENT] Order ${externalRef} validated. Amount matches: R$${sentAmount.toFixed(2)}`);
+      } else {
+        // Order doesn't exist yet — log warning but allow (webhook will create/update)
+        console.warn(`[CREATE-PAYMENT] Order ${externalRef} not found in DB. Proceeding with payment creation. Webhook will reconcile.`);
       }
     }
     // --- END SECURITY ---

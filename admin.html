@@ -970,7 +970,10 @@
                     </div>
                     <div>
                         <span class="block text-xs uppercase font-bold text-gray-400">Forma de Pagamento</span>
-                        <span class="font-bold text-white" id="detail-payment"></span>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="font-bold text-white" id="detail-payment"></span>
+                            <span id="detail-payment-status-badge"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -2375,6 +2378,7 @@
                         clientPhone: o.client_phone || o.clientPhone,
                         address: o.address,
                         payment: o.payment,
+                        payment_status: o.payment_status || null,
                         notes: o.notes,
                         deliveryDate: o.delivery_date || o.deliveryDate,
                         deliveryTime: o.delivery_time || o.deliveryTime,
@@ -2491,6 +2495,18 @@
                     }
                 }
 
+                // Payment status badge
+                let paymentBadge = '';
+                if (order.payment_status === 'approved') {
+                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full"><i class="fa-solid fa-circle-check text-[8px]"></i>PAGO</span>`;
+                } else if (order.payment_status === 'rejected' || order.payment_status === 'cancelled') {
+                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full"><i class="fa-solid fa-circle-xmark text-[8px]"></i>RECUSADO</span>`;
+                } else if (order.payment_status === 'in_process') {
+                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-orange-500/20 text-orange-400 px-1.5 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-magnifying-glass text-[8px]"></i>EM ANÁLISE</span>`;
+                } else {
+                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-yellow-500/20 text-yellow-400 px-1.5 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-clock text-[8px]"></i>AGUARDANDO</span>`;
+                }
+
                 card.innerHTML = `
                     <div class="flex justify-between items-start gap-2 mb-2">
                         <span class="font-mono font-bold text-cf-yellow text-xs uppercase">#${order.id}</span>
@@ -2502,7 +2518,10 @@
                     ${orderDateFormatted ? `<div class="text-[10px] text-gray-500 font-semibold mb-2"><i class="fa-regular fa-calendar-plus"></i> Recebido: ${orderDateFormatted}</div>` : ''}
                     <div class="text-[11px] text-gray-400 font-semibold truncate mb-2">${itemsSummary}</div>
                     <div class="flex justify-between items-center text-xs mt-2 border-t border-cf-gray/30 pt-2">
-                        <span class="font-impact text-white">R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-impact text-white">R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}</span>
+                            ${paymentBadge}
+                        </div>
                         ${order.deliveryDate ? `
                             <span class="text-[10px] text-green-400 font-bold flex items-center gap-1" title="Entrega: ${formattedDeliveryDate} ${order.deliveryTime}">
                                 <i class="fa-solid fa-truck"></i> ${order.deliveryTime}
@@ -2690,6 +2709,21 @@
             phoneEl.href = `https://wa.me/55${phoneVal}`;
 
             document.getElementById('detail-payment').innerText = order.payment;
+
+            // Payment status badge in detail modal
+            const paymentStatusBadge = document.getElementById('detail-payment-status-badge');
+            if (paymentStatusBadge) {
+                if (order.payment_status === 'approved') {
+                    paymentStatusBadge.innerHTML = `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle-check text-[9px]"></i> PAGO</span>`;
+                } else if (order.payment_status === 'rejected' || order.payment_status === 'cancelled') {
+                    paymentStatusBadge.innerHTML = `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle-xmark text-[9px]"></i> RECUSADO</span>`;
+                } else if (order.payment_status === 'in_process') {
+                    paymentStatusBadge.innerHTML = `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-magnifying-glass text-[9px]"></i> EM ANÁLISE</span>`;
+                } else {
+                    paymentStatusBadge.innerHTML = `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-clock text-[9px]"></i> AGUARDANDO PAGAMENTO</span>`;
+                }
+            }
+
             document.getElementById('detail-address').innerText = order.address;
 
             const formattedDeliveryDate = formatDateToBR(order.deliveryDate);

@@ -110,7 +110,7 @@ serve(async (req) => {
             const supabase = createClient(supabaseUrl, supabaseServiceKey);
             
             let dbStatus = 'Pendente';
-            if (status === 'approved') dbStatus = 'Preparando';
+            if (status === 'approved') dbStatus = 'Em Preparo';
             else if (status === 'rejected' || status === 'cancelled') dbStatus = 'Cancelado';
 
             console.log('[WEBHOOK] Updating order', orderId, 'to status:', dbStatus);

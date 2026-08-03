@@ -2421,7 +2421,7 @@
             if (loadingDiv) loadingDiv.classList.add('hidden');
         }
 
-        async function finalizeAndSaveOrder(paymentMethod, mpResponse) {
+        async function finalizeAndSaveOrder(paymentMethod, mpResponse, isPaymentInProcess = false) {
             const order = window.currentOrderData;
             order.payment = paymentMethod;
 
@@ -2443,8 +2443,8 @@
                         total: parseFloat(order.total),
                         status: order.status
                     };
-                    const { error } = await window.supabaseClient.from('orders').insert([dbOrder]);
-                    if (error && error.code !== '23505') throw error;
+                    const { error } = await window.supabaseClient.from('orders').upsert([dbOrder], { onConflict: 'id' });
+                    if (error) throw error;
                 } catch (err) {
                     console.error("Erro ao enviar pedido para o Supabase, salvando localmente:", err);
                     let orders = JSON.parse(localStorage.getItem('cleanfoods_orders')) || [];
@@ -2543,7 +2543,7 @@
                             body: JSON.stringify({ order_id: orderId }),
                         });
                         const dbData = await dbRes.json();
-                        if (dbRes.ok && dbData.status === 'Preparando') {
+                        if (dbRes.ok && dbData.status === 'Em Preparo') {
                             onPaymentApproved();
                         }
                     } catch (e) {
@@ -2566,6 +2566,16 @@
                     pollOrderStatus(order.id, mpResponse.id);
                 } else {
                     if (pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                }
+            } else if (isPaymentInProcess) {
+                // Cartão em análise pelo Mercado Pago
+                if (tyTitle) tyTitle.innerText = 'Pagamento em Análise';
+                if (tySubtitle) tySubtitle.innerText = 'Quase lá!';
+                if (tyMessage) tyMessage.innerText = 'Seu pagamento está sendo analisado pelo Mercado Pago. Assim que for aprovado, seu pedido será preparado automaticamente. Você será notificado!';
+                if (pixInfoContainer) pixInfoContainer.classList.add('hidden');
+                // Polling para verificar quando o pagamento for aprovado
+                if (mpResponse && mpResponse.id) {
+                    pollOrderStatus(order.id, mpResponse.id);
                 }
             } else {
                 if (tyTitle) tyTitle.innerText = 'Pedido Recebido!';
@@ -2697,7 +2707,8 @@
                                     resolve();
 
                                     const pMethod = formData.payment_method_id === 'pix' ? 'Pix' : 'Cartão de Crédito';
-                                    finalizeAndSaveOrder(pMethod, data);
+                                    const isInProcess = data.status === 'in_process' || data.status === 'pending';
+                                    finalizeAndSaveOrder(pMethod, data, isInProcess);
                                 })
                                 .catch((error) => {
                                     reject();

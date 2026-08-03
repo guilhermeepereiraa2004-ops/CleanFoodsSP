@@ -60,13 +60,13 @@ serve(async (req) => {
         const supabase = createClient(supabaseUrl, supabaseServiceKey);
         const { error } = await supabase
           .from('orders')
-          .update({ status: 'Preparando', payment_status: 'approved' })
+          .update({ status: 'Em Preparo', payment_status: 'approved' })
           .eq('id', order_id);
 
         if (error) {
           console.error('[CHECK-PAYMENT] Supabase update error:', error);
         } else {
-          console.log('[CHECK-PAYMENT] Order', order_id, 'updated to Preparando');
+          console.log('[CHECK-PAYMENT] Order', order_id, 'updated to Em Preparo');
         }
       }
     }
