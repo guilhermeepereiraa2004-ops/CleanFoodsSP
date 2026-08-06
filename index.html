@@ -1228,14 +1228,26 @@
                 </div>
 
                 <!-- Delivery Address -->
-                <div>
-                    <label
-                        class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
-                        <i class="fa-solid fa-location-dot text-cf-yellow"></i> Endereço de Entrega Completo *
+                <div class="space-y-3">
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5 tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-cf-yellow"></i> Endereço de Entrega *
                     </label>
-                    <textarea id="client-address" required rows="2"
-                        placeholder="Ex: Av. Paulista, 1000 - Apto 51 - Bela Vista, São Paulo - SP"
-                        class="w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600 resize-none"></textarea>
+                    <input type="hidden" id="client-address" value="">
+                    
+                    <div class="grid grid-cols-3 gap-2">
+                        <input type="text" id="client-cep" placeholder="CEP" maxlength="9" class="client-cep col-span-1 w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
+                        <input type="text" id="client-rua" placeholder="Busque seu endereço ou digite..." required class="client-rua-autocomplete col-span-2 w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2">
+                        <input type="text" id="client-numero" placeholder="Número" required class="client-numero col-span-1 w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
+                        <input type="text" id="client-complemento" placeholder="Comp. (Apto, Bloco)" class="client-complemento col-span-2 w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="client-bairro" placeholder="Bairro" required class="client-bairro w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
+                        <input type="text" id="client-cidade-uf" placeholder="Cidade - UF" required class="client-cidade-uf w-full bg-cf-black text-white border-2 border-cf-gray rounded px-4 py-2.5 font-bold focus:border-cf-yellow focus:ring-2 focus:ring-cf-yellow/20 focus:outline-none transition-all placeholder:text-gray-600">
+                    </div>
                 </div>
 
                 <!-- Delivery Date Selection (Pills / Cards) -->
@@ -2122,11 +2134,17 @@
             const shippingRow = document.getElementById('cart-shipping-row');
             const shippingSpan = document.getElementById('cart-shipping-val');
             if (shippingRow && shippingSpan) {
-                shippingRow.classList.remove('hidden');
-                if (shippingFee > 0) {
-                    shippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
+                if (typeof window.dynamicShippingFee === 'undefined') {
+                    shippingRow.classList.add('hidden');
                 } else {
-                    shippingSpan.innerText = `GRÁTIS (Combo 30)`;
+                    shippingRow.classList.remove('hidden');
+                    if (window.outOfRange) {
+                        shippingSpan.innerHTML = `<span class="text-cf-yellow text-xs font-bold whitespace-nowrap"><a href="https://wa.me/5511910993953" target="_blank" class="hover:underline">A consultar <i class="fa-brands fa-whatsapp"></i></a></span>`;
+                    } else if (shippingFee > 0) {
+                        shippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
+                    } else {
+                        shippingSpan.innerText = `GRÁTIS (Combo 30)`;
+                    }
                 }
             }
 
@@ -2168,11 +2186,21 @@
             }
 
             if (chkShippingRow && chkShippingSpan) {
-                chkShippingRow.classList.remove('hidden');
-                if (shippingFee > 0) {
-                    chkShippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
+                if (typeof window.dynamicShippingFee === 'undefined') {
+                    chkShippingRow.classList.add('hidden');
                 } else {
-                    chkShippingSpan.innerText = `GRÁTIS (Combo 30)`;
+                    chkShippingRow.classList.remove('hidden');
+                    if (window.outOfRange) {
+                        chkShippingSpan.innerHTML = `<span class="text-cf-yellow text-xs font-bold whitespace-nowrap"><a href="https://wa.me/5511910993953" target="_blank" class="hover:underline">A consultar <i class="fa-brands fa-whatsapp"></i></a></span>`;
+                    } else if (shippingFee > 0) {
+                        if (window.dynamicShippingDistance) {
+                            chkShippingSpan.innerHTML = `(${window.dynamicShippingDistance.toFixed(1)} km) R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
+                        } else {
+                            chkShippingSpan.innerText = `R$ ${shippingFee.toFixed(2).replace('.', ',')}`;
+                        }
+                    } else {
+                        chkShippingSpan.innerText = `GRÁTIS (Combo 30)`;
+                    }
                 }
             }
 
@@ -2180,18 +2208,11 @@
             if (chkTotalSpan) chkTotalSpan.innerText = `R$ ${finalTotal.toFixed(2).replace('.', ',')}`;
         }
 
-        const DEFAULT_SHIPPING_FEE = 15.00;
-
         function getEffectiveShippingFee() {
-            if (typeof window.systemShippingFee === 'number' && !isNaN(window.systemShippingFee) && window.systemShippingFee > 0) {
-                return window.systemShippingFee;
+            if (typeof window.dynamicShippingFee !== 'undefined') {
+                return window.dynamicShippingFee;
             }
-            const savedFrete = localStorage.getItem('cleanfoods_frete');
-            if (savedFrete !== null && savedFrete !== undefined && savedFrete !== '') {
-                const parsed = parseFloat(savedFrete.replace(',', '.'));
-                if (!isNaN(parsed) && parsed > 0) return parsed;
-            }
-            return DEFAULT_SHIPPING_FEE;
+            return 0;
         }
 
         async function loadSettings() {
@@ -2523,15 +2544,32 @@
             const nameInput = document.getElementById('client-name');
             const phoneInput = document.getElementById('client-phone');
             const addressInput = document.getElementById('client-address');
-
+            const paymentInput = document.querySelector('input[name="payment-method"]:checked');
             const notesInput = document.getElementById('client-notes');
             const dateInput = document.getElementById('delivery-date');
             const timeInput = document.getElementById('delivery-time');
+            
+            // Build address from new fields
+            const rua = document.getElementById('client-rua') ? document.getElementById('client-rua').value.trim() : '';
+            const num = document.getElementById('client-numero') ? document.getElementById('client-numero').value.trim() : '';
+            const comp = document.getElementById('client-complemento') ? document.getElementById('client-complemento').value.trim() : '';
+            const bairro = document.getElementById('client-bairro') ? document.getElementById('client-bairro').value.trim() : '';
+            const cid = document.getElementById('client-cidade-uf') ? document.getElementById('client-cidade-uf').value.trim() : '';
+            const cep = document.getElementById('client-cep') ? document.getElementById('client-cep').value.trim() : '';
+            
+            let builtAddress = "";
+            if (rua && num && bairro && cid) {
+                builtAddress = `${rua}, ${num}`;
+                if (comp) builtAddress += ` - ${comp}`;
+                builtAddress += ` - ${bairro}, ${cid}`;
+                if (cep) builtAddress += ` - CEP: ${cep}`;
+            }
+            if (addressInput) addressInput.value = builtAddress;
 
             const name = nameInput ? nameInput.value.trim() : '';
             const phone = phoneInput ? phoneInput.value.trim() : '';
-            const address = addressInput ? addressInput.value.trim() : '';
-            let payment = 'Aguardando';
+            const address = builtAddress || (addressInput ? addressInput.value.trim() : '');
+            const payment = paymentInput ? paymentInput.value : 'Aguardando';
             const notes = notesInput ? notesInput.value.trim() : '';
             const deliveryDate = dateInput ? dateInput.value : '';
             const deliveryTime = timeInput ? timeInput.value : '';
@@ -2547,8 +2585,9 @@
                 return;
             }
             if (!address) {
-                alert("Por favor, preencha o campo Endereço de Entrega.");
-                if (addressInput) addressInput.focus();
+                alert("Por favor, preencha o campo Endereço de Entrega (Rua, Número, Bairro, Cidade).");
+                const numInput = document.getElementById('client-numero');
+                if (numInput && !numInput.value) numInput.focus();
                 return;
             }
             if (!payment) {
@@ -2672,6 +2711,13 @@
                     name: `🚚 Taxa de Entrega (Frete)`,
                     size: 'Único',
                     price: shippingFee,
+                    quantity: 1
+                });
+            } else if (window.outOfRange) {
+                orderItems.push({
+                    name: `🚚 Taxa de Entrega (A Consultar)`,
+                    size: 'Único',
+                    price: 0,
                     quantity: 1
                 });
             }
@@ -3399,6 +3445,61 @@
             window.location.href = 'cardapio-completo.html?promo=active';
         }
     </script>
+    <!-- Custom Alert Modal (Overwrites default window.alert) -->
+    <div id="custom-alert-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-cf-black border border-cf-gray rounded-xl shadow-2xl max-w-sm w-full transform scale-95 transition-transform duration-300 relative overflow-hidden">
+            <!-- Top accent -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cf-yellow to-orange-500"></div>
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-cf-yellow/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-triangle-exclamation text-cf-yellow text-lg"></i>
+                    </div>
+                    <h3 id="custom-alert-title" class="text-white font-impact tracking-wider text-xl">Aviso</h3>
+                </div>
+                <p id="custom-alert-message" class="text-gray-300 text-sm leading-relaxed mb-6 font-bold">
+                    Mensagem de erro aqui.
+                </p>
+                <button onclick="closeCustomAlert()" class="w-full bg-cf-yellow hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition-colors flex justify-center items-center gap-2">
+                    Entendi <i class="fa-solid fa-check"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showCustomAlert(message, title = "Atenção") {
+            const modal = document.getElementById('custom-alert-modal');
+            document.getElementById('custom-alert-title').innerText = title;
+            document.getElementById('custom-alert-message').innerText = message;
+            
+            modal.classList.remove('hidden');
+            // Trigger animation
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.children[0].classList.remove('scale-95');
+                modal.children[0].classList.add('scale-100');
+            }, 10);
+        }
+        
+        function closeCustomAlert() {
+            const modal = document.getElementById('custom-alert-modal');
+            modal.classList.add('opacity-0');
+            modal.children[0].classList.remove('scale-100');
+            modal.children[0].classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Overwrite default window.alert globally!
+        window.alert = function(message) {
+            showCustomAlert(message);
+        };
+    </script>
+
+    <!-- Address Logic (ViaCEP + OSRM) -->
+    <script src="address_autocomplete.js"></script>
 </body>
 
 </html>

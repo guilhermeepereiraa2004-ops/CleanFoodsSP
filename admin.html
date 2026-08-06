@@ -973,6 +973,7 @@
                         <div class="flex items-center gap-2 mt-0.5">
                             <span class="font-bold text-white" id="detail-payment"></span>
                             <span id="detail-payment-status-badge"></span>
+                            <button id="btn-approve-payment" class="hidden ml-2 text-xs bg-green-500 hover:bg-green-600 text-white px-2 py-0.5 rounded transition-colors" title="Marcar como Pago"><i class="fa-solid fa-check"></i> Aprovar</button>
                         </div>
                     </div>
                 </div>
@@ -2712,7 +2713,10 @@
 
             // Payment status badge in detail modal
             const paymentStatusBadge = document.getElementById('detail-payment-status-badge');
+            const btnApprove = document.getElementById('btn-approve-payment');
             if (paymentStatusBadge) {
+                if (btnApprove) btnApprove.classList.add('hidden');
+                
                 if (order.payment_status === 'approved') {
                     paymentStatusBadge.innerHTML = `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle-check text-[9px]"></i> PAGO</span>`;
                 } else if (order.payment_status === 'rejected' || order.payment_status === 'cancelled') {
@@ -2721,6 +2725,10 @@
                     paymentStatusBadge.innerHTML = `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-magnifying-glass text-[9px]"></i> EM ANÁLISE</span>`;
                 } else {
                     paymentStatusBadge.innerHTML = `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-clock text-[9px]"></i> AGUARDANDO PAGAMENTO</span>`;
+                    if (btnApprove) {
+                        btnApprove.classList.remove('hidden');
+                        btnApprove.onclick = () => approvePaymentManually(order.id);
+                    }
                 }
             }
 
@@ -2820,6 +2828,33 @@
         async function deleteDetailOrder() {
             if (!activeOrderDetailId) return;
             await deleteOrderById(activeOrderDetailId);
+        }
+
+        async function approvePaymentManually(orderId) {
+            if (!confirm('Tem certeza que deseja marcar o pagamento deste pedido como PAGO?')) return;
+            
+            const index = orders.findIndex(o => o.id === orderId);
+            if (index !== -1) {
+                orders[index].payment_status = 'approved';
+                const order = orders[index];
+                
+                if (supabaseClient) {
+                    try {
+                        const { error } = await supabaseClient.from('orders')
+                            .update({ payment_status: 'approved' })
+                            .eq('id', orderId);
+                        if (error) throw error;
+                    } catch (err) {
+                        console.error("Erro ao aprovar pagamento no Supabase:", err);
+                    }
+                }
+                
+                localStorage.setItem('cleanfoods_orders', JSON.stringify(orders));
+                renderOrders();
+                if (activeOrderDetailId === orderId) {
+                    openOrderDetail(orderId);
+                }
+            }
         }
 
         let salesChartInstance = null;
