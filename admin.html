@@ -477,9 +477,19 @@
             <!-- ================= TAB: PEDIDOS ================= -->
             <div id="tab-pedidos" class="tab-content hidden">
                 <div class="bg-cf-darkgray p-6 md:p-8 border-4 border-white">
-                    <h2 class="font-impact text-2xl md:text-3xl text-white uppercase mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-cf-yellow"></i> Pedidos Recentes
-                    </h2>
+                    <div class="sticky top-0 z-20 bg-cf-darkgray/95 backdrop-blur-md pt-6 pb-4 -mt-6 mb-6 border-b-2 border-cf-gray/30 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
+                        <h2 class="font-impact text-2xl md:text-3xl text-white uppercase flex items-center gap-2 m-0 shrink-0">
+                            <i class="fa-solid fa-list-check text-cf-yellow"></i> Pedidos Recentes
+                        </h2>
+                        <div class="flex flex-wrap items-center gap-2" id="orders-date-filter-group">
+                            <button onclick="setOrderFilter('all')" class="order-filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-cf-yellow text-cf-black border border-cf-yellow shadow-[0_0_10px_rgba(246,197,0,0.4)]" data-filter="all">Todos</button>
+                            <button onclick="setOrderFilter('today')" class="order-filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-cf-black border border-cf-gray text-gray-400 hover:text-white" data-filter="today">Hoje</button>
+                            <button onclick="setOrderFilter('5days')" class="order-filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-cf-black border border-cf-gray text-gray-400 hover:text-white" data-filter="5days">Últimos 5 dias</button>
+                            <button onclick="setOrderFilter('week')" class="order-filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-cf-black border border-cf-gray text-gray-400 hover:text-white" data-filter="week">Semana</button>
+                            <button onclick="setOrderFilter('month')" class="order-filter-btn px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-cf-black border border-cf-gray text-gray-400 hover:text-white" data-filter="month">Mês</button>
+                        </div>
+                        <input type="hidden" id="orders-date-filter" value="all">
+                    </div>
 
                     <div class="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-4 gap-6 items-start pb-4 hide-scrollbar" id="kanban-board-container">
                         <!-- Col: Pendente -->
@@ -3202,6 +3212,24 @@
             return dateStr;
         };
 
+        function setOrderFilter(val) {
+            const filterInput = document.getElementById('orders-date-filter');
+            if (filterInput) filterInput.value = val;
+            
+            // Update active state of pills
+            document.querySelectorAll('.order-filter-btn').forEach(btn => {
+                if (btn.dataset.filter === val) {
+                    btn.classList.remove('bg-cf-black', 'text-gray-400', 'border-cf-gray');
+                    btn.classList.add('bg-cf-yellow', 'text-cf-black', 'border-cf-yellow', 'shadow-[0_0_10px_rgba(246,197,0,0.4)]');
+                } else {
+                    btn.classList.add('bg-cf-black', 'text-gray-400', 'border-cf-gray');
+                    btn.classList.remove('bg-cf-yellow', 'text-cf-black', 'border-cf-yellow', 'shadow-[0_0_10px_rgba(246,197,0,0.4)]');
+                }
+            });
+            
+            renderOrders();
+        }
+
         function renderOrders() {
             const containers = {
                 'Pendente': document.getElementById('cards-Pendente'),
@@ -3232,7 +3260,54 @@
                 'Concluído': 0
             };
 
-            if (orders.length === 0) {
+            // Date filter logic
+            const dateFilterEl = document.getElementById('orders-date-filter');
+            const dateFilter = dateFilterEl ? dateFilterEl.value : 'all';
+            
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            
+            let filteredOrders = orders;
+            
+            if (dateFilter !== 'all') {
+                filteredOrders = orders.filter(order => {
+                    let targetTime = 0;
+                    const dDate = order.deliveryDate || order.delivery_date;
+                    if (dDate && dDate.includes('-')) {
+                        const parts = dDate.split('-');
+                        if (parts.length === 3) {
+                            targetTime = new Date(parts[0], parts[1] - 1, parts[2]).getTime();
+                        }
+                    }
+                    
+                    if (!targetTime) {
+                        const cDate = order.date || order.created_at;
+                        if (cDate) {
+                            targetTime = new Date(cDate).getTime();
+                        }
+                    }
+                    
+                    if (!targetTime) return true; // If no valid date, show it
+                    
+                    const orderDate = targetTime;
+                    
+                    if (dateFilter === 'today') {
+                        return orderDate >= today;
+                    } else if (dateFilter === '5days') {
+                        const fiveDaysAgo = today - (5 * 24 * 60 * 60 * 1000);
+                        return orderDate >= fiveDaysAgo;
+                    } else if (dateFilter === 'week') {
+                        const sevenDaysAgo = today - (7 * 24 * 60 * 60 * 1000);
+                        return orderDate >= sevenDaysAgo;
+                    } else if (dateFilter === 'month') {
+                        const thirtyDaysAgo = today - (30 * 24 * 60 * 60 * 1000);
+                        return orderDate >= thirtyDaysAgo;
+                    }
+                    return true;
+                });
+            }
+
+            if (filteredOrders.length === 0) {
                 for (const status in containers) {
                     if (containers[status]) {
                         containers[status].innerHTML = `
@@ -3250,7 +3325,7 @@
                 return;
             }
 
-            orders.forEach(order => {
+            filteredOrders.forEach(order => {
                 const status = order.status || 'Pendente';
                 if (!containers[status]) return;
 
@@ -3290,13 +3365,13 @@
                 // Payment status badge
                 let paymentBadge = '';
                 if (order.payment_status === 'approved') {
-                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full"><i class="fa-solid fa-circle-check text-[8px]"></i>PAGO</span>`;
+                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded-full whitespace-nowrap shrink-0"><i class="fa-solid fa-circle-check text-[8px]"></i>PAGO</span>`;
                 } else if (order.payment_status === 'rejected' || order.payment_status === 'cancelled') {
-                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full"><i class="fa-solid fa-circle-xmark text-[8px]"></i>RECUSADO</span>`;
+                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full whitespace-nowrap shrink-0"><i class="fa-solid fa-circle-xmark text-[8px]"></i>RECUSADO</span>`;
                 } else if (order.payment_status === 'in_process') {
-                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-orange-500/20 text-orange-400 px-1.5 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-magnifying-glass text-[8px]"></i>EM ANÁLISE</span>`;
+                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-orange-500/20 text-orange-400 px-1.5 py-0.5 rounded-full animate-pulse whitespace-nowrap shrink-0"><i class="fa-solid fa-magnifying-glass text-[8px]"></i>EM ANÁLISE</span>`;
                 } else {
-                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-yellow-500/20 text-yellow-400 px-1.5 py-0.5 rounded-full animate-pulse"><i class="fa-solid fa-clock text-[8px]"></i>AGUARDANDO</span>`;
+                    paymentBadge = `<span class="inline-flex items-center gap-1 text-[9px] font-bold bg-yellow-500/20 text-yellow-400 px-1.5 py-0.5 rounded-full animate-pulse whitespace-nowrap shrink-0"><i class="fa-solid fa-clock text-[8px]"></i>AGUARDANDO</span>`;
                 }
 
                 card.innerHTML = `
@@ -3309,13 +3384,13 @@
                     <div class="text-sm font-bold text-white uppercase truncate mb-1" title="${order.clientName}">${order.clientName}</div>
                     ${orderDateFormatted ? `<div class="text-[10px] text-gray-500 font-semibold mb-2"><i class="fa-regular fa-calendar-plus"></i> Recebido: ${orderDateFormatted}</div>` : ''}
                     <div class="text-[11px] text-gray-400 font-semibold truncate mb-2">${itemsSummary}</div>
-                    <div class="flex justify-between items-center text-xs mt-2 border-t border-cf-gray/30 pt-2">
-                        <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap justify-between items-center text-xs mt-2 border-t border-cf-gray/30 pt-2 gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
                             <span class="font-impact text-white">R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}</span>
                             ${paymentBadge}
                         </div>
                         ${order.deliveryDate ? `
-                            <span class="text-[10px] text-green-400 font-bold flex items-center gap-1" title="Entrega: ${formattedDeliveryDate} ${order.deliveryTime}">
+                            <span class="text-[10px] text-green-400 font-bold flex items-center gap-1 shrink-0 ml-auto" title="Entrega: ${formattedDeliveryDate} ${order.deliveryTime}">
                                 <i class="fa-solid fa-truck"></i> ${order.deliveryTime}
                             </span>
                         ` : ''}
