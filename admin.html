@@ -263,6 +263,14 @@
                     class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-ticket text-sm w-4 text-center"></i> Cupons
                 </button>
+                <button onclick="switchTab('combos')" id="btn-combos"
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-layer-group text-sm w-4 text-center"></i> Combos
+                </button>
+                <button onclick="switchTab('estoque')" id="btn-estoque"
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-boxes-stacked text-sm w-4 text-center"></i> Estoque
+                </button>
                 <button onclick="switchTab('config')" id="btn-config"
                     class="w-full flex items-center gap-3 px-3 py-2 rounded text-gray-300 hover:bg-cf-gray hover:text-white transition-all text-xs font-semibold uppercase tracking-wider">
                     <i class="fa-solid fa-gears text-sm w-4 text-center"></i> Ajustes
@@ -603,6 +611,163 @@
                 </div>
             </div>
 
+            <!-- ================= TAB: COMBOS ================= -->
+            <div id="tab-combos" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Form -->
+                    <div class="lg:col-span-1 bg-cf-darkgray p-6 border-4 border-cf-yellow">
+                        <h3 class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-cf-yellow"></i> Novo Combo
+                        </h3>
+                        <div class="space-y-4 font-body">
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Nome do Combo</label>
+                                <input type="text" id="combo-nome" placeholder="Ex: Combo Monstro 10"
+                                    class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Frase / Descrição</label>
+                                <textarea id="combo-descricao" placeholder="Ex: O combo perfeito para sua dieta..."
+                                    class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-sm resize-none h-16"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Foto do Combo</label>
+                                <label class="w-full flex items-center justify-center border-2 border-dashed border-cf-gray hover:border-cf-yellow rounded cursor-pointer transition-colors group relative overflow-hidden h-32">
+                                    <input type="file" id="combo-foto" accept="image/*" class="hidden" onchange="handleComboFoto(this)">
+                                    <img id="combo-foto-preview" class="hidden absolute inset-0 w-full h-full object-cover z-0 opacity-40 group-hover:opacity-20 transition-opacity">
+                                    <div class="text-center relative z-10 px-3 py-4">
+                                        <i class="fa-solid fa-camera text-2xl text-gray-500 group-hover:text-cf-yellow mb-2 transition-colors drop-shadow-lg"></i>
+                                        <div id="combo-foto-text" class="text-xs font-bold text-gray-400 group-hover:text-white uppercase tracking-wider drop-shadow-lg bg-black/50 px-2 py-1 rounded">Clique para adicionar foto</div>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="p-3 bg-black/30 border border-cf-gray rounded">
+                                <label class="block text-xs uppercase font-bold text-cf-yellow mb-2">Adicionar Marmitas</label>
+                                <div class="relative mb-2">
+                                    <input type="hidden" id="combo-marmita-select-value">
+                                    <button onclick="toggleCustomSelect()" id="combo-marmita-btn" class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-sm text-left flex justify-between items-center">
+                                        <span>Selecione um prato...</span>
+                                        <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+                                    </button>
+                                    <div id="combo-marmita-dropdown" class="absolute left-0 right-0 top-full mt-1 bg-cf-black border border-cf-gray rounded max-h-60 overflow-y-auto hidden z-50 shadow-2xl">
+                                        <div class="p-2 border-b border-gray-700 sticky top-0 bg-cf-black">
+                                            <input type="text" id="combo-marmita-search" onkeyup="filterCustomSelect()" placeholder="Buscar marmita..." class="w-full bg-cf-darkgray text-white border border-gray-600 rounded px-2 py-1 text-xs outline-none focus:border-cf-yellow">
+                                        </div>
+                                        <div id="combo-marmita-options" class="flex flex-col">
+                                            <!-- Dynamically generated options -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="number" id="combo-marmita-qtd" value="1" min="1" class="w-20 bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold text-center">
+                                    <button onclick="addMarmitaToCombo()" class="bg-cf-gray hover:bg-gray-600 text-white font-bold py-2 px-3 rounded flex-1 transition-colors text-xs uppercase">
+                                        + Adicionar
+                                    </button>
+                                </div>
+                                <ul id="combo-items-list" class="mt-3 space-y-1 text-xs text-gray-300">
+                                    <!-- Dynamic -->
+                                </ul>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço Sugerido (Soma)</label>
+                                <div id="combo-preco-sugerido" class="w-full bg-cf-black text-gray-500 border border-cf-gray rounded px-3 py-2 font-bold font-mono">R$ 0.00</div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-cf-yellow mb-1">Preço Final do Combo (R$)</label>
+                                <input type="number" id="combo-preco-final" placeholder="Ex: 150.00" step="0.01" min="0"
+                                    class="w-full bg-cf-black text-white border border-cf-yellow rounded px-3 py-2 font-bold text-lg">
+                            </div>
+                            <button onclick="saveCombo()" id="save-combo-btn"
+                                class="btn-street w-full py-3 font-bold flex items-center justify-center gap-2 mt-4 shadow-lg text-sm">
+                                <i class="fa-solid fa-check"></i> Salvar Combo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- List Column -->
+                    <div class="lg:col-span-2 bg-cf-darkgray p-6 border-4 border-white">
+                        <h3 class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
+                            <i class="fa-solid fa-list text-cf-yellow"></i> Combos Cadastrados no Cardápio
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left font-body text-sm font-semibold">
+                                <thead>
+                                    <tr class="border-b border-cf-gray text-gray-400 text-xs uppercase">
+                                        <th class="py-3 px-4">Nome do Combo</th>
+                                        <th class="py-3 px-4">Descrição (Itens)</th>
+                                        <th class="py-3 px-4 text-center">Preço (R$)</th>
+                                        <th class="py-3 px-4 text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="combos-table-body" class="text-gray-200 text-sm">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB: ESTOQUE ================= -->
+            <div id="tab-estoque" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Form -->
+                    <div class="lg:col-span-1 bg-cf-darkgray p-6 border-4 border-cf-yellow">
+                        <h3 class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
+                            <i class="fa-solid fa-circle-plus text-cf-yellow"></i> Novo Item
+                        </h3>
+                        <div class="space-y-4 font-body">
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Nome do Item</label>
+                                <input type="text" id="estoque-nome" placeholder="Ex: Embalagem Marmita"
+                                    class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Quantidade</label>
+                                <input type="number" id="estoque-quantidade" placeholder="Ex: 100" min="0"
+                                    class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço Unitário (R$)</label>
+                                <input type="number" id="estoque-preco" placeholder="Ex: 0.50" step="0.01" min="0"
+                                    class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                            </div>
+                            <button onclick="addEstoqueItem()"
+                                class="btn-street w-full py-2.5 font-bold flex items-center justify-center gap-2 mt-4 shadow-lg text-sm">
+                                <i class="fa-solid fa-plus"></i> Adicionar ao Estoque
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- List Column -->
+                    <div class="lg:col-span-2 bg-cf-darkgray p-6 border-4 border-white">
+                        <h3 class="font-impact text-xl text-white uppercase mb-4 pb-2 border-b border-cf-gray flex items-center gap-2">
+                            <i class="fa-solid fa-boxes-stacked text-cf-yellow"></i> Itens em Estoque
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left font-body text-sm font-semibold">
+                                <thead>
+                                    <tr class="border-b border-cf-gray text-gray-400 text-xs uppercase">
+                                        <th class="py-3 px-4">Nome</th>
+                                        <th class="py-3 px-4 text-center">Quantidade</th>
+                                        <th class="py-3 px-4 text-center">Preço (R$)</th>
+                                        <th class="py-3 px-4 text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="estoque-table-body" class="text-gray-200 text-sm">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ================= TAB: AJUSTES ================= -->
             <div id="tab-config" class="tab-content hidden">
                 <div class="bg-cf-darkgray p-6 md:p-8 border-4 border-cf-yellow">
@@ -629,11 +794,7 @@
                             <input type="text" id="config-address" value="Ipiranga, São Paulo - SP"
                                 class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
                         </div>
-                        <div>
-                            <label class="block text-xs uppercase font-bold text-gray-400 mb-2">Valor do Frete (R$)</label>
-                            <input type="number" step="0.01" id="config-frete" value="15.00" placeholder="Ex: 15.00"
-                                class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
-                        </div>
+
 
                         <button onclick="saveConfig()"
                             class="btn-street px-6 py-2.5 font-bold flex items-center gap-2 mt-4 shadow-lg">
@@ -934,6 +1095,44 @@
                         <i class="fa-solid fa-floppy-disk"></i> Salvar
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Editar Item Estoque -->
+    <div id="edit-estoque-modal"
+        class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-cf-darkgray border-4 border-cf-yellow p-6 max-w-md w-full mx-4 relative torn-edge shadow-2xl">
+            <button onclick="closeEditEstoqueModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-impact text-2xl text-cf-yellow uppercase mb-6 pb-2 border-b border-cf-gray flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i> Editar Item
+            </h3>
+            
+            <input type="hidden" id="edit-estoque-index">
+            
+            <div class="space-y-4 font-body">
+                <div>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Nome do Item</label>
+                    <input type="text" id="edit-estoque-nome"
+                        class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Quantidade</label>
+                    <input type="number" id="edit-estoque-quantidade" min="0"
+                        class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-bold text-gray-400 mb-1">Preço Unitário (R$)</label>
+                    <input type="number" id="edit-estoque-preco" step="0.01" min="0"
+                        class="w-full bg-cf-black text-white border border-cf-gray rounded px-3 py-2 font-bold">
+                </div>
+                <button onclick="saveEditEstoqueItem()"
+                    class="btn-street w-full py-3 font-bold flex items-center justify-center gap-2 mt-4 shadow-lg text-sm">
+                    <i class="fa-solid fa-check"></i> Salvar Alterações
+                </button>
             </div>
         </div>
     </div>
@@ -1248,6 +1447,11 @@
             const activeBtn = document.getElementById('btn-' + tabId);
             if (activeBtn) activeBtn.classList.add('sidebar-link-active');
 
+            if (tabId === 'combos') {
+                populateComboSelect();
+                renderCombos();
+            }
+
             // Update page title
             const titles = {
                 'dashboard': 'Dashboard',
@@ -1309,12 +1513,15 @@
             } catch (e) {}
 
             try {
+                estoque = JSON.parse(localStorage.getItem('cleanfoods_estoque')) || [];
+                renderEstoque();
+            } catch (e) {}
+
+            try {
                 const savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
                 const savedAddress = localStorage.getItem('cleanfoods_address');
-                const savedFrete = localStorage.getItem('cleanfoods_frete');
                 if (savedWhatsapp) document.getElementById('config-whatsapp').value = savedWhatsapp;
                 if (savedAddress) document.getElementById('config-address').value = savedAddress;
-                if (savedFrete) document.getElementById('config-frete').value = savedFrete;
             } catch (e) {}
 
             // Restore active tab (Cardápio, Pedidos, etc.) instantly
@@ -1327,6 +1534,7 @@
                 loadSettings(),
                 loadCoupons(),
                 loadOrders(),
+                loadEstoque(),
                 typeof loadTransactions === 'function' ? loadTransactions() : Promise.resolve(),
                 typeof loadClients === 'function' ? loadClients() : Promise.resolve()
             ]).then(() => {
@@ -1425,9 +1633,14 @@
                                 priceP: d.price_p || d.priceP || '0,00',
                                 priceG: d.price_g || d.priceG || '0,00',
                                 available: d.available !== false,
-                                image: (localD && localD.image) ? localD.image : (d.image || '')
+                                image: (localD && localD.image) ? localD.image : (d.image || ''),
+                                description: d.description || (d.nutrition ? d.nutrition.description : '') || '',
+                                ingredients: d.ingredients || (d.nutrition ? d.nutrition.ingredients : []) || [],
+                                nutrition: d.nutrition || (localD && localD.nutrition) || { ...defaultNutrition }
                             };
-                        }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
+                        });
+                        const localOnlyDishes = localDishes.filter(ld => !data.some(d => d.id === ld.id) && !deletedIds.includes(ld.id));
+                        dishes = [...dishes, ...localOnlyDishes].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
                         dishes = ensureSalgados(dishes);
                     } else {
                         // Seed database
@@ -1438,7 +1651,8 @@
                             price_p: d.priceP,
                             price_g: d.priceG,
                             available: true,
-                            image: ''
+                            image: '',
+                            nutrition: d.nutrition
                         }));
                         const { error: insertError } = await supabaseClient.from('dishes').insert(dbDishes);
                         if (insertError) throw insertError;
@@ -1743,7 +1957,20 @@
                     saveDishImageToDB(dish.id);
                 }
             }
-
+            else if (cropperTargetContext === 'combo') {
+                currentComboImage = compressedBase64;
+                const textEl = document.getElementById('combo-foto-text');
+                if (textEl) {
+                    textEl.textContent = 'FOTO ADICIONADA E RECORTADA!';
+                    textEl.classList.add('text-cf-yellow');
+                    textEl.classList.remove('text-gray-400');
+                }
+                const previewImg = document.getElementById('combo-foto-preview');
+                if (previewImg) {
+                    previewImg.src = compressedBase64;
+                    previewImg.classList.remove('hidden');
+                }
+            }
             closeCropperModal();
         }
 
@@ -2160,8 +2387,6 @@
         async function loadSettings() {
             let savedWhatsapp = localStorage.getItem('cleanfoods_whatsapp');
             let savedAddress = localStorage.getItem('cleanfoods_address');
-            let savedFrete = localStorage.getItem('cleanfoods_frete');
-
             if (supabaseClient) {
                 try {
                     const { data, error } = await supabaseClient.from('settings').select('*');
@@ -2171,8 +2396,6 @@
                         if (waSetting) savedWhatsapp = waSetting.value;
                         const addrSetting = data.find(s => s.key === 'address');
                         if (addrSetting) savedAddress = addrSetting.value;
-                        const freteSetting = data.find(s => s.key === 'frete');
-                        if (freteSetting) savedFrete = freteSetting.value;
                     }
                 } catch (err) {
                     console.error("Erro ao carregar configurações do Supabase:", err);
@@ -2181,26 +2404,19 @@
 
             if (savedWhatsapp) document.getElementById('config-whatsapp').value = savedWhatsapp;
             if (savedAddress) document.getElementById('config-address').value = savedAddress;
-            const freteVal = savedFrete ? parseFloat(savedFrete) : 15.00;
-            document.getElementById('config-frete').value = freteVal.toFixed(2);
         }
 
         async function saveConfig() {
             const whatsapp = document.getElementById('config-whatsapp').value.trim();
             const address = document.getElementById('config-address').value.trim();
-            const freteInput = document.getElementById('config-frete').value.trim();
-            const freteVal = parseFloat(freteInput.replace(',', '.')) || 15.00;
-            const freteStr = freteVal.toFixed(2);
 
             localStorage.setItem('cleanfoods_whatsapp', whatsapp);
             localStorage.setItem('cleanfoods_address', address);
-            localStorage.setItem('cleanfoods_frete', freteStr);
 
             if (supabaseClient) {
                 try {
                     await supabaseClient.from('settings').upsert({ key: 'whatsapp', value: whatsapp });
                     await supabaseClient.from('settings').upsert({ key: 'address', value: address });
-                    await supabaseClient.from('settings').upsert({ key: 'frete', value: freteStr });
                 } catch (err) {
                     console.error("Erro ao salvar configurações no Supabase:", err);
                 }
@@ -2364,12 +2580,587 @@
             });
         }
 
+        // Estoque Logic
+        let estoque = [];
+
+        async function loadEstoque() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient.from('inventory').select('*');
+                    if (error) {
+                        console.warn("Tabela inventory não existe ou erro no Supabase. Usando apenas localStorage.");
+                        estoque = JSON.parse(localStorage.getItem('cleanfoods_estoque')) || [];
+                    } else {
+                        estoque = data || [];
+                    }
+                } catch (err) {
+                    console.error("Erro ao carregar estoque do Supabase:", err);
+                    estoque = JSON.parse(localStorage.getItem('cleanfoods_estoque')) || [];
+                }
+            } else {
+                estoque = JSON.parse(localStorage.getItem('cleanfoods_estoque')) || [];
+            }
+            renderEstoque();
+        }
+
+        function renderEstoque() {
+            const tbody = document.getElementById('estoque-table-body');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+
+            if (estoque.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="py-12 text-center text-gray-500 font-bold italic">
+                            <i class="fa-solid fa-box-open text-3xl mb-3 block text-cf-gray"></i>
+                            <span>Nenhum item no estoque.</span>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            estoque.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-cf-gray/20 hover:bg-cf-black/20 transition-colors';
+
+                tr.innerHTML = `
+                    <td class="py-4 px-4 font-bold uppercase">${item.name}</td>
+                    <td class="py-4 px-4 text-center font-mono">
+                        <div class="flex items-center justify-center gap-3">
+                            <button onclick="updateEstoqueQuantity(${index}, -1)" class="w-6 h-6 bg-cf-gray rounded text-white flex items-center justify-center hover:bg-cf-yellow hover:text-black transition-colors">
+                                <i class="fa-solid fa-minus text-xs"></i>
+                            </button>
+                            <span class="w-8 text-center">${item.quantity}</span>
+                            <button onclick="updateEstoqueQuantity(${index}, 1)" class="w-6 h-6 bg-cf-gray rounded text-white flex items-center justify-center hover:bg-cf-yellow hover:text-black transition-colors">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="py-4 px-4 text-center font-mono text-cf-yellow">R$ ${Number(item.price).toFixed(2)}</td>
+                    <td class="py-4 px-4 text-center space-x-2">
+                        <button onclick="editEstoqueItem(${index})" class="text-blue-500 hover:text-blue-400 transition-colors text-base">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteEstoqueItem(${index})" class="text-red-500 hover:text-red-400 transition-colors text-base">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function addEstoqueItem() {
+            const nomeInput = document.getElementById('estoque-nome');
+            const qtdInput = document.getElementById('estoque-quantidade');
+            const precoInput = document.getElementById('estoque-preco');
+
+            const name = nomeInput.value.trim();
+            const quantity = parseInt(qtdInput.value);
+            const price = parseFloat(precoInput.value);
+
+            if (!name) return showToast('Preencha o nome do item.', true);
+            if (isNaN(quantity) || quantity < 0) return showToast('Quantidade inválida.', true);
+            if (isNaN(price) || price < 0) return showToast('Preço inválido.', true);
+
+            const newItem = {
+                id: crypto.randomUUID(),
+                name: name,
+                quantity: quantity,
+                price: price
+            };
+
+            estoque.push(newItem);
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('inventory').insert([newItem]);
+                    if (error) {
+                        localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                    }
+                } catch (err) {
+                    console.error("Erro ao criar item de estoque no Supabase:", err);
+                    localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                }
+            } else {
+                localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+            }
+
+            renderEstoque();
+
+            nomeInput.value = '';
+            qtdInput.value = '';
+            precoInput.value = '';
+
+            showToast('ITEM ADICIONADO AO ESTOQUE!');
+        }
+
+        async function deleteEstoqueItem(index) {
+            const item = estoque[index];
+            if (confirm(`Deseja apagar o item ${item.name}?`)) {
+                estoque.splice(index, 1);
+                if (supabaseClient) {
+                    try {
+                        const { error } = await supabaseClient.from('inventory').delete().eq('id', item.id);
+                        if (error) {
+                            localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                        }
+                    } catch (err) {
+                        console.error("Erro ao deletar item do Supabase:", err);
+                        localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                    }
+                } else {
+                    localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                }
+                renderEstoque();
+                showToast('ITEM REMOVIDO DO ESTOQUE!');
+            }
+        }
+
+        async function updateEstoqueQuantity(index, delta) {
+            const item = estoque[index];
+            const newQuantity = item.quantity + delta;
+            if (newQuantity < 0) return; // Prevent negative quantity
+
+            item.quantity = newQuantity;
+            
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('inventory').update({ quantity: item.quantity }).eq('id', item.id);
+                    if (error) {
+                        localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                    }
+                } catch (err) {
+                    console.error("Erro ao atualizar quantidade no Supabase:", err);
+                    localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                }
+            } else {
+                localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+            }
+
+            renderEstoque();
+            showToast('QUANTIDADE ATUALIZADA!');
+        }
+
+        function editEstoqueItem(index) {
+            const item = estoque[index];
+            document.getElementById('edit-estoque-index').value = index;
+            document.getElementById('edit-estoque-nome').value = item.name;
+            document.getElementById('edit-estoque-quantidade').value = item.quantity;
+            document.getElementById('edit-estoque-preco').value = Number(item.price).toFixed(2);
+            
+            const modal = document.getElementById('edit-estoque-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+        
+        function closeEditEstoqueModal() {
+            const modal = document.getElementById('edit-estoque-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        async function saveEditEstoqueItem() {
+            const index = document.getElementById('edit-estoque-index').value;
+            const name = document.getElementById('edit-estoque-nome').value.trim();
+            const quantity = parseInt(document.getElementById('edit-estoque-quantidade').value);
+            const price = parseFloat(document.getElementById('edit-estoque-preco').value);
+
+            if (!name) return showToast('Preencha o nome do item.', true);
+            if (isNaN(quantity) || quantity < 0) return showToast('Quantidade inválida.', true);
+            if (isNaN(price) || price < 0) return showToast('Preço inválido.', true);
+
+            const item = estoque[index];
+            item.name = name;
+            item.quantity = quantity;
+            item.price = price;
+
+            if (supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('inventory').update({ name: item.name, quantity: item.quantity, price: item.price }).eq('id', item.id);
+                    if (error) {
+                        localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                    }
+                } catch (err) {
+                    console.error("Erro ao editar item no Supabase:", err);
+                    localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+                }
+            } else {
+                localStorage.setItem('cleanfoods_estoque', JSON.stringify(estoque));
+            }
+
+            renderEstoque();
+            closeEditEstoqueModal();
+            showToast('ITEM ATUALIZADO!');
+        }
+
+        // Combos Logic
+        let currentComboItems = [];
+        let currentComboSuggestedPrice = 0;
+        let editingComboId = null;
+
+        function populateComboSelect() {
+            const optionsContainer = document.getElementById('combo-marmita-options');
+            if (!optionsContainer) return;
+            optionsContainer.innerHTML = '';
+            document.getElementById('combo-marmita-select-value').value = '';
+            document.querySelector('#combo-marmita-btn span').textContent = 'Selecione um prato...';
+            
+            const activeDishes = dishes.filter(d => d.category !== 'Combos' && !getDeletedDishIds().includes(d.id));
+            activeDishes.forEach(dish => {
+                const div = document.createElement('div');
+                div.className = 'custom-select-option flex justify-between items-center p-2 hover:bg-cf-darkgray cursor-pointer border-b border-gray-800 text-sm';
+                div.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="font-bold text-white">${dish.name}</span>
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider">${dish.category === 'Gourmet' ? 'Linha Gourmet' : 'Linha ' + dish.category}</span>
+                    </div>
+                    <span class="text-cf-yellow font-mono whitespace-nowrap ml-4">R$ ${dish.priceP}</span>
+                `;
+                div.onclick = () => selectCustomOption(dish.id, dish.name, dish.priceP);
+                optionsContainer.appendChild(div);
+            });
+        }
+
+        function toggleCustomSelect() {
+            const dropdown = document.getElementById('combo-marmita-dropdown');
+            if (dropdown) dropdown.classList.toggle('hidden');
+        }
+
+        function filterCustomSelect() {
+            const query = document.getElementById('combo-marmita-search').value.toLowerCase();
+            const options = document.querySelectorAll('.custom-select-option');
+            options.forEach(opt => {
+                const text = opt.textContent.toLowerCase();
+                opt.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        function selectCustomOption(id, name, price) {
+            document.getElementById('combo-marmita-select-value').value = id;
+            document.querySelector('#combo-marmita-btn span').textContent = `${name} - R$ ${price}`;
+            toggleCustomSelect();
+        }
+
+        // Close dropdown if clicked outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('combo-marmita-dropdown');
+            const btn = document.getElementById('combo-marmita-btn');
+            if (dropdown && !dropdown.classList.contains('hidden') && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        function addMarmitaToCombo() {
+            const dishId = document.getElementById('combo-marmita-select-value').value;
+            const qtdInput = document.getElementById('combo-marmita-qtd');
+            
+            const qtd = parseInt(qtdInput.value);
+            
+            if (!dishId) return showToast('Selecione uma marmita.', true);
+            if (isNaN(qtd) || qtd <= 0) return showToast('Quantidade inválida.', true);
+            
+            const dish = dishes.find(d => d.id === dishId);
+            if (!dish) return;
+
+            const basePrice = parseFloat(dish.priceP.replace(',', '.'));
+            
+            currentComboItems.push({
+                dishName: dish.name,
+                quantity: qtd,
+                totalPrice: basePrice * qtd
+            });
+            
+            updateComboFormUI();
+        }
+
+        function removeComboItem(index) {
+            currentComboItems.splice(index, 1);
+            updateComboFormUI();
+        }
+
+        function updateComboFormUI() {
+            const list = document.getElementById('combo-items-list');
+            list.innerHTML = '';
+            currentComboSuggestedPrice = 0;
+
+            currentComboItems.forEach((item, index) => {
+                currentComboSuggestedPrice += item.totalPrice;
+                const li = document.createElement('li');
+                li.className = 'flex justify-between items-center border-b border-cf-gray/30 pb-1';
+                li.innerHTML = `
+                    <span>${item.quantity}x ${item.dishName}</span>
+                    <button onclick="removeComboItem(${index})" class="text-red-500 hover:text-red-400 ml-2"><i class="fa-solid fa-xmark"></i></button>
+                `;
+                list.appendChild(li);
+            });
+
+            document.getElementById('combo-preco-sugerido').textContent = `R$ ${currentComboSuggestedPrice.toFixed(2)}`;
+            if (currentComboItems.length > 0) {
+                document.getElementById('combo-preco-final').value = currentComboSuggestedPrice.toFixed(2);
+            } else {
+                document.getElementById('combo-preco-final').value = '';
+            }
+        }
+
+        let currentComboImage = '';
+        function handleComboFoto(input) {
+            if (input.files && input.files[0]) {
+                openCropper(input.files[0], 'combo');
+            }
+            input.value = '';
+        }
+
+        async function saveCombo() {
+            const name = document.getElementById('combo-nome').value.trim();
+            const phrase = document.getElementById('combo-descricao').value.trim();
+            const priceFinal = parseFloat(document.getElementById('combo-preco-final').value);
+
+            if (!name) return showToast('Preencha o nome do combo.', true);
+            if (currentComboItems.length === 0) return showToast('Adicione pelo menos uma marmita.', true);
+            if (isNaN(priceFinal) || priceFinal <= 0) return showToast('Preço final inválido.', true);
+
+            const ingredientsText = currentComboItems.map(i => `${i.quantity}x ${i.dishName}`).join(', ');
+            const finalDescription = phrase ? phrase + ' • ' + ingredientsText : ingredientsText;
+            
+            const newComboDish = {
+                id: editingComboId || ('combo-' + Date.now().toString(36) + Math.random().toString(36).substring(2)),
+                name: name,
+                category: 'Combos',
+                priceP: priceFinal.toFixed(2).replace('.', ','),
+                priceG: '—',
+                available: true,
+                image: currentComboImage,
+                description: finalDescription,
+                ingredients: currentComboItems,
+                nutrition: {}
+            };
+
+            if (editingComboId) {
+                const index = dishes.findIndex(d => d.id === editingComboId);
+                if (index > -1) {
+                    if (!currentComboImage && dishes[index].image) {
+                        newComboDish.image = dishes[index].image;
+                    }
+                    newComboDish.available = dishes[index].available !== false;
+                    dishes[index] = newComboDish;
+                } else {
+                    dishes.push(newComboDish);
+                }
+            } else {
+                dishes.push(newComboDish);
+            }
+
+            if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                try {
+                    const dbComboDish = {
+                        id: newComboDish.id,
+                        name: newComboDish.name,
+                        category: newComboDish.category,
+                        price_p: newComboDish.priceP,
+                        price_g: newComboDish.priceG,
+                        available: newComboDish.available,
+                        image: newComboDish.image,
+                        description: newComboDish.description,
+                        ingredients: newComboDish.ingredients,
+                        nutrition: newComboDish.nutrition
+                    };
+                    const { data, error } = await supabaseClient.from('dishes').upsert([dbComboDish], { onConflict: 'id' }).select();
+                    if (error) {
+                        console.error("Supabase upsert error:", error);
+                        if (error.code === '42703') {
+                            console.log("Tentando salvar sem colunas extras no Supabase...");
+                            const fallbackDish = {
+                                id: newComboDish.id,
+                                name: newComboDish.name,
+                                category: newComboDish.category,
+                                price_p: newComboDish.priceP,
+                                price_g: newComboDish.priceG
+                            };
+                            const fallbackRes = await supabaseClient.from('dishes').upsert([fallbackDish], { onConflict: 'id' }).select();
+                            if (fallbackRes.error) {
+                                showToast("Erro no Supabase: " + fallbackRes.error.message, true);
+                            } else if (!fallbackRes.data || fallbackRes.data.length === 0) {
+                                alert("O Supabase bloqueou a criação do Combo!\n\nVocê precisa ir no painel do Supabase, na tabela 'dishes', e adicionar uma 'Policy' (Regra RLS) permitindo o INSERT.");
+                            }
+                        } else {
+                            showToast("Erro no Supabase: " + error.message, true);
+                        }
+                    } else if (!data || data.length === 0) {
+                        // Silent failure due to RLS
+                        alert("O Supabase bloqueou a criação do Combo!\n\nVocê precisa ir no painel do Supabase, na tabela 'dishes', e adicionar uma 'Policy' (Regra RLS) permitindo o comando INSERT (inserção). Atualmente, a tabela só permite leitura ou atualização.");
+                    }
+                } catch (err) {
+                    console.error("Erro ao salvar combo no Supabase:", err);
+                    showToast("Erro: " + err.message, true);
+                }
+            }
+            // SEMPRE salva no localStorage para evitar perdas se o Supabase falhar silenciosamente (ex: RLS bloqueando)
+            localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+
+            // Reset form
+            document.getElementById('combo-nome').value = '';
+            document.getElementById('combo-descricao').value = '';
+            document.getElementById('combo-foto').value = '';
+            const textEl = document.getElementById('combo-foto-text');
+            textEl.textContent = 'Clique para adicionar foto';
+            textEl.classList.remove('text-cf-yellow');
+            textEl.classList.add('text-gray-400');
+            const previewImg = document.getElementById('combo-foto-preview');
+            if (previewImg) {
+                previewImg.src = '';
+                previewImg.classList.add('hidden');
+            }
+            currentComboImage = '';
+            editingComboId = null;
+            document.getElementById('save-combo-btn').innerHTML = '<i class="fa-solid fa-check"></i> Salvar Combo';
+            
+            document.getElementById('combo-marmita-qtd').value = 1;
+            currentComboItems = [];
+            updateComboFormUI();
+            
+            renderCombos();
+            renderDishesEditor();
+            showToast('COMBO SALVO COM SUCESSO!');
+        }
+
+        function editCombo(id) {
+            const combo = dishes.find(d => d.id === id);
+            if (!combo) return;
+
+            editingComboId = id;
+            document.getElementById('combo-nome').value = combo.name;
+            
+            let phrase = '';
+            if (combo.description) {
+                const parts = combo.description.split(' • ');
+                if (parts.length > 1) {
+                    phrase = parts[0];
+                } else if (!combo.description.match(/\\dx/)) {
+                    phrase = combo.description;
+                }
+            }
+            document.getElementById('combo-descricao').value = phrase;
+            
+            document.getElementById('combo-preco-final').value = combo.priceP.replace(',', '.');
+            currentComboImage = ''; 
+            const textEl = document.getElementById('combo-foto-text');
+            const previewImg = document.getElementById('combo-foto-preview');
+            if (combo.image) {
+                textEl.textContent = 'FOTO MANTIDA (Clique para alterar)';
+                textEl.classList.add('text-cf-yellow');
+                textEl.classList.remove('text-gray-400');
+                if (previewImg) {
+                    previewImg.src = combo.image;
+                    previewImg.classList.remove('hidden');
+                }
+            } else {
+                textEl.textContent = 'Clique para adicionar foto';
+                textEl.classList.remove('text-cf-yellow');
+                textEl.classList.add('text-gray-400');
+                if (previewImg) {
+                    previewImg.src = '';
+                    previewImg.classList.add('hidden');
+                }
+            }
+
+            currentComboItems = combo.ingredients || [];
+            updateComboFormUI();
+
+            const saveBtn = document.getElementById('save-combo-btn');
+            if (saveBtn) saveBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Atualizar Combo';
+
+            document.getElementById('combo-nome').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        async function toggleComboAvailability(dishId, isAvailable) {
+            const dish = dishes.find(d => d.id === dishId);
+            if (!dish) return;
+            
+            dish.available = isAvailable;
+            localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+            
+            if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                try {
+                    const { error } = await supabaseClient.from('dishes').update({
+                        available: isAvailable
+                    }).eq('id', dishId);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Erro ao atualizar disponibilidade do combo no Supabase:", err);
+                }
+            }
+            showToast(isAvailable ? 'COMBO ATIVADO!' : 'COMBO DESATIVADO!');
+            renderCombos(); // Re-render to ensure UI consistency if needed
+        }
+
+        function renderCombos() {
+            const tbody = document.getElementById('combos-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const combos = dishes.filter(d => d.category === 'Combos' && !getDeletedDishIds().includes(d.id));
+
+            if (combos.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="py-12 text-center text-gray-500 font-bold italic">
+                            <i class="fa-solid fa-layer-group text-3xl mb-3 block text-cf-gray"></i>
+                            <span>Nenhum combo cadastrado.</span>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            combos.forEach((combo) => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-cf-gray/20 hover:bg-cf-black/20 transition-colors';
+
+                tr.innerHTML = `
+                    <td class="py-4 px-4 font-bold uppercase text-cf-yellow flex items-center gap-3">
+                        <div class="w-12 h-12 bg-cf-darkgray rounded border border-cf-gray overflow-hidden flex-shrink-0 relative cursor-pointer" title="Alterar Foto">
+                            <img src="${combo.image || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E'}" class="w-full h-full object-cover">
+                            <label class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black/50 cursor-pointer">
+                                <i class="fa-solid fa-camera text-white text-lg drop-shadow-md"></i>
+                                <input type="file" accept="image/*" class="hidden" onchange="previewImage(this, '${combo.id}')">
+                            </label>
+                        </div>
+                        <div class="flex flex-col">
+                            <span>${combo.name}</span>
+                            ${combo.image ? `<button onclick="removeDirectDishImage('${combo.id}')" class="text-[10px] text-red-500 hover:underline text-left mt-1" title="Apagar Foto do Combo"><i class="fa-solid fa-trash-can mr-1"></i>Apagar Foto</button>` : ''}
+                        </div>
+                    </td>
+                    <td class="py-4 px-4 text-xs text-gray-400">${combo.description || ''}</td>
+                    <td class="py-4 px-4 text-center font-mono">R$ ${combo.priceP}</td>
+                    <td class="py-4 px-4 text-center flex items-center justify-center gap-3">
+                        <label class="relative inline-flex items-center cursor-pointer" title="Ativar/Desativar Combo">
+                            <input type="checkbox" onchange="toggleComboAvailability('${combo.id}', this.checked)" class="sr-only peer" ${combo.available !== false ? 'checked' : ''}>
+                            <div class="w-9 h-5 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                        <button onclick="editCombo('${combo.id}')" class="bg-cf-gray hover:bg-cf-yellow hover:text-cf-black text-white transition-colors px-2 py-1.5 rounded text-xs font-bold inline-flex items-center gap-1.5" title="Editar Combo">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </button>
+                        <button onclick="deleteDish('${combo.id}')" class="text-red-500 hover:text-red-400 transition-colors text-base" title="Excluir Combo">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
         // Orders Logic
         let orders = [];
         let activeOrderDetailId = null;
 
         async function loadOrders() {
-            if (supabaseClient) {
+            if (typeof supabaseClient !== 'undefined' && supabaseClient) {
                 try {
                     const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
                     if (error) throw error;

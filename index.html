@@ -837,6 +837,23 @@
 
 
 
+            <!-- Destaque COMBOS -->
+            <div id="combos-section" class="mb-20 relative">
+                <div class="text-center mb-10">
+                    <h2 class="font-impact text-5xl md:text-6xl text-cf-yellow uppercase inline-block relative transform -skew-x-6">
+                        Nossos Combos
+                        <div class="absolute -bottom-2 left-0 w-full h-1 bg-white"></div>
+                    </h2>
+                    <p class="font-body text-gray-300 mt-4 max-w-2xl mx-auto uppercase tracking-widest text-sm font-bold">
+                        Mais sabor, mais economia! Juntamos os favoritos para você.
+                    </p>
+                </div>
+                
+                <div id="menu-combos-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-body relative z-10">
+                    <!-- Dynamic Combos -->
+                </div>
+            </div>
+
             <div class="menu-grid grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Categoria: Frango -->
                 <div
@@ -1025,7 +1042,7 @@
                     </a>
                     <div class="text-lg font-body text-gray-400 mt-4 flex items-center font-bold">
                         <i class="fa-solid fa-location-dot text-xl mr-4 text-white"></i> <span
-                            id="val-address-text">Ipiranga, São Paulo - SP</span>
+                            id="val-address-text">Avenida Nazaré 683, Ipiranga, São Paulo - SP</span>
                     </div>
                 </div>
             </div>
@@ -1135,7 +1152,7 @@
                 <div id="dish-detail-category" class="text-cf-yellow font-bold text-xs uppercase mb-1 tracking-widest">
                 </div>
                 <h3 id="dish-detail-name" class="font-impact text-2xl text-white uppercase mb-4 leading-tight"></h3>
-                <p class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1">
+                <p id="dish-detail-description" class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1 whitespace-pre-wrap">
                     Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o seu
                     melhor desempenho.
                 </p>
@@ -1146,7 +1163,7 @@
                 </div>
 
                 <!-- Nutrition Table -->
-                <div class="mt-4 border border-cf-gray rounded overflow-hidden flex-shrink-0">
+                <div id="nutrition-container" class="mt-4 border border-cf-gray rounded overflow-hidden flex-shrink-0">
                     <div
                         class="w-full bg-cf-darkgray text-white font-impact text-sm tracking-wider uppercase p-3 flex justify-between items-center">
                         <span><i class="fa-solid fa-leaf text-cf-yellow mr-2"></i> Tabela Nutricional</span>
@@ -1574,16 +1591,19 @@
         }
 
         function renderMenu() {
+            const combosList = document.getElementById('menu-combos-list');
             const frangoList = document.getElementById('menu-frango-list');
             const patinhoList = document.getElementById('menu-patinho-list');
             const gourmetList = document.getElementById('menu-gourmet-list');
             const salgadosList = document.getElementById('menu-salgados-list');
 
+            if (combosList) combosList.innerHTML = '';
             if (frangoList) frangoList.innerHTML = '';
             if (patinhoList) patinhoList.innerHTML = '';
             if (gourmetList) gourmetList.innerHTML = '';
             if (salgadosList) salgadosList.innerHTML = '';
 
+            let countCombos = 0;
             let countFrango = 0;
             let countPatinho = 0;
             let countGourmet = 0;
@@ -1596,7 +1616,40 @@
                 const imgSrc = dish.image || placeholderImg;
                 const priceOptionsHTML = renderDishPriceOptions(dish);
 
-                if (dish.category === 'Frango' && frangoList && countFrango < 4) {
+                if (dish.category === 'Combos' && combosList && countCombos < 4) {
+                    countCombos++;
+                    const card = document.createElement('div');
+                    card.className = 'bg-cf-black border border-cf-yellow rounded-lg overflow-hidden flex flex-col group hover:border-yellow-400 transition-colors cursor-hover shadow-xl shadow-cf-yellow/10';
+
+                    let comboPhrase = 'Uma seleção perfeita para os seus melhores dias.';
+                    if (dish.description) {
+                        const parts = dish.description.split(' • ');
+                        if (parts.length > 1) {
+                            comboPhrase = parts[0];
+                        } else if (!dish.description.includes('×') && !dish.description.includes('1x') && !dish.description.includes('2x')) {
+                            comboPhrase = dish.description;
+                        }
+                    }
+
+                    card.innerHTML = `
+                        <div class="h-48 bg-cf-darkgray overflow-hidden relative cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                            <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-cf-black via-transparent to-transparent pointer-events-none"></div>
+                            <div class="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-cf-yellow text-cf-black text-xs font-bold px-3 py-1.5 uppercase rounded shadow-lg z-10 animate-pulse"><i class="fa-solid fa-crown mr-1"></i> Combo</div>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between items-center bg-gradient-to-b from-cf-black to-[#0a0a0a]">
+                            <div class="text-xl font-impact text-cf-yellow uppercase mb-2 tracking-wide">${dish.name}</div>
+                            <div class="text-sm text-gray-300 mb-5 italic font-body text-center line-clamp-3 leading-relaxed">"${comboPhrase}"</div>
+                            <button onclick="openDishDetail('${dish.id}')" class="w-full bg-transparent border-2 border-cf-yellow text-cf-yellow font-bold uppercase text-xs px-4 py-3 rounded hover:bg-cf-yellow hover:text-cf-black transition-all duration-300 mb-4 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(255,204,0,0.1)] hover:shadow-[0_0_20px_rgba(255,204,0,0.3)]">
+                                <i class="fa-solid fa-gift text-lg"></i> Ver Itens do Combo
+                            </button>
+                            <div class="mt-auto w-full pt-4 border-t border-gray-800/50">
+                                ${priceOptionsHTML}
+                            </div>
+                        </div>
+                    `;
+                    combosList.appendChild(card);
+                } else if (dish.category === 'Frango' && frangoList && countFrango < 4) {
                     countFrango++;
                     const card = document.createElement('div');
                     card.className = 'bg-cf-black border border-gray-700 rounded overflow-hidden flex flex-col group hover:border-white transition-colors cursor-hover';
@@ -1678,6 +1731,15 @@
                     salgadosList.appendChild(card);
                 }
             });
+
+            const combosSection = document.getElementById('combos-section');
+            if (combosSection) {
+                if (countCombos === 0) {
+                    combosSection.classList.add('hidden');
+                } else {
+                    combosSection.classList.remove('hidden');
+                }
+            }
         }
 
         // Supabase Database helpers
@@ -1700,16 +1762,24 @@
                     const { data, error } = await supabaseClient.from('dishes').select('*');
                     if (error) throw error;
                     if (data && data.length > 0) {
-                        dishes = data.filter(d => !deletedIds.includes(d.id)).map(d => ({
-                            id: d.id,
-                            name: d.name,
-                            category: d.category,
-                            priceP: d.price_p || d.priceP || '0,00',
-                            priceG: d.price_g || d.priceG || '0,00',
-                            available: d.available !== false,
-                            image: d.image || '',
-                            nutrition: d.nutrition
-                        })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
+                        const localDishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || [];
+                        dishes = data.filter(d => !deletedIds.includes(d.id)).map(d => {
+                            const localD = localDishes.find(ld => ld.id === d.id);
+                            return {
+                                id: d.id,
+                                name: d.name,
+                                category: d.category,
+                                priceP: d.price_p || d.priceP || '0,00',
+                                priceG: d.price_g || d.priceG || '0,00',
+                                available: d.available !== false,
+                                image: (localD && localD.image) ? localD.image : (d.image || ''),
+                                description: d.description || (d.nutrition ? d.nutrition.description : '') || '',
+                                ingredients: d.ingredients || (d.nutrition ? d.nutrition.ingredients : []) || [],
+                                nutrition: d.nutrition || (localD && localD.nutrition) || { description: '', ingredients: [] }
+                            };
+                        });
+                        const localOnlyDishes = localDishes.filter(ld => !data.some(d => d.id === ld.id) && !deletedIds.includes(ld.id));
+                        dishes = [...dishes, ...localOnlyDishes].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
                         dishes = ensureSalgados(dishes);
                     } else {
                         // Seed database
@@ -3215,23 +3285,56 @@
             const imgEl = document.getElementById('dish-detail-img');
             imgEl.src = dish.image || placeholderImg;
 
-            document.getElementById('dish-detail-category').innerText = dish.category === 'Gourmet' ? 'Linha Gourmet' : 'Linha ' + dish.category;
+            document.getElementById('dish-detail-category').innerText = dish.category === 'Gourmet' ? 'Linha Gourmet' : (dish.category === 'Combos' ? 'Combo' : 'Linha ' + dish.category);
             document.getElementById('dish-detail-name').innerText = dish.name;
-
-            const pContainer = document.getElementById('dish-detail-p');
-            if (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') {
-                pContainer.innerHTML = `<span class="text-gray-400 font-bold">P (225g)</span>
-                    <button onclick="addToCart('${dish.id}', 'P'); closeDishDetail();" class="text-white bg-cf-gray px-4 py-2 rounded-sm cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
-            } else {
-                pContainer.innerHTML = `<span class="text-gray-500 font-bold">P (225g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+            
+            const descEl = document.getElementById('dish-detail-description');
+            if (descEl) {
+                if (dish.category === 'Combos') {
+                    let descText = dish.description || 'Combo especial Cleanfoods';
+                    if (descText.includes(' • ')) {
+                        const parts = descText.split(' • ');
+                        const phrase = parts[0];
+                        const items = parts[1].split(', ').map(item => `<li><i class="fa-solid fa-check text-cf-yellow mr-2"></i>${item}</li>`).join('');
+                        descEl.innerHTML = `<div class="mb-3 font-bold text-white">${phrase}</div><ul class="text-left space-y-1 text-xs text-gray-300 font-body">${items}</ul>`;
+                    } else if (descText.match(/\\dx/)) {
+                        const items = descText.split(', ').map(item => `<li><i class="fa-solid fa-check text-cf-yellow mr-2"></i>${item}</li>`).join('');
+                        descEl.innerHTML = `<ul class="text-left space-y-1 text-xs text-gray-300 font-body">${items}</ul>`;
+                    } else {
+                        descEl.innerText = descText;
+                    }
+                } else {
+                    descEl.innerText = 'Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o seu melhor desempenho.';
+                }
             }
 
+            const pContainer = document.getElementById('dish-detail-p');
             const gContainer = document.getElementById('dish-detail-g');
-            if (dish.priceG && dish.priceG !== '—' && dish.priceG !== '') {
-                gContainer.innerHTML = `<span class="text-cf-yellow font-bold">G (450g)</span>
-                    <button onclick="addToCart('${dish.id}', 'G'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceG} <i class="fa-solid fa-cart-plus"></i></button>`;
+            const pGroup = pContainer.parentElement;
+            const nutritionContainer = document.getElementById('nutrition-container');
+
+            if (dish.category === 'Combos') {
+                pContainer.innerHTML = `<span class="text-cf-yellow font-bold text-sm">Tamanho Único</span>
+                    <button onclick="addToCart('${dish.id}', 'Único'); closeDishDetail();" class="text-cf-black bg-cf-yellow px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
+                gContainer.classList.add('hidden');
+                if (nutritionContainer) nutritionContainer.classList.add('hidden');
             } else {
-                gContainer.innerHTML = `<span class="text-gray-500 font-bold">G (450g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+                gContainer.classList.remove('hidden');
+                if (nutritionContainer) nutritionContainer.classList.remove('hidden');
+
+                if (dish.priceP && dish.priceP !== '—' && dish.priceP !== '') {
+                    pContainer.innerHTML = `<span class="text-gray-400 font-bold">P (225g)</span>
+                        <button onclick="addToCart('${dish.id}', 'P'); closeDishDetail();" class="text-white bg-cf-gray px-4 py-2 rounded-sm cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
+                } else {
+                    pContainer.innerHTML = `<span class="text-gray-500 font-bold">P (225g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+                }
+
+                if (dish.priceG && dish.priceG !== '—' && dish.priceG !== '') {
+                    gContainer.innerHTML = `<span class="text-cf-yellow font-bold">G (450g)</span>
+                        <button onclick="addToCart('${dish.id}', 'G'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceG} <i class="fa-solid fa-cart-plus"></i></button>`;
+                } else {
+                    gContainer.innerHTML = `<span class="text-gray-500 font-bold">G (450g)</span><span class="text-gray-600 font-bold text-sm">—</span>`;
+                }
             }
 
             const defaultNutrition = {
@@ -3331,7 +3434,13 @@
 
             // Load latest dishes from Supabase in background
             if (typeof loadDishes === 'function') {
-                loadDishes().then(() => renderMenu()).catch(e => console.warn(e));
+                const _oldStr = JSON.stringify(dishes);
+                loadDishes().then(() => {
+                    if (JSON.stringify(dishes) !== _oldStr) {
+                        renderMenu();
+                        if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+                    }
+                }).catch(e => console.warn(e));
             }
 
             try {

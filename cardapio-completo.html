@@ -397,6 +397,10 @@
                     class="bg-cf-yellow text-cf-black font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-yellow hover:bg-white hover:text-cf-black hover:border-white transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
                     Todos
                 </button>
+                <button onclick="filterCategory('Combos')" id="filter-btn-Combos"
+                    class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
+                    Combos
+                </button>
                 <button onclick="filterCategory('Frango')" id="filter-btn-Frango"
                     class="bg-cf-darkgray text-white font-impact tracking-wider px-3 sm:px-6 py-2 sm:py-3 border-2 border-cf-gray hover:bg-cf-yellow hover:text-cf-black hover:border-cf-yellow transition-all uppercase text-xs sm:text-base rounded-sm cursor-hover shadow-lg">
                     Linha Frango
@@ -451,7 +455,7 @@
                     </a>
                     <div class="text-lg font-body text-gray-400 mt-4 flex items-center font-bold">
                         <i class="fa-solid fa-location-dot text-xl mr-4 text-white"></i> <span
-                            id="val-address-text">Ipiranga, São Paulo - SP</span>
+                            id="val-address-text">Avenida Nazaré 683, Ipiranga, São Paulo - SP</span>
                     </div>
                 </div>
             </div>
@@ -569,7 +573,7 @@
                         class="text-cf-yellow font-bold text-xs uppercase mb-1 tracking-widest">
                     </div>
                     <h3 id="dish-detail-name" class="font-impact text-2xl text-white uppercase mb-4 leading-tight"></h3>
-                    <p class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1">
+                    <p id="dish-detail-description" class="font-body text-gray-300 text-sm font-semibold mb-6 flex-1 whitespace-pre-wrap">
                         Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o
                         seu
                         melhor desempenho.
@@ -581,7 +585,7 @@
                     </div>
 
                     <!-- Nutrition Table -->
-                    <div class="mt-4 border border-cf-gray rounded overflow-hidden flex-shrink-0">
+                    <div id="nutrition-container" class="mt-4 border border-cf-gray rounded overflow-hidden flex-shrink-0">
                         <div
                             class="w-full bg-cf-darkgray text-white font-impact text-sm tracking-wider uppercase p-3 flex justify-between items-center">
                             <span><i class="fa-solid fa-leaf text-cf-yellow mr-2"></i> Tabela Nutricional</span>
@@ -1006,6 +1010,8 @@
                                 priceG: d.price_g || d.priceG || '0,00',
                                 available: d.available !== false,
                                 image: (localD && localD.image) ? localD.image : (d.image || ''),
+                                description: d.description || (d.nutrition ? d.nutrition.description : '') || '',
+                                ingredients: d.ingredients || (d.nutrition ? d.nutrition.ingredients : []) || [],
                                 nutrition: d.nutrition || (localD && localD.nutrition) || { ...defaultNutrition }
                             };
                         }).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR', { numeric: true }));
@@ -1034,6 +1040,16 @@
                 dishes = JSON.parse(localStorage.getItem('cleanfoods_dishes_v2')) || defaultDishes;
                 dishes = dishes.filter(d => !deletedIds.includes(d.id));
                 dishes = ensureSalgados(dishes);
+            }
+
+            const combos = dishes.filter(d => d.category === 'Combos' && d.available !== false && !deletedIds.includes(d.id));
+            const filterBtnCombos = document.getElementById('filter-btn-Combos');
+            if (filterBtnCombos) {
+                if (combos.length === 0) {
+                    filterBtnCombos.classList.add('hidden');
+                } else {
+                    filterBtnCombos.classList.remove('hidden');
+                }
             }
         }
 
@@ -2563,7 +2579,7 @@
             activeCategory = category;
 
             // Highlight active button
-            const categories = ['Todos', 'Frango', 'Patinho', 'Gourmet', 'Salgados'];
+            const categories = ['Todos', 'Combos', 'Frango', 'Patinho', 'Gourmet', 'Salgados'];
             categories.forEach(cat => {
                 const btn = document.getElementById('filter-btn-' + cat);
                 if (btn) {
@@ -2587,6 +2603,17 @@
         }
 
         function renderDishPriceOptionsFull(dish) {
+            if (dish.category === 'Combos') {
+                const comboPrice = dish.priceP;
+                return `
+                    <div class="flex justify-center items-center text-sm font-semibold w-full">
+                        <span class="bg-cf-yellow text-cf-black px-4 py-1.5 rounded-sm font-bold text-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all inline-flex items-center gap-1.5 w-full justify-center shadow-md" onclick="addToCart('${dish.id}', 'Único')">
+                            ADICIONAR POR R$ ${comboPrice} <i class="fa-solid fa-basket-shopping ml-1 text-xs"></i>
+                        </span>
+                    </div>
+                `;
+            }
+
             const hasP = isValidPrice(dish.priceP);
             const hasG = isValidPrice(dish.priceG);
 
@@ -2641,26 +2668,38 @@
                 const placeholderImg = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23666%22%3E%3Cpath d=%22M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z%22/%3E%3C/svg%3E';
                 const imgSrc = dish.image || placeholderImg;
 
-                const card = document.createElement('div');
-                card.className = "bg-cf-darkgray border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between hover:-translate-y-1.5 transition-transform duration-300 shadow-xl cursor-hover group";
+                let comboPhrase = 'Uma seleção perfeita para os seus melhores dias.';
+                if (isCombo && dish.description) {
+                    const parts = dish.description.split(' • ');
+                    if (parts.length > 1) {
+                        comboPhrase = parts[0];
+                    } else if (!dish.description.includes('×') && !dish.description.includes('1x') && !dish.description.includes('2x')) {
+                        comboPhrase = dish.description;
+                    }
+                }
 
-                let groupLabel = 'Linha ' + dish.category;
-                if (dish.category === 'Gourmet') groupLabel = 'Linha Gourmet';
-                if (dish.category === 'Salgados') groupLabel = 'Salgados e Doces Proteicos';
-
-                const priceHTML = renderDishPriceOptionsFull(dish);
+                card.className = isCombo 
+                    ? "bg-cf-black border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between hover:-translate-y-1.5 transition-transform duration-300 shadow-xl shadow-cf-yellow/10 cursor-hover group"
+                    : "bg-cf-darkgray border border-cf-yellow rounded-lg overflow-hidden flex flex-col justify-between hover:-translate-y-1.5 transition-transform duration-300 shadow-xl cursor-hover group";
 
                 card.innerHTML = `
-                    <div class="h-48 bg-cf-black overflow-hidden relative border-b-4 border-cf-yellow cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
-                        <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-3 left-3 bg-cf-yellow text-cf-black text-[10px] uppercase font-bold px-2 py-1 rounded shadow pointer-events-none">${groupLabel}</div>
+                    <div class="h-48 ${isCombo ? 'bg-cf-darkgray' : 'bg-cf-black'} overflow-hidden relative border-b-4 border-cf-yellow cursor-pointer group-hover:opacity-90" onclick="openDishDetail('${dish.id}')">
+                        <img src="${imgSrc}" class="w-full h-full object-cover group-hover:scale-110 transition-transform ${isCombo ? 'duration-700' : 'duration-500'}">
+                        ${isCombo ? '<div class="absolute inset-0 bg-gradient-to-t from-cf-black via-transparent to-transparent pointer-events-none"></div>' : ''}
+                        <div class="absolute top-3 ${isCombo ? 'right-3 bg-gradient-to-r from-yellow-400 to-cf-yellow text-cf-black text-xs px-3 py-1.5 animate-pulse' : 'left-3 bg-cf-yellow text-cf-black text-[10px] px-2 py-1'} uppercase font-bold rounded shadow-lg pointer-events-none z-10">${isCombo ? '<i class="fa-solid fa-crown mr-1"></i> Combo' : (dish.category === 'Gourmet' ? 'Linha Gourmet' : 'Linha ' + dish.category)}</div>
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
                             <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity transform scale-50 group-hover:scale-100 duration-300"></i>
                         </div>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <h4 class="font-impact text-2xl text-white uppercase mb-4">${dish.name}</h4>
-                        <div class="pt-4 border-t border-gray-800 mt-auto">
+                    <div class="p-5 flex-1 flex flex-col justify-between ${isCombo ? 'text-center items-center bg-gradient-to-b from-cf-black to-[#0a0a0a]' : ''}">
+                        <h4 class="font-impact ${isCombo ? 'text-xl' : 'text-2xl'} text-white uppercase mb-2 ${isCombo ? 'text-cf-yellow tracking-wide' : ''}">${dish.name}</h4>
+                        ${isCombo ? `
+                            <div class="text-sm text-gray-300 mb-5 italic font-body text-center line-clamp-3 leading-relaxed">"${comboPhrase}"</div>
+                            <button onclick="openDishDetail('${dish.id}')" class="w-full bg-transparent border-2 border-cf-yellow text-cf-yellow font-bold uppercase text-xs px-4 py-3 rounded hover:bg-cf-yellow hover:text-cf-black transition-all duration-300 mb-4 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(255,204,0,0.1)] hover:shadow-[0_0_20px_rgba(255,204,0,0.3)]">
+                                <i class="fa-solid fa-gift text-lg"></i> Ver Itens do Combo
+                            </button>
+                        ` : ''}
+                        <div class="${isCombo ? 'mt-auto w-full pt-4 border-t border-gray-800/50' : 'pt-4 border-t border-gray-800 mt-auto'}">
                             ${priceHTML}
                         </div>
                     </div>
@@ -2678,29 +2717,59 @@
             const imgEl = document.getElementById('dish-detail-img');
             imgEl.src = dish.image || placeholderImg;
 
-            document.getElementById('dish-detail-category').innerText = dish.category === 'Gourmet' ? 'Linha Gourmet' : 'Linha ' + dish.category;
+            document.getElementById('dish-detail-category').innerText = dish.category === 'Gourmet' ? 'Linha Gourmet' : (dish.category === 'Combos' ? 'Combo' : 'Linha ' + dish.category);
             document.getElementById('dish-detail-name').innerText = dish.name;
+            
+            const descEl = document.getElementById('dish-detail-description');
+            if (descEl) {
+                if (dish.category === 'Combos') {
+                    let descText = dish.description || 'Combo especial Cleanfoods';
+                    if (descText.includes(' • ')) {
+                        const parts = descText.split(' • ');
+                        const phrase = parts[0];
+                        const items = parts[1].split(', ').map(item => `<li><i class="fa-solid fa-check text-cf-yellow mr-2"></i>${item}</li>`).join('');
+                        descEl.innerHTML = `<div class="mb-3 font-bold text-white">${phrase}</div><ul class="text-left space-y-1 text-xs text-gray-300 font-body">${items}</ul>`;
+                    } else if (descText.match(/\\dx/)) {
+                        const items = descText.split(', ').map(item => `<li><i class="fa-solid fa-check text-cf-yellow mr-2"></i>${item}</li>`).join('');
+                        descEl.innerHTML = `<ul class="text-left space-y-1 text-xs text-gray-300 font-body">${items}</ul>`;
+                    } else {
+                        descEl.innerText = descText;
+                    }
+                } else {
+                    descEl.innerText = 'Refeição ultracongelada com ingredientes de verdade. Sem glúten, sem lactose e preparada para o seu melhor desempenho.';
+                }
+            }
 
             const pContainer = document.getElementById('dish-detail-p');
             const gContainer = document.getElementById('dish-detail-g');
+            const nutritionContainer = document.getElementById('nutrition-container');
 
-            const hasP = isValidPrice(dish.priceP);
-            const hasG = isValidPrice(dish.priceG);
-
-            if (hasP && hasG) {
+            if (dish.category === 'Combos') {
                 pContainer.style.display = 'flex';
-                pContainer.innerHTML = `<span class="text-gray-400 font-bold">P (225g)</span>
-                    <button onclick="addToCart('${dish.id}', 'P'); closeDishDetail();" class="text-white bg-cf-gray px-4 py-2 rounded-sm cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
-                gContainer.style.display = 'flex';
-                gContainer.innerHTML = `<span class="text-cf-yellow font-bold">G (450g)</span>
-                    <button onclick="addToCart('${dish.id}', 'G'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceG} <i class="fa-solid fa-cart-plus"></i></button>`;
-            } else {
-                const singlePrice = hasP ? dish.priceP : (hasG ? dish.priceG : '');
-                const singleSize = hasP ? 'P' : 'G';
-                pContainer.style.display = 'flex';
-                pContainer.innerHTML = `<span class="text-gray-300 font-bold">Tamanho Único</span>
-                    <button onclick="addToCart('${dish.id}', '${singleSize}'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${singlePrice} <i class="fa-solid fa-cart-plus"></i></button>`;
+                pContainer.innerHTML = `<span class="text-cf-yellow font-bold text-sm">Tamanho Único</span>
+                    <button onclick="addToCart('${dish.id}', 'Único'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
                 gContainer.style.display = 'none';
+                if (nutritionContainer) nutritionContainer.style.display = 'none';
+            } else {
+                if (nutritionContainer) nutritionContainer.style.display = 'block';
+                const hasP = isValidPrice(dish.priceP);
+                const hasG = isValidPrice(dish.priceG);
+
+                if (hasP && hasG) {
+                    pContainer.style.display = 'flex';
+                    pContainer.innerHTML = `<span class="text-gray-400 font-bold">P (225g)</span>
+                        <button onclick="addToCart('${dish.id}', 'P'); closeDishDetail();" class="text-white bg-cf-gray px-4 py-2 rounded-sm cursor-pointer hover:bg-cf-yellow hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceP} <i class="fa-solid fa-cart-plus"></i></button>`;
+                    gContainer.style.display = 'flex';
+                    gContainer.innerHTML = `<span class="text-cf-yellow font-bold">G (450g)</span>
+                        <button onclick="addToCart('${dish.id}', 'G'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${dish.priceG} <i class="fa-solid fa-cart-plus"></i></button>`;
+                } else {
+                    const singlePrice = hasP ? dish.priceP : (hasG ? dish.priceG : '');
+                    const singleSize = hasP ? 'P' : 'G';
+                    pContainer.style.display = 'flex';
+                    pContainer.innerHTML = `<span class="text-gray-300 font-bold">Tamanho Único</span>
+                        <button onclick="addToCart('${dish.id}', '${singleSize}'); closeDishDetail();" class="bg-cf-yellow text-cf-black px-4 py-2 rounded-sm cursor-pointer hover:bg-white hover:text-cf-black transition-all font-bold text-sm inline-flex items-center gap-2">R$ ${singlePrice} <i class="fa-solid fa-cart-plus"></i></button>`;
+                    gContainer.style.display = 'none';
+                }
             }
 
             const n = dish.nutrition || { ...defaultNutrition };
@@ -2871,9 +2940,13 @@
             });
 
             // Load fresh data from Supabase in background
+            const _oldStr = JSON.stringify(dishes);
             loadDishes().then(() => {
-                renderDishesGrid();
-                localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+                if (JSON.stringify(dishes) !== _oldStr) {
+                    renderDishesGrid();
+                    localStorage.setItem('cleanfoods_dishes_v2', JSON.stringify(dishes));
+                    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+                }
             });
 
             // Load other configs asynchronously
