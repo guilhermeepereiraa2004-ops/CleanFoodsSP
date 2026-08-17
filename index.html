@@ -1062,7 +1062,8 @@
 
         <div
             class="text-center mt-20 pt-6 pb-6 border-t border-gray-800 font-body text-xs text-gray-600 font-semibold tracking-widest uppercase">
-            © 2026 Cleanfoods SP. Todos os direitos reservados. Sem glúten, sem lactose.
+            © 2026 Cleanfoods SP. Todos os direitos reservados. Sem glúten, sem lactose.<br>
+            CNPJ: 66.719.007/0001-76
             <div class="mt-4 text-[11px] tracking-widest">
                 <a href="https://www.grpsantana.com.br/" target="_blank"
                     class="text-gray-300 hover:text-white transition-colors cursor-hover">
@@ -3533,8 +3534,14 @@
 
             function checkFloatBtn() {
                 const heroRect = heroSection.getBoundingClientRect();
-                // Show button when hero section is mostly out of view
-                if (heroRect.bottom < window.innerHeight / 2) {
+                const footer = document.querySelector('footer');
+                const footerRect = footer ? footer.getBoundingClientRect() : { top: window.innerHeight * 2 };
+                
+                // Show button when hero section is mostly out of view AND footer is not in view
+                const isHeroOut = heroRect.bottom < window.innerHeight / 2;
+                const isFooterInView = footerRect.top <= window.innerHeight;
+
+                if (isHeroOut && !isFooterInView) {
                     floatBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-24', 'scale-75');
                     floatBtn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0', 'scale-100');
                 } else {
