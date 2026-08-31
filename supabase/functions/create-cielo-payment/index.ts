@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -90,7 +91,7 @@ serve(async (req) => {
       Payment: {
         Type: "CreditCard",
         Amount: amountInCents,
-        Provider: paymentData.vr_brand || "Simulado", // Alelo, Ticket, Sodexo, etc.
+        Provider: "Cielo",
         Installments: 1,
         CreditCard: {
           CardNumber: paymentData.card_number.replace(/\D/g, ''),

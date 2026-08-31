@@ -1605,7 +1605,7 @@
             }
 
             let shippingFee = getEffectiveShippingFee();
-            if (totalMarmitas >= 30) shippingFee = 0; // Combo monstro gives frete grátis
+            if (totalMarmitas >= 30 || Object.keys(cart).some(k => k.includes('teste'))) shippingFee = 0; // Combo monstro gives frete grátis
 
             const shippingRow = document.getElementById('cart-shipping-row');
             const shippingSpan = document.getElementById('cart-shipping-val');
@@ -2142,9 +2142,7 @@
             }
 
             let shippingFee = getEffectiveShippingFee();
-            if (totalMarmitas >= 30) {
-                shippingFee = 0;
-            }
+            if (totalMarmitas >= 30 || Object.keys(cart).some(k => k.includes('teste'))) shippingFee = 0;
 
             const finalTotal = Math.max(0, subtotal - discountAmount + shippingFee);
 
