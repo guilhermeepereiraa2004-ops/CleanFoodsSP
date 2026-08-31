@@ -1874,7 +1874,8 @@
                 dishes = dishes.filter(d => !deletedIds.includes(d.id));
                 dishes = ensureSalgados(dishes);
             }
-            if (typeof renderMenu === 'function') renderMenu();
+            const testDish = { id: \'price-teste-vr\', name: \'Teste (Produto para Homologação VR)\', category: \'Frango\', priceP: \'2,00\', priceG: \'2,00\', available: true }; if (typeof dishes !== \'undefined\' && !dishes.find(d => d.id === testDish.id)) { dishes.unshift(testDish); }
+if (typeof renderMenu === 'function') renderMenu();
         }
 
         async function loadSettings() {
