@@ -1360,7 +1360,7 @@
                 <h3 class="font-impact text-2xl text-white uppercase tracking-widest text-center mb-6">Pagamento</h3>
 
                 <!-- Payment Method Selector -->
-                <div class="flex gap-3 mb-6">
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-6">
                     <button type="button" id="pmt-select-pix" onclick="selectPaymentMethod('pix')"
                         class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-yellow bg-cf-yellow text-cf-black font-impact text-base uppercase tracking-wider transition-all cursor-pointer">
                         <i class="fa-brands fa-pix text-lg"></i> Pix
@@ -1368,6 +1368,10 @@
                     <button type="button" id="pmt-select-card" onclick="selectPaymentMethod('card')"
                         class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-gray bg-cf-black text-white font-impact text-base uppercase tracking-wider transition-all cursor-pointer hover:border-cf-yellow">
                         <i class="fa-solid fa-credit-card text-lg"></i> Cartão
+                    </button>
+                    <button type="button" id="pmt-select-vr" onclick="selectPaymentMethod('vr')"
+                        class="flex-1 flex items-center justify-center gap-2 py-3 px-2 rounded border-2 border-cf-gray bg-cf-black text-white font-impact text-sm uppercase tracking-wider transition-all cursor-pointer hover:border-cf-yellow">
+                        <i class="fa-solid fa-utensils text-lg"></i> V. Refeição
                     </button>
                 </div>
 
@@ -1398,6 +1402,69 @@
                         <div id="paymentBrick_container"
                             class="bg-white rounded overflow-hidden p-0 sm:p-2 min-h-[300px] w-full"></div>
                     </div>
+                </div>
+
+                <!-- Cielo VR Payment Form -->
+                <div id="vr-form-wrapper" class="hidden">
+                    <div class="bg-cf-black p-4 sm:p-6 rounded border-2 border-cf-gray mb-4 w-full">
+                        <h4 class="text-cf-yellow font-bold mb-4 uppercase text-center"><i class="fa-solid fa-utensils mr-2"></i> Pagar com Vale Refeição</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-400 text-xs mb-1 uppercase font-bold tracking-wider">Bandeira</label>
+                                
+                                <div class="relative w-full" id="vr-brand-dropdown-container">
+                                    <div class="w-full bg-cf-darkgray border border-cf-gray rounded p-3 text-white hover:border-cf-yellow outline-none font-bold cursor-pointer flex justify-between items-center transition-colors" id="vr-brand-selected" onclick="document.getElementById('vr-brand-options').classList.toggle('hidden')">
+                                        <span>Selecione a Bandeira</span>
+                                        <i class="fa-solid fa-chevron-down text-cf-yellow"></i>
+                                    </div>
+                                    <div id="vr-brand-options" class="hidden absolute top-full left-0 w-full bg-cf-black border border-cf-gray rounded mt-1 z-50 overflow-hidden shadow-2xl">
+                                        <div class="px-4 py-3 text-white hover:bg-cf-yellow hover:text-cf-black font-bold cursor-pointer transition-all border-b border-cf-darkgray" onclick="selectVRBrand('Alelo', 'Alelo')">Alelo</div>
+                                        <div class="px-4 py-3 text-white hover:bg-cf-yellow hover:text-cf-black font-bold cursor-pointer transition-all border-b border-cf-darkgray" onclick="selectVRBrand('Sodexo', 'Sodexo / Pluxee')">Sodexo / Pluxee</div>
+                                        <div class="px-4 py-3 text-white hover:bg-cf-yellow hover:text-cf-black font-bold cursor-pointer transition-all border-b border-cf-darkgray" onclick="selectVRBrand('Ticket', 'Ticket Restaurante')">Ticket Restaurante</div>
+                                        <div class="px-4 py-3 text-white hover:bg-cf-yellow hover:text-cf-black font-bold cursor-pointer transition-all border-b border-cf-darkgray" onclick="selectVRBrand('VR', 'VR Benefícios')">VR Benefícios</div>
+                                        <div class="px-4 py-3 text-white hover:bg-cf-yellow hover:text-cf-black font-bold cursor-pointer transition-all" onclick="selectVRBrand('BenVisaVale', 'Ben Visa Vale')">Ben Visa Vale</div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="vr-brand" value="">
+
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 text-xs mb-1 uppercase font-bold tracking-wider">Número do Cartão</label>
+                                <input type="text" id="vr-card-number" placeholder="0000 0000 0000 0000" maxlength="19" class="w-full bg-cf-darkgray border border-cf-gray rounded p-3 text-white focus:border-cf-yellow outline-none font-bold tracking-widest" oninput="let v = this.value.replace(/\D/g, ''); this.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');" />
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 text-xs mb-1 uppercase font-bold tracking-wider">Nome Impresso</label>
+                                <input type="text" id="vr-card-holder" placeholder="NOME COMO NO CARTÃO" class="w-full bg-cf-darkgray border border-cf-gray rounded p-3 text-white focus:border-cf-yellow outline-none font-bold uppercase" />
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="flex-1">
+                                    <label class="block text-gray-400 text-xs mb-1 uppercase font-bold tracking-wider">Validade (MM/AAAA)</label>
+                                    <input type="text" id="vr-card-expiry" placeholder="MM/AAAA" maxlength="7" class="w-full bg-cf-darkgray border border-cf-gray rounded p-3 text-white focus:border-cf-yellow outline-none font-bold text-center tracking-widest" oninput="this.value = this.value.replace(/[^0-9\/]/g, ''); if(this.value.length === 2 && !this.value.includes('/')) this.value += '/';" />
+                                </div>
+                                <div class="w-1/3">
+                                    <label class="block text-gray-400 text-xs mb-1 uppercase font-bold tracking-wider">CVV</label>
+                                    <input type="text" id="vr-card-cvv" placeholder="123" maxlength="4" class="w-full bg-cf-darkgray border border-cf-gray rounded p-3 text-white focus:border-cf-yellow outline-none font-bold text-center tracking-widest" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                </div>
+                            </div>
+                            
+                            <div class="bg-cf-darkgray p-4 rounded border border-cf-gray mt-4 mb-4">
+                                <div class="text-gray-400 text-xs uppercase font-bold tracking-wider mb-1 text-center">Total a pagar</div>
+                                <div class="text-cf-yellow font-impact text-3xl text-center" id="vr-pay-total-display">R$ 0,00</div>
+                            </div>
+
+                            <button type="button" id="vr-pay-btn" onclick="handleVRPayment()"
+                                class="w-full bg-cf-yellow text-cf-black font-impact text-lg uppercase tracking-widest py-3.5 rounded hover:bg-white transition-all cursor-pointer flex items-center justify-center gap-2 mt-2">
+                                <i class="fa-solid fa-lock text-sm"></i> Confirmar Pagamento
+                            </button>
+                            
+                            <div id="vr-loading" class="hidden text-center py-4">
+                                <i class="fa-solid fa-spinner fa-spin text-cf-yellow text-3xl mb-3 block"></i>
+                                <span class="text-gray-400 text-sm font-bold">Processando Pagamento...</span>
+                            </div>
+                            <div id="vr-error" class="hidden text-red-500 font-bold text-sm text-center mt-2"></div>
+                        </div>
+                    </div>
+                </div>
                 </div>
 
                 <div class="mt-2">
@@ -2824,7 +2891,7 @@
 
             // Set Pix total display
             const pixTotal = document.getElementById('pix-direct-total');
-            if (pixTotal) pixTotal.innerText = `R$ ${parseFloat(order.total).toFixed(2).replace('.', ',')}`;
+            if (pixTotal) pixTotal.innerText = `R$ ${parseFloat(window.currentOrderData ? window.currentOrderData.total : 0).toFixed(2).replace('.', ',')}`;
 
             // Default to Pix selected
             selectPaymentMethod('pix');
@@ -2835,21 +2902,36 @@
         function selectPaymentMethod(method) {
             const pixContainer = document.getElementById('pix-direct-container');
             const cardWrapper = document.getElementById('card-brick-wrapper');
+            const vrWrapper = document.getElementById('vr-form-wrapper');
+            
             const btnPix = document.getElementById('pmt-select-pix');
             const btnCard = document.getElementById('pmt-select-card');
+            const btnVr = document.getElementById('pmt-select-vr');
+
+            // Reset all styles
+            const activeClass = 'flex-1 flex items-center justify-center gap-2 py-3 px-2 rounded border-2 border-cf-yellow bg-cf-yellow text-cf-black font-impact text-sm sm:text-base uppercase tracking-wider transition-all cursor-pointer';
+            const inactiveClass = 'flex-1 flex items-center justify-center gap-2 py-3 px-2 rounded border-2 border-cf-gray bg-cf-black text-white font-impact text-sm sm:text-base uppercase tracking-wider transition-all cursor-pointer hover:border-cf-yellow';
+            
+            btnPix.className = inactiveClass;
+            btnCard.className = inactiveClass;
+            if(btnVr) btnVr.className = inactiveClass;
+            
+            pixContainer.classList.add('hidden');
+            cardWrapper.classList.add('hidden');
+            if(vrWrapper) vrWrapper.classList.add('hidden');
 
             if (method === 'pix') {
                 pixContainer.classList.remove('hidden');
-                cardWrapper.classList.add('hidden');
-                btnPix.className = 'flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-yellow bg-cf-yellow text-cf-black font-impact text-base uppercase tracking-wider transition-all cursor-pointer';
-                btnCard.className = 'flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-gray bg-cf-black text-white font-impact text-base uppercase tracking-wider transition-all cursor-pointer hover:border-cf-yellow';
-            } else {
-                pixContainer.classList.add('hidden');
+                btnPix.className = activeClass;
+            } else if (method === 'card') {
                 cardWrapper.classList.remove('hidden');
-                btnCard.className = 'flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-yellow bg-cf-yellow text-cf-black font-impact text-base uppercase tracking-wider transition-all cursor-pointer';
-                btnPix.className = 'flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded border-2 border-cf-gray bg-cf-black text-white font-impact text-base uppercase tracking-wider transition-all cursor-pointer hover:border-cf-yellow';
-                // Initialize brick only when card is selected
+                btnCard.className = activeClass;
                 initializePaymentBrick();
+            } else if (method === 'vr') {
+                if(vrWrapper) vrWrapper.classList.remove('hidden');
+                if(btnVr) btnVr.className = activeClass;
+                // Update the total display in VR tab
+                document.getElementById('vr-pay-total-display').innerText = `R$ ${parseFloat(window.currentOrderData ? window.currentOrderData.total : 0).toFixed(2).replace('.', ',')}`;
             }
         }
 
@@ -2877,7 +2959,7 @@
                         items: order.items,
                         subtotal: parseFloat(order.subtotal),
                         discount: parseFloat(order.discount),
-                        total: parseFloat(order.total),
+                        total: parseFloat(window.currentOrderData ? window.currentOrderData.total : 0),
                         status: 'Pendente'
                     };
                     const { error } = await window.supabaseClient.from('orders').insert([dbOrder]);
@@ -2899,7 +2981,7 @@
                 : `${cleanName || 'cliente'}@cleanfoodsp.com.br`;
 
             const paymentData = {
-                transaction_amount: parseFloat(order.total),
+                transaction_amount: parseFloat(window.currentOrderData ? window.currentOrderData.total : 0),
                 payment_method_id: 'pix',
                 description: `Pedido ${order.id} - ${order.clientName}`,
                 external_reference: order.id,
@@ -2968,7 +3050,7 @@
                         items: order.items,
                         subtotal: parseFloat(order.subtotal),
                         discount: parseFloat(order.discount),
-                        total: parseFloat(order.total),
+                        total: parseFloat(window.currentOrderData ? window.currentOrderData.total : 0),
                         status: order.status
                     };
                     const { error } = await window.supabaseClient.from('orders').upsert([dbOrder], { onConflict: 'id' });
@@ -2990,7 +3072,7 @@
                 id: 'TX-' + order.id,
                 type: 'Entrada',
                 description: `Pedido #${order.id} - ${order.clientName}`,
-                value: parseFloat(order.total),
+                value: parseFloat(window.currentOrderData ? window.currentOrderData.total : 0),
                 date: new Date().toISOString(),
                 category: 'Pedido'
             };
@@ -3018,7 +3100,7 @@
             const orderDeliverySpan = document.getElementById('thank-order-delivery');
 
             if (orderIdSpan) orderIdSpan.innerText = '#' + order.id;
-            if (orderTotalSpan) orderTotalSpan.innerText = 'R$ ' + parseFloat(order.total).toFixed(2).replace('.', ',');
+            if (orderTotalSpan) orderTotalSpan.innerText = 'R$ ' + parseFloat(window.currentOrderData ? window.currentOrderData.total : 0).toFixed(2).replace('.', ',');
             if (orderPaymentSpan) orderPaymentSpan.innerText = paymentMethod;
             if (orderDeliverySpan) {
                 const parts = order.deliveryDate.split('-');
@@ -3134,6 +3216,104 @@
         }
 
         let isBrickInitialized = false;
+        
+        async function handleVRPayment() {
+            const brand = document.getElementById('vr-brand').value;
+            const number = document.getElementById('vr-card-number').value.replace(/\s/g, '');
+            const holder = document.getElementById('vr-card-holder').value;
+            const expiry = document.getElementById('vr-card-expiry').value;
+            const cvv = document.getElementById('vr-card-cvv').value;
+            
+            const errorDiv = document.getElementById('vr-error');
+            const loadingDiv = document.getElementById('vr-loading');
+            const payBtn = document.getElementById('vr-pay-btn');
+            
+            errorDiv.classList.add('hidden');
+            
+            if(!brand || number.length < 13 || !holder || expiry.length < 5 || cvv.length < 3) {
+                errorDiv.innerText = "Por favor, preencha todos os campos do cartão corretamente.";
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            loadingDiv.classList.remove('hidden');
+            payBtn.classList.add('hidden');
+            
+            try {
+                // Pre-save order if needed (simulating MP behavior)
+                const preOrderId = crypto.randomUUID();
+                const orderData = {
+                    id: preOrderId,
+                    clientName: document.getElementById('client-name').value,
+                    clientPhone: document.getElementById('client-phone').value,
+                    clientAddress: document.getElementById('client-address').value,
+                    clientNumber: document.getElementById('client-numero').value,
+                    items: Object.keys(cart).map(id => ({
+                        product_id: id,
+                        name: cart[id].name,
+                        quantity: cart[id].quantity,
+                        price: cart[id].price
+                    })),
+                    total: parseFloat(window.currentOrderData ? window.currentOrderData.total : 0),
+                    paymentMethod: "Vale Refeição (" + brand + ")"
+                };
+                
+                if (window.supabaseClient) {
+                    await window.supabaseClient.from('orders').insert([{
+                        id: preOrderId,
+                        client_name: orderData.clientName,
+                        client_phone: orderData.clientPhone,
+                        client_address: orderData.clientAddress,
+                        client_number: orderData.clientNumber,
+                        client_complement: document.getElementById('client-complement')?.value || '',
+                        items: orderData.items,
+                        total: orderData.total,
+                        payment_method: 'vr',
+                        status: 'pending',
+                        payment_status: 'pending'
+                    }]);
+                }
+                
+                const response = await fetch(`${window.SUPABASE_URL}/functions/v1/create-cielo-payment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${window.SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({
+                        external_reference: preOrderId,
+                        transaction_amount: parseFloat(window.currentOrderData ? window.currentOrderData.total : 0),
+                        vr_brand: brand,
+                        card_number: number,
+                        card_holder_name: holder,
+                        card_expiration_date: expiry,
+                        card_cvv: cvv
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'approved') {
+                    showThankYouModal(preOrderId);
+                    sendOrderToWhatsApp(orderData); // Simulate webhook / finalization
+                    cart = {};
+                    updateCartDisplay();
+                } else {
+                    errorDiv.innerText = "Pagamento não aprovado. " + (data.error || "Tente novamente.");
+                    errorDiv.classList.remove('hidden');
+                    loadingDiv.classList.add('hidden');
+                    payBtn.classList.remove('hidden');
+                }
+            } catch(e) {
+                console.error(e);
+                errorDiv.innerText = "Erro ao processar pagamento. Verifique os dados.";
+                errorDiv.classList.remove('hidden');
+                loadingDiv.classList.add('hidden');
+                payBtn.classList.remove('hidden');
+            }
+        }
+    
+
         async function initializePaymentBrick() {
             // Always re-initialize to reset Brick state for new orders
             if (!window.MP_PUBLIC_KEY) {
@@ -3156,7 +3336,7 @@
 
             const settings = {
                 initialization: {
-                    amount: parseFloat(order.total),
+                    amount: parseFloat(window.currentOrderData ? window.currentOrderData.total : 0),
                     preferenceId: null,
                     payer: {
                         email: validEmail,
@@ -3203,7 +3383,7 @@
                                         items: order.items,
                                         subtotal: parseFloat(order.subtotal),
                                         discount: parseFloat(order.discount),
-                                        total: parseFloat(order.total),
+                                        total: parseFloat(window.currentOrderData ? window.currentOrderData.total : 0),
                                         status: 'Pendente'
                                     };
                                     const { error } = await window.supabaseClient.from('orders').insert([dbOrder]);
@@ -3616,6 +3796,21 @@
 
     <!-- Address Logic (ViaCEP + OSRM) -->
     <script src="address_autocomplete.js"></script>
+<script>
+        function selectVRBrand(value, label) {
+            document.getElementById('vr-brand').value = value;
+            document.getElementById('vr-brand-selected').innerHTML = '<span>' + label + '</span><i class="fa-solid fa-chevron-down text-cf-yellow"></i>';
+            document.getElementById('vr-brand-options').classList.add('hidden');
+        }
+        
+        document.addEventListener('click', function(e) {
+            const container = document.getElementById('vr-brand-dropdown-container');
+            const options = document.getElementById('vr-brand-options');
+            if (container && options && !container.contains(e.target)) {
+                options.classList.add('hidden');
+            }
+        });
+</script>
 </body>
 
 </html>
