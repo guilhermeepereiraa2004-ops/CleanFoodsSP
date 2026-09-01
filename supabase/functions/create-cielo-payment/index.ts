@@ -166,6 +166,22 @@ serve(async (req) => {
     const isApproved = [1, 2].includes(cieloData.Payment?.Status);
     const returnMsg = cieloData.Payment?.ReturnMessage || cieloData.Payment?.ProviderReturnMessage || (isApproved ? 'Aprovado' : 'Não autorizado');
 
+    // Update order status in Supabase database immediately
+    if (supabaseUrl && supabaseServiceKey) {
+      try {
+        const supabase = createClient(supabaseUrl, supabaseServiceKey);
+        await supabase
+          .from('orders')
+          .update({
+            payment_status: isApproved ? 'approved' : 'rejected',
+            status: isApproved ? 'preparing' : 'cancelled'
+          })
+          .eq('id', externalRef);
+      } catch (dbErr) {
+        console.error('[CIELO] Error updating order status in DB:', dbErr);
+      }
+    }
+
     return new Response(
       JSON.stringify({ 
          status: isApproved ? 'approved' : 'rejected', 
