@@ -3299,7 +3299,8 @@ if (typeof renderMenu === 'function') renderMenu();
                     cart = {};
                     updateCartDisplay();
                 } else {
-                    errorDiv.innerText = "Pagamento não aprovado. " + (data.error || "Tente novamente.");
+                    const detail = data.return_message || data.error || "Transação não autorizada pela operadora.";
+                    errorDiv.innerText = "Pagamento não aprovado: " + detail;
                     errorDiv.classList.remove('hidden');
                     loadingDiv.classList.add('hidden');
                     payBtn.classList.remove('hidden');

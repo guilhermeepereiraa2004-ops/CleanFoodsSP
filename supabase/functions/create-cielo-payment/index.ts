@@ -1,16 +1,18 @@
 // @ts-nocheck
 /**
- * Utility to map incoming brand strings to Braspag BrandEnum values.
- * Cielo expects specific enum values (e.g., 'Visa', 'Master', 'Elo', etc.).
- * The frontend may send brand names like 'Alelo' which are not part of the enum.
- * This function normalizes known aliases.
+ * Utility to map incoming brand strings to Braspag/Cielo BrandEnum values.
+ * Alelo uses the Elo network on Cielo.
  */
-function mapBrand(input?: string): string | undefined {
-  if (!input) return undefined;
+function mapBrand(input?: string): string {
+  if (!input) return "Elo";
   const normalized = input.trim().toLowerCase();
   const brandMap: Record<string, string> = {
     alelo: "Elo",
     elo: "Elo",
+    sodexo: "Sodexo",
+    ticket: "Ticket",
+    vr: "VR",
+    benvisavale: "Visa",
     visa: "Visa",
     mastercard: "Master",
     master: "Master",
@@ -20,8 +22,9 @@ function mapBrand(input?: string): string | undefined {
     hipercard: "Hipercard",
     diners: "Diners"
   };
-  return brandMap[normalized] || undefined;
+  return brandMap[normalized] || "Elo";
 }
+
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -100,31 +103,45 @@ serve(async (req) => {
     }
 
     if (expectedTotal === 0) {
-       expectedTotal = parseFloat(paymentData.transaction_amount);
+       expectedTotal = parseFloat(paymentData.transaction_amount || 0);
     }
 
     // Convert to cents for Cielo API
     const amountInCents = Math.round(expectedTotal * 100);
+    const mappedBrand = mapBrand(paymentData.vr_brand);
 
+    // In Cielo eCommerce 3.0, vouchers (Alelo, VR, etc.) are processed as DebitCard with Authenticate: false
     const cieloPayload = {
       MerchantOrderId: externalRef,
       Customer: {
-        Name: paymentData.payer?.first_name || "Cliente CleanFoods"
+        Name: paymentData.payer?.first_name || paymentData.card_holder_name || "Cliente CleanFoods"
       },
       Payment: {
-        Type: "CreditCard",
+        Type: "DebitCard",
         Amount: amountInCents,
         Provider: "Cielo",
-        Installments: 1,
-        CreditCard: {
+        Authenticate: false,
+        DebitCard: {
           CardNumber: paymentData.card_number.replace(/\D/g, ''),
           Holder: paymentData.card_holder_name,
           ExpirationDate: paymentData.card_expiration_date, // format MM/YYYY
           SecurityCode: paymentData.card_cvv,
-          Brand: mapBrand(paymentData.vr_brand) || "Visa"
+          Brand: mappedBrand
         }
       }
     };
+
+    console.log("[CIELO] Sending payload:", JSON.stringify({
+      ...cieloPayload,
+      Payment: {
+        ...cieloPayload.Payment,
+        DebitCard: {
+          ...cieloPayload.Payment.DebitCard,
+          CardNumber: cieloPayload.Payment.DebitCard.CardNumber.slice(0, 6) + "******" + cieloPayload.Payment.DebitCard.CardNumber.slice(-4),
+          SecurityCode: "***"
+        }
+      }
+    }));
 
     const response = await fetch('https://api.cieloecommerce.cielo.com.br/1/sales/', {
       method: 'POST',
@@ -137,19 +154,24 @@ serve(async (req) => {
     });
 
     const cieloData = await response.json();
+    console.log("[CIELO] Response:", JSON.stringify(cieloData));
 
     if (!response.ok) {
       console.error('Cielo Error:', cieloData);
-      throw new Error(cieloData.length ? cieloData[0].Message : 'Failed to create payment in Cielo');
+      const errMsg = Array.isArray(cieloData) ? cieloData[0]?.Message : (cieloData.Message || 'Falha ao processar pagamento na Cielo');
+      throw new Error(errMsg);
     }
 
     // Typical Cielo Approval Statuses: 1 (Authorized), 2 (Payment Confirmed)
-    // 0 is Created, but not authorized yet (usually requires capture, but some VR are auto-capture)
     const isApproved = [1, 2].includes(cieloData.Payment?.Status);
+    const returnMsg = cieloData.Payment?.ReturnMessage || cieloData.Payment?.ProviderReturnMessage || (isApproved ? 'Aprovado' : 'Não autorizado');
 
     return new Response(
       JSON.stringify({ 
          status: isApproved ? 'approved' : 'rejected', 
+         error: isApproved ? null : returnMsg,
+         return_code: cieloData.Payment?.ReturnCode || cieloData.Payment?.ProviderReturnCode,
+         return_message: returnMsg,
          cielo_response: cieloData,
          payment_id: cieloData.Payment?.PaymentId
       }),
