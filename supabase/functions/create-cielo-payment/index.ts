@@ -1,4 +1,27 @@
 // @ts-nocheck
+/**
+ * Utility to map incoming brand strings to Braspag BrandEnum values.
+ * Cielo expects specific enum values (e.g., 'Visa', 'Master', 'Elo', etc.).
+ * The frontend may send brand names like 'Alelo' which are not part of the enum.
+ * This function normalizes known aliases.
+ */
+function mapBrand(input?: string): string | undefined {
+  if (!input) return undefined;
+  const normalized = input.trim().toLowerCase();
+  const brandMap: Record<string, string> = {
+    alelo: "Elo",
+    elo: "Elo",
+    visa: "Visa",
+    mastercard: "Master",
+    master: "Master",
+    amex: "Amex",
+    americanexpress: "Amex",
+    discover: "Discover",
+    hipercard: "Hipercard",
+    diners: "Diners"
+  };
+  return brandMap[normalized] || undefined;
+}
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -98,7 +121,7 @@ serve(async (req) => {
           Holder: paymentData.card_holder_name,
           ExpirationDate: paymentData.card_expiration_date, // format MM/YYYY
           SecurityCode: paymentData.card_cvv,
-          Brand: paymentData.vr_brand || "Visa"
+          Brand: mapBrand(paymentData.vr_brand) || "Visa"
         }
       }
     };
