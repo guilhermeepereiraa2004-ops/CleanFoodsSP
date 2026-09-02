@@ -45,16 +45,16 @@ async function calculateDistanceAndFreight(destLat, destLng) {
 async function calculateDistanceByAddress(addressString) {
     try {
         const query = encodeURIComponent(addressString);
-        const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`;
-        const response = await fetch(url, { headers: { "Accept-Language": "pt-BR" } });
+        const url = `https://photon.komoot.io/api/?q=${query}&limit=1`;
+        const response = await fetch(url);
         const data = await response.json();
-        if (data && data.length > 0) {
-            const lat = parseFloat(data[0].lat);
-            const lng = parseFloat(data[0].lon);
+        if (data && data.features && data.features.length > 0) {
+            const lng = parseFloat(data.features[0].geometry.coordinates[0]);
+            const lat = parseFloat(data.features[0].geometry.coordinates[1]);
             calculateDistanceAndFreight(lat, lng);
         }
     } catch (err) {
-        console.error("Nominatim Fetch Error", err);
+        console.error("Geocoding Fetch Error", err);
     }
 }
 
