@@ -1566,7 +1566,6 @@
 
         // Global Cart and Menu variables
         const defaultDishes = [
-            { id: 'price-teste-vr', name: 'Teste (Produto para Homologação VR)', category: 'Frango', priceP: '2,00', priceG: '2,00' },
             // FRANGO
             { id: 'price-frango-desfiado-pure-batata-doce-legumes', name: '01. Frango desfiado com purê de batata doce e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
             { id: 'price-frango-desfiado-arroz-integral-legumes', name: '02. Frango desfiado com arroz integral e legumes', category: 'Frango', priceP: '19,50', priceG: '27,50' },
@@ -1874,7 +1873,6 @@
                 dishes = dishes.filter(d => !deletedIds.includes(d.id));
                 dishes = ensureSalgados(dishes);
             }
-            const testDish = { id: 'price-teste-vr', name: 'Teste (Produto para Homologação VR)', category: 'Frango', priceP: '2,00', priceG: '2,00', available: true }; if (typeof dishes !== 'undefined' && !dishes.find(d => d.id === testDish.id)) { dishes.unshift(testDish); }
 if (typeof renderMenu === 'function') renderMenu();
         }
 
