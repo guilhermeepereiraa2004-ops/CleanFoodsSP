@@ -88,7 +88,8 @@ document.addEventListener('input', function(e) {
                         if (numeroInput) numeroInput.focus();
 
                         // Try to calculate distance from ViaCEP result
-                        const destStr = `${data.logradouro}, ${data.bairro}, ${data.localidade}, ${data.uf}, Brasil`;
+                        // Using CEP instead of neighborhood gives much higher accuracy in Photon
+                        const destStr = `${data.logradouro}, ${cep}, ${data.localidade}, ${data.uf}, Brasil`;
                         calculateDistanceByAddress(destStr);
                     }
                 })
@@ -113,8 +114,9 @@ document.addEventListener('blur', function(e) {
         const cidade = form.querySelector('.client-cidade-uf')?.value.trim();
         
         // If they filled enough manual info, calculate it
-        if (rua && numero && bairro && cidade) {
-            const destStr = `${rua}, ${numero}, ${bairro}, ${cidade}, Brasil`;
+        if (rua && cidade) {
+            // Avoid using bairro here too, to prevent false matches in Photon
+            const destStr = `${rua}, ${cidade}, Brasil`;
             calculateDistanceByAddress(destStr);
         }
     }
